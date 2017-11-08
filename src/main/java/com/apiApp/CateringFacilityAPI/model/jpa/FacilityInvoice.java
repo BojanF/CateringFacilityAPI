@@ -11,10 +11,6 @@ public class FacilityInvoice extends Invoice{
     @ManyToOne
     private Facility facility;
 
-    @NotNull
-    @OneToOne
-    private Package subscribe;
-
     public Facility getFacility() {
         return facility;
     }
@@ -23,11 +19,4 @@ public class FacilityInvoice extends Invoice{
         this.facility = facility;
     }
 
-    public Package getSubscribe() {
-        return subscribe;
-    }
-
-    public void setSubscribe(Package subscribe) {
-        this.subscribe = subscribe;
-    }
 }

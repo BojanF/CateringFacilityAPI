@@ -26,4 +26,8 @@ public class BaseEntity  {
     public int hashCode() {
         return id.hashCode();
     }
+
+    public Long getId() {
+        return id;
+    }
 }

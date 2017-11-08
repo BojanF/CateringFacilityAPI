@@ -1,5 +1,6 @@
 package com.apiApp.CateringFacilityAPI.model.jpa;
 
+import javax.persistence.Column;
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 import javax.validation.constraints.NotNull;
@@ -8,8 +9,13 @@ import javax.validation.constraints.NotNull;
 public class MenuItem extends BaseEntity {
 
     @NotNull
-    private Long price;
+    @Column(length = 150)
+    private String name;
 
+    @NotNull
+    private Double price;
+
+    @Column(length = 5000)
     private String description;
 
     @NotNull
@@ -27,11 +33,11 @@ public class MenuItem extends BaseEntity {
         this.facility = facility;
     }
 
-    public Long getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(Long price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 
@@ -49,5 +55,13 @@ public class MenuItem extends BaseEntity {
 
     public void setOnPromotion(boolean onPromotion) {
         this.onPromotion = onPromotion;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

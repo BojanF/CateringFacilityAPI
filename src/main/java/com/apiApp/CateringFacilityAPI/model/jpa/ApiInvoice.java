@@ -11,10 +11,6 @@ public class ApiInvoice extends Invoice {
     @ManyToOne
     private Developer developer;
 
-    @NotNull
-    @OneToOne
-    private Package subscribe;
-
     public Developer getDeveloper() {
         return developer;
     }
@@ -23,11 +19,4 @@ public class ApiInvoice extends Invoice {
         this.developer = developer;
     }
 
-    public Package getSubscribe() {
-        return subscribe;
-    }
-
-    public void setSubscribe(Package subscribe) {
-        this.subscribe = subscribe;
-    }
 }

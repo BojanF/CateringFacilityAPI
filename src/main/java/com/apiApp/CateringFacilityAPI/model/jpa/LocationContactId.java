@@ -21,6 +21,8 @@ public class LocationContactId implements Serializable {
         this.telephoneNumber = telephoneNumber;
     }
 
+    public LocationContactId() {}
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

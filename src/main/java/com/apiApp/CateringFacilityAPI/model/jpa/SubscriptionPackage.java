@@ -8,10 +8,10 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "packages")
-public class Package extends BaseEntity{
+public class SubscriptionPackage extends BaseEntity{
 
     @NotNull
-    private Long price;
+    private Double price;
 
     @NotNull
     private int expiresIn;
@@ -20,11 +20,14 @@ public class Package extends BaseEntity{
     @Enumerated(EnumType.STRING)
     private PackageStatus status;
 
-    public Long getPrice() {
+    @Column(length = 5000)
+    public String description;
+
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(Long price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 
@@ -44,4 +47,11 @@ public class Package extends BaseEntity{
         this.status = status;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 }
