@@ -1,7 +1,10 @@
 package com.apiApp.CateringFacilityAPI.service;
 
 import com.apiApp.CateringFacilityAPI.model.enums.CustomerStatus;
+import com.apiApp.CateringFacilityAPI.model.enums.PackageStatus;
+import com.apiApp.CateringFacilityAPI.model.jpa.ApiInvoice;
 import com.apiApp.CateringFacilityAPI.model.jpa.Developer;
+import com.apiApp.CateringFacilityAPI.model.jpa.SubscriptionPackage;
 import com.apiApp.CateringFacilityAPI.service.IDeveloperService;
 import org.junit.Assert;
 import org.junit.Test;
@@ -11,6 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
@@ -21,6 +25,12 @@ public class DeveloperServiceTest {
 
     @Autowired
     private IDeveloperService developerService;
+
+    @Autowired
+    private IApiInvoiceService apiInvoiceService;
+
+    @Autowired
+    private ISubscriptionPackageService packageService;
 
     @Test
     public void crudTestDeveloper(){
@@ -74,4 +84,107 @@ public class DeveloperServiceTest {
 
     }
 
+    @Test
+    public void developerInvoicesTest(){
+        Developer dev = developerService.insertDeveloper(
+                "VojcheS",
+                "peco",
+                "v@mail.com",
+                CustomerStatus.ACTIVE);
+        Assert.assertNotNull(developerService.findOne(dev.getId()));
+
+        Developer dev2 = developerService.insertDeveloper(
+                "MarijoK",
+                "black",
+                "marijo@email.com",
+                CustomerStatus.ACTIVE);
+        Assert.assertNotNull(developerService.findOne(dev2.getId()));
+
+        SubscriptionPackage subscriptionPackage = packageService.insertPackage(
+                10d,
+                15,
+                PackageStatus.ACTIVE,
+                "Ordinary 15 days package");
+        Assert.assertNotNull(packageService.findOne(subscriptionPackage.getId()));
+
+        ApiInvoice devInvoice1 = apiInvoiceService.insertApiInvoice(
+                subscriptionPackage,
+                0.18d,
+                LocalDateTime.now().minusDays(14),
+                dev);
+        Assert.assertNotNull(apiInvoiceService.findOne(devInvoice1.getId()));
+
+        ApiInvoice devInvoice2 = apiInvoiceService.insertApiInvoice(
+                subscriptionPackage,
+                0.18d,
+                LocalDateTime.now(),
+                dev);
+        Assert.assertNotNull(apiInvoiceService.findOne(devInvoice2.getId()));
+
+
+        List<ApiInvoice> devInvoices = developerService.developerInvoices(dev.getId());
+        Assert.assertEquals(2, devInvoices.size());
+        List<Long> devInvoicesIDs = Arrays.asList(devInvoice1.getId(), devInvoice2.getId());
+        for(ApiInvoice ai : devInvoices){
+            Assert.assertEquals(true, devInvoicesIDs.contains(ai.getId()));
+        }
+
+        ApiInvoice dev2Invoice1 = apiInvoiceService.insertApiInvoice(
+                subscriptionPackage,
+                0.18d,
+                LocalDateTime.now().minusDays(30),
+                dev2);
+        Assert.assertNotNull(apiInvoiceService.findOne(dev2Invoice1.getId()));
+        dev2Invoice1.setInvoicePayed(true);
+        dev2Invoice1.setPayedAt(dev2Invoice1.getCreatedAt().plusDays(9l));
+        dev2Invoice1 = apiInvoiceService.update(dev2Invoice1);
+        Assert.assertNotNull(dev2Invoice1.getPayedAt());
+        Assert.assertEquals(true, dev2Invoice1.getPayedStatus());
+
+        ApiInvoice dev2Invoice2 = apiInvoiceService.insertApiInvoice(
+                subscriptionPackage,
+                0.18d,
+                LocalDateTime.now().minusDays(15),
+                dev2);
+        Assert.assertNotNull(apiInvoiceService.findOne(dev2Invoice2.getId()));
+        dev2Invoice2.setInvoicePayed(true);
+        dev2Invoice2.setPayedAt(dev2Invoice2.getCreatedAt().plusDays(9l));
+        dev2Invoice2 = apiInvoiceService.update(dev2Invoice2);
+        Assert.assertNotNull(dev2Invoice2.getPayedAt());
+        Assert.assertEquals(true, dev2Invoice2.getPayedStatus());
+
+        ApiInvoice dev2Invoice3 = apiInvoiceService.insertApiInvoice(
+                subscriptionPackage,
+                0.18d,
+                LocalDateTime.now(),
+                dev2);
+        Assert.assertNotNull(apiInvoiceService.findOne(dev2Invoice3.getId()));
+
+        List<ApiInvoice> dev2Invoices = developerService.developerInvoices(dev2.getId());
+        Assert.assertEquals(3, dev2Invoices.size());
+        List<Long> dev2InvoicesIDs = Arrays.asList(dev2Invoice1.getId(), dev2Invoice2.getId(), dev2Invoice3.getId());
+        for(ApiInvoice ai : dev2Invoices){
+            Assert.assertEquals(true, dev2InvoicesIDs.contains(ai.getId()));
+        }
+
+
+        apiInvoiceService.delete(devInvoice1.getId());
+        apiInvoiceService.delete(devInvoice2.getId());
+        apiInvoiceService.delete(dev2Invoice1.getId());
+        apiInvoiceService.delete(dev2Invoice2.getId());
+        apiInvoiceService.delete(dev2Invoice3.getId());
+        Assert.assertNull(apiInvoiceService.findOne(devInvoice1.getId()));
+        Assert.assertNull(apiInvoiceService.findOne(devInvoice2.getId()));
+        Assert.assertNull(apiInvoiceService.findOne(dev2Invoice1.getId()));
+        Assert.assertNull(apiInvoiceService.findOne(dev2Invoice2.getId()));
+        Assert.assertNull(apiInvoiceService.findOne(dev2Invoice3.getId()));
+
+        packageService.delete(subscriptionPackage.getId());
+        Assert.assertNull(packageService.findOne(subscriptionPackage.getId()));
+
+        developerService.delete(dev.getId());
+        developerService.delete(dev2.getId());
+        Assert.assertEquals(null, developerService.findOne(dev.getId()));
+        Assert.assertEquals(null, developerService.findOne(dev2.getId()));
+    }
 }

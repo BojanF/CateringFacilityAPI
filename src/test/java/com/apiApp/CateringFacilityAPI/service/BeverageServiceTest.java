@@ -49,6 +49,7 @@ public class BeverageServiceTest {
                  fac1,
                  BeverageType.COFFEE,
                 null);
+        Assert.assertNotNull(beverageService.findOne(b1.getId()));
 
         Beverage b2 = beverageService.insertBeverage(
                 "Makijato",
@@ -57,6 +58,7 @@ public class BeverageServiceTest {
                  fac1,
                  BeverageType.COFFEE,
                 null);
+        Assert.assertNotNull(beverageService.findOne(b2.getId()));
 
         Beverage b3 = beverageService.insertBeverage(
                 "Skopksko",
@@ -65,6 +67,7 @@ public class BeverageServiceTest {
                  fac1,
                  BeverageType.BEER,
                 null);
+        Assert.assertNotNull(beverageService.findOne(b3.getId()));
 
         Beverage b4 = beverageService.insertBeverage(
                 "Laden caj",
@@ -73,6 +76,7 @@ public class BeverageServiceTest {
                  fac1,
                  BeverageType.ICE_TEA,
                 "Shumsko ovosje, portokal...");
+        Assert.assertNotNull(beverageService.findOne(b4.getId()));
 
         Beverage b5 = beverageService.insertBeverage(
                 "Caj",
@@ -82,6 +86,8 @@ public class BeverageServiceTest {
                  BeverageType.TEA,
                 "Franch...");
 
+        Assert.assertNotNull(beverageService.findOne(b5.getId()));
+
         Beverage b6 = beverageService.insertBeverage(
                 "Vodka",
                 120d,
@@ -89,12 +95,6 @@ public class BeverageServiceTest {
                  fac1,
                  BeverageType.ALCOHOL,
                 "Smirnoff...");
-
-        Assert.assertNotNull(beverageService.findOne(b1.getId()));
-        Assert.assertNotNull(beverageService.findOne(b2.getId()));
-        Assert.assertNotNull(beverageService.findOne(b3.getId()));
-        Assert.assertNotNull(beverageService.findOne(b4.getId()));
-        Assert.assertNotNull(beverageService.findOne(b5.getId()));
         Assert.assertNotNull(beverageService.findOne(b6.getId()));
 
         Assert.assertNull(b2.getDescription());

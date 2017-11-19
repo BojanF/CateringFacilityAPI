@@ -1,7 +1,10 @@
 package com.apiApp.CateringFacilityAPI.service;
 
 import com.apiApp.CateringFacilityAPI.model.enums.CustomerStatus;
+import com.apiApp.CateringFacilityAPI.model.jpa.ApiInvoice;
 import com.apiApp.CateringFacilityAPI.model.jpa.Developer;
+
+import java.util.List;
 
 public interface IDeveloperService {
 
@@ -14,4 +17,6 @@ public interface IDeveloperService {
     void delete(Long id);
 
     Iterable<Developer> findAll();
+
+    List<ApiInvoice> developerInvoices(Long devId);
 }

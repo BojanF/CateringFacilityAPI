@@ -71,7 +71,7 @@ public class FacilityInvoiceServiceTest {
         FacilityInvoice invoice = facilityInvoiceService.insertFacilityInvoice(
                 subscriptionPackage,
                 0.18d,
-                LocalDateTime.now(),
+                LocalDateTime.now().minusDays(15),
                 fac1);
 
         Assert.assertNotNull(facilityInvoiceService.findOne(invoice.getId()));
@@ -93,7 +93,7 @@ public class FacilityInvoiceServiceTest {
         FacilityInvoice invoice2 = facilityInvoiceService.insertFacilityInvoice(
                 subscriptionPackage,
                 0.18d,
-                invoice.getCreatedAt().plusDays(15l),
+                LocalDateTime.now(),
                 fac1);
         Assert.assertNotNull(facilityInvoiceService.findOne(invoice2.getId()));
         Assert.assertEquals(false, invoice2.getPayedStatus());

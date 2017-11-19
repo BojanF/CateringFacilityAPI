@@ -2,6 +2,9 @@ package com.apiApp.CateringFacilityAPI.service;
 
 import com.apiApp.CateringFacilityAPI.model.jpa.Facility;
 import com.apiApp.CateringFacilityAPI.model.jpa.FacilityLocation;
+import com.apiApp.CateringFacilityAPI.model.jpa.FacilityLocationContact;
+
+import java.util.List;
 
 public interface IFacilityLocationService {
 
@@ -14,5 +17,7 @@ public interface IFacilityLocationService {
     void delete(Long id);
 
     Iterable<FacilityLocation> findAll();
+
+    List<FacilityLocationContact> facLocationContacts(Long locationId);
     
 }

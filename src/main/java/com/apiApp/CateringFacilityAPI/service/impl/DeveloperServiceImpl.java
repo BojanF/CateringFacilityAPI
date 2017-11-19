@@ -1,11 +1,14 @@
 package com.apiApp.CateringFacilityAPI.service.impl;
 
 import com.apiApp.CateringFacilityAPI.model.enums.CustomerStatus;
+import com.apiApp.CateringFacilityAPI.model.jpa.ApiInvoice;
 import com.apiApp.CateringFacilityAPI.model.jpa.Developer;
 import com.apiApp.CateringFacilityAPI.persistance.IDeveloperRepository;
 import com.apiApp.CateringFacilityAPI.service.IDeveloperService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class DeveloperServiceImpl implements IDeveloperService {
@@ -42,5 +45,10 @@ public class DeveloperServiceImpl implements IDeveloperService {
     @Override
     public Iterable<Developer> findAll() {
         return developerRepository.findAll();
+    }
+
+    @Override
+    public List<ApiInvoice> developerInvoices(Long devId) {
+        return developerRepository.developerInvoices(devId);
     }
 }

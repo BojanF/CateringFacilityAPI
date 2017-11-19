@@ -4,7 +4,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "api_invoice")
+@Table(name = "api_invoices")
 public class ApiInvoice extends Invoice {
 
     @NotNull

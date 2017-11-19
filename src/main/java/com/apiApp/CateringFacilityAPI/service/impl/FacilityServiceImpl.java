@@ -1,11 +1,13 @@
 package com.apiApp.CateringFacilityAPI.service.impl;
 
 import com.apiApp.CateringFacilityAPI.model.enums.CustomerStatus;
-import com.apiApp.CateringFacilityAPI.model.jpa.Facility;
+import com.apiApp.CateringFacilityAPI.model.jpa.*;
 import com.apiApp.CateringFacilityAPI.persistance.IFacilityRepository;
 import com.apiApp.CateringFacilityAPI.service.IFacilityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class FacilityServiceImpl implements IFacilityService {
@@ -43,5 +45,25 @@ public class FacilityServiceImpl implements IFacilityService {
     @Override
     public Iterable<Facility> findAll() {
         return facilityRepository.findAll();
+    }
+
+    @Override
+    public List<Course> facilityCourses(Long facilityId) {
+        return facilityRepository.facilityCourses(facilityId);
+    }
+
+    @Override
+    public List<Beverage> facilityBeverages(Long facilityId) {
+        return facilityRepository.facilityBeverages(facilityId);
+    }
+
+    @Override
+    public List<FacilityLocation> facilityLocations(Long facilityId){
+        return facilityRepository.facilityLocations(facilityId);
+    }
+
+    @Override
+    public List<FacilityInvoice> facilityInvoices(Long facilityId){
+        return facilityRepository.facilityInvoices(facilityId);
     }
 }

@@ -2,10 +2,13 @@ package com.apiApp.CateringFacilityAPI.service.impl;
 
 import com.apiApp.CateringFacilityAPI.model.jpa.Facility;
 import com.apiApp.CateringFacilityAPI.model.jpa.FacilityLocation;
+import com.apiApp.CateringFacilityAPI.model.jpa.FacilityLocationContact;
 import com.apiApp.CateringFacilityAPI.persistance.IFacilityLocationRepository;
 import com.apiApp.CateringFacilityAPI.service.IFacilityLocationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class FacilityLocationServiceImpl implements IFacilityLocationService{
@@ -43,5 +46,10 @@ public class FacilityLocationServiceImpl implements IFacilityLocationService{
     @Override
     public Iterable<FacilityLocation> findAll() {
         return locationRepository.findAll();
+    }
+
+    @Override
+    public List<FacilityLocationContact> facLocationContacts(Long locationId) {
+        return locationRepository.facLocationContacts(locationId);
     }
 }

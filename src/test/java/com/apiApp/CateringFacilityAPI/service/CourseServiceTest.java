@@ -49,6 +49,7 @@ public class CourseServiceTest {
                  fac1,
                  CourseType.APPETIZER,
                 null);
+        Assert.assertNotNull(courseService.findOne(course1.getId()));
 
         Course course2 = courseService.insertCourse(
                 "English breakfast",
@@ -57,6 +58,7 @@ public class CourseServiceTest {
                  fac1,
                  CourseType.BREAKFAST,
                 "Breakfast for champions!!! Eggs, bacon, beans, susage...");
+        Assert.assertNotNull(courseService.findOne(course2.getId()));
 
         Course course3 = courseService.insertCourse(
                 "Ambassador cake",
@@ -65,6 +67,7 @@ public class CourseServiceTest {
                  fac1,
                  CourseType.DESERT,
                 "Recomended for MFAs :)");
+        Assert.assertNotNull(courseService.findOne(course3.getId()));
 
         Course course4 = courseService.insertCourse(
                 "Pizza quattro stagioni",
@@ -73,10 +76,6 @@ public class CourseServiceTest {
                  fac1,
                  CourseType.MAIN_COURSE,
                 "Specialty of the house");
-
-        Assert.assertNotNull(courseService.findOne(course1.getId()));
-        Assert.assertNotNull(courseService.findOne(course2.getId()));
-        Assert.assertNotNull(courseService.findOne(course3.getId()));
         Assert.assertNotNull(courseService.findOne(course4.getId()));
 
         Assert.assertNull(course1.getDescription());

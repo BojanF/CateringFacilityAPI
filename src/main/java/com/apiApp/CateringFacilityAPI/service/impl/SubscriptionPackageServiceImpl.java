@@ -1,11 +1,15 @@
 package com.apiApp.CateringFacilityAPI.service.impl;
 
 import com.apiApp.CateringFacilityAPI.model.enums.PackageStatus;
+import com.apiApp.CateringFacilityAPI.model.jpa.ApiInvoice;
+import com.apiApp.CateringFacilityAPI.model.jpa.FacilityInvoice;
 import com.apiApp.CateringFacilityAPI.model.jpa.SubscriptionPackage;
 import com.apiApp.CateringFacilityAPI.persistance.ISubscriptionPackageRepository;
 import com.apiApp.CateringFacilityAPI.service.ISubscriptionPackageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class SubscriptionPackageServiceImpl implements ISubscriptionPackageService {
@@ -42,4 +46,30 @@ public class SubscriptionPackageServiceImpl implements ISubscriptionPackageServi
     public Iterable<SubscriptionPackage> findAll() {
         return packageRepository.findAll();
     }
+
+    @Override
+    public List<ApiInvoice> ApiInvoicesForPackage(Long packageId) {
+        return packageRepository.ApiInvoicesForPackage(packageId);
+    }
+
+    @Override
+    public List<FacilityInvoice> FacilityInvoicesForPackage(Long packageId) {
+        return packageRepository.FacilityInvoicesForPackage(packageId);
+    }
+
+    @Override
+    public int countApiInvoicesForPackage(Long packageId) {
+        return packageRepository.countApiInvoicesForPackage(packageId);
+    }
+
+    @Override
+    public int countFacilityInvoicesForPackage(Long packageId) {
+        return packageRepository.countFacilityInvoicesForPackage(packageId);
+    }
+
+    @Override
+    public Double sumOfInvoicesForPackage(Long packageId, boolean paid) {
+        return packageRepository.sumOfApiInvoicesForPackage(packageId, paid) + packageRepository.sumOfFacilityInvoicesForPackage(packageId, paid);
+    }
+
 }

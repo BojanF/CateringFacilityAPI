@@ -52,11 +52,10 @@ public class FacilityLocationContactServiceTest {
     public void crudTestFacilityContact(){
         LocationContactId id1 = new LocationContactId(fac1.getId(), "023030330");
         FacilityLocationContact contact1 = contactService.insertFacilityLocationContact(id1, cafeLi);
+        Assert.assertNotNull(contactService.findOne(id1));
 
         LocationContactId id2 = new LocationContactId(fac1.getId(), "070012789");
         FacilityLocationContact contact2 = contactService.insertFacilityLocationContact(id2, cafeLi);
-
-        Assert.assertNotNull(contactService.findOne(id1));
         Assert.assertNotNull(contactService.findOne(id2));
 
         contactService.delete(id1);
