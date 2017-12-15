@@ -13,6 +13,9 @@ public class Invoice extends BaseEntity {
     private SubscriptionPackage subscribe;
 
     @NotNull
+    private Double originalPackagePrice;
+
+    @NotNull
     private Double grossPrice;
 
     @NotNull
@@ -63,7 +66,10 @@ public class Invoice extends BaseEntity {
     }
 
     public void setGrossPrice() {
-        this.grossPrice = (1+this.taxAmount) * this.subscribe.getPrice();
+        Double grossPriceCalculation = (1+this.taxAmount/100d) * this.subscribe.getPrice();
+        //for rounding the number
+        grossPriceCalculation = Math.round( grossPriceCalculation * 100d ) / 100d;
+        this.grossPrice = grossPriceCalculation;
     }
 
     public Double getTaxAmount() {
@@ -80,5 +86,17 @@ public class Invoice extends BaseEntity {
 
     public void setInvoicePayed(boolean invoicePayed) {
         this.invoicePayed = invoicePayed;
+    }
+
+    public Double getOriginalPackagePrice() {
+        return originalPackagePrice;
+    }
+
+    public void setOriginalPackagePrice(Double originalPackagePrice) {
+        this.originalPackagePrice = originalPackagePrice;
+    }
+
+    public void setGrossPrice(Double grossPrice) {
+        this.grossPrice = grossPrice;
     }
 }

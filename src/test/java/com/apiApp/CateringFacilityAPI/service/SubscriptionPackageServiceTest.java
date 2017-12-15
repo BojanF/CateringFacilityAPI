@@ -37,10 +37,14 @@ public class SubscriptionPackageServiceTest {
     @Autowired
     private IFacilityInvoiceService facilityInvoiceService;
 
+    @Autowired
+    private ITaxAmountService taxAmountService;
+
     private Developer dev;
     private Developer dev2;
     private Facility fac1;
     private Facility fac2;
+    private TaxAmount ta;
 
     @Before
     public void initialize(){
@@ -67,12 +71,17 @@ public class SubscriptionPackageServiceTest {
                 "black",
                 "marijo@email.com",
                 CustomerStatus.ACTIVE);
+
+        //we need at least one entry in tax table for creating invoices
+        //tax attr is filled automatic with creation of invoice, in the constructor in service
+        ta = taxAmountService.insertTaxAmount(18d);
     }
 
     @Test
     public void crudTestPackage(){
 
         SubscriptionPackage p = packageService.insertPackage(
+                "Christmas special",
                 5d,
                 7,
                  PackageStatus.ACTIVE,
@@ -87,6 +96,7 @@ public class SubscriptionPackageServiceTest {
         Assert.assertEquals(p.getStatus(), PackageStatus.SUSPENDED);
 
         SubscriptionPackage p2 = packageService.insertPackage(
+                "Starter",
                 10d,
                 15,
                  PackageStatus.ACTIVE,
@@ -97,6 +107,7 @@ public class SubscriptionPackageServiceTest {
         //testing findAll method
         List<Long> packageIdentifiers = Arrays.asList(p.getId(), p2.getId());
         Iterable<SubscriptionPackage> packages = packageService.findAll();
+
         for (SubscriptionPackage pcg : packages) {
             Assert.assertEquals(true, packageIdentifiers.contains(pcg.getId()));
         }
@@ -112,6 +123,7 @@ public class SubscriptionPackageServiceTest {
     @Test
     public void invoicesForPackage(){
         SubscriptionPackage packageOne = packageService.insertPackage(
+                "Starter",
                 10d,
                 15,
                 PackageStatus.ACTIVE,
@@ -119,6 +131,7 @@ public class SubscriptionPackageServiceTest {
         Assert.assertNotNull(packageService.findOne(packageOne.getId()));
 
         SubscriptionPackage packageTwo = packageService.insertPackage(
+                "Christmas special",
                 5d,
                 7,
                 PackageStatus.ACTIVE,
@@ -127,21 +140,21 @@ public class SubscriptionPackageServiceTest {
 
         ApiInvoice devInvoice1 = apiInvoiceService.insertApiInvoice(
                 packageOne,
-                0.18d,
+
                 LocalDateTime.now().minusDays(14),
                 dev);
         Assert.assertNotNull(apiInvoiceService.findOne(devInvoice1.getId()));
 
         ApiInvoice devInvoice2 = apiInvoiceService.insertApiInvoice(
                 packageTwo,
-                0.18d,
+
                 LocalDateTime.now(),
                 dev);
         Assert.assertNotNull(apiInvoiceService.findOne(devInvoice2.getId()));
 
         ApiInvoice dev2Invoice1 = apiInvoiceService.insertApiInvoice(
                 packageOne,
-                0.18d,
+
                 LocalDateTime.now().minusDays(30),
                 dev2);
         Assert.assertNotNull(apiInvoiceService.findOne(dev2Invoice1.getId()));
@@ -153,7 +166,7 @@ public class SubscriptionPackageServiceTest {
 
         ApiInvoice dev2Invoice2 = apiInvoiceService.insertApiInvoice(
                 packageOne,
-                0.18d,
+
                 LocalDateTime.now().minusDays(15),
                 dev2);
         Assert.assertNotNull(apiInvoiceService.findOne(dev2Invoice2.getId()));
@@ -165,28 +178,28 @@ public class SubscriptionPackageServiceTest {
 
         ApiInvoice dev2Invoice3 = apiInvoiceService.insertApiInvoice(
                 packageTwo,
-                0.18d,
+
                 LocalDateTime.now(),
                 dev2);
         Assert.assertNotNull(apiInvoiceService.findOne(dev2Invoice3.getId()));
 
         FacilityInvoice fac1Invoice1 = facilityInvoiceService.insertFacilityInvoice(
                 packageOne,
-                0.18d,
+
                 LocalDateTime.now().minusDays(15),
                 fac1);
         Assert.assertNotNull(facilityInvoiceService.findOne(fac1Invoice1.getId()));
 
         FacilityInvoice fac1Invoice2 = facilityInvoiceService.insertFacilityInvoice(
                 packageOne,
-                0.18d,
+
                 LocalDateTime.now(),
                 fac1);
         Assert.assertNotNull(facilityInvoiceService.findOne(fac1Invoice2.getId()));
 
         FacilityInvoice fac2Invoice1 = facilityInvoiceService.insertFacilityInvoice(
                 packageTwo,
-                0.18d,
+
                 LocalDateTime.now(),
                 fac2);
         Assert.assertNotNull(facilityInvoiceService.findOne(fac2Invoice1.getId()));
@@ -257,8 +270,9 @@ public class SubscriptionPackageServiceTest {
     }
 
     @Test
-    public void sumOfPaidUndpaidInvoicesForPackage(){
+    public void sumOfPaidUnpaidInvoicesForPackage(){
         SubscriptionPackage packageOne = packageService.insertPackage(
+                "Starter",
                 10d,
                 15,
                 PackageStatus.ACTIVE,
@@ -266,6 +280,7 @@ public class SubscriptionPackageServiceTest {
         Assert.assertNotNull(packageService.findOne(packageOne.getId()));
 
         SubscriptionPackage packageTwo = packageService.insertPackage(
+                "Christmas special",
                 5d,
                 7,
                 PackageStatus.ACTIVE,
@@ -274,21 +289,21 @@ public class SubscriptionPackageServiceTest {
 
         ApiInvoice devInvoice1 = apiInvoiceService.insertApiInvoice(
                 packageOne,
-                0.18d,
+
                 LocalDateTime.now().minusDays(14),
                 dev);
         Assert.assertNotNull(apiInvoiceService.findOne(devInvoice1.getId()));
 
         ApiInvoice devInvoice2 = apiInvoiceService.insertApiInvoice(
                 packageTwo,
-                0.18d,
+
                 LocalDateTime.now(),
                 dev);
         Assert.assertNotNull(apiInvoiceService.findOne(devInvoice2.getId()));
 
         ApiInvoice dev2Invoice1 = apiInvoiceService.insertApiInvoice(
                 packageOne,
-                0.18d,
+
                 LocalDateTime.now().minusDays(30),
                 dev2);
         Assert.assertNotNull(apiInvoiceService.findOne(dev2Invoice1.getId()));
@@ -300,7 +315,7 @@ public class SubscriptionPackageServiceTest {
 
         ApiInvoice dev2Invoice2 = apiInvoiceService.insertApiInvoice(
                 packageOne,
-                0.18d,
+
                 LocalDateTime.now().minusDays(15),
                 dev2);
         Assert.assertNotNull(apiInvoiceService.findOne(dev2Invoice2.getId()));
@@ -312,28 +327,28 @@ public class SubscriptionPackageServiceTest {
 
         ApiInvoice dev2Invoice3 = apiInvoiceService.insertApiInvoice(
                 packageTwo,
-                0.18d,
+
                 LocalDateTime.now(),
                 dev2);
         Assert.assertNotNull(apiInvoiceService.findOne(dev2Invoice3.getId()));
 
         FacilityInvoice fac1Invoice1 = facilityInvoiceService.insertFacilityInvoice(
                 packageOne,
-                0.18d,
+
                 LocalDateTime.now().minusDays(15),
                 fac1);
         Assert.assertNotNull(facilityInvoiceService.findOne(fac1Invoice1.getId()));
 
         FacilityInvoice fac1Invoice2 = facilityInvoiceService.insertFacilityInvoice(
                 packageOne,
-                0.18d,
+
                 LocalDateTime.now(),
                 fac1);
         Assert.assertNotNull(facilityInvoiceService.findOne(fac1Invoice2.getId()));
 
         FacilityInvoice fac2Invoice1 = facilityInvoiceService.insertFacilityInvoice(
                 packageTwo,
-                0.18d,
+
                 LocalDateTime.now(),
                 fac2);
 
@@ -382,5 +397,6 @@ public class SubscriptionPackageServiceTest {
         facilityService.delete(fac2.getId());
         developerService.delete(dev.getId());
         developerService.delete(dev2.getId());
+        taxAmountService.delete(ta.getId());
     }
 }

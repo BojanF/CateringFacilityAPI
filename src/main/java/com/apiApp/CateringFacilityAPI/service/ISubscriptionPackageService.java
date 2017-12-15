@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface ISubscriptionPackageService {
 
-    SubscriptionPackage insertPackage(Double price, int expiresIn, PackageStatus status, String description);
+    SubscriptionPackage insertPackage(String name, Double price, int expiresIn, PackageStatus status, String description);
 
     SubscriptionPackage findOne(Long id);
 

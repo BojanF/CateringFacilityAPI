@@ -11,6 +11,9 @@ import javax.validation.constraints.NotNull;
 public class SubscriptionPackage extends BaseEntity{
 
     @NotNull
+    private String name;
+
+    @NotNull
     private Double price;
 
     @NotNull
@@ -53,5 +56,13 @@ public class SubscriptionPackage extends BaseEntity{
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

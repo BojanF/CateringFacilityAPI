@@ -5,22 +5,28 @@ import com.apiApp.CateringFacilityAPI.model.jpa.FacilityInvoice;
 import com.apiApp.CateringFacilityAPI.model.jpa.SubscriptionPackage;
 import com.apiApp.CateringFacilityAPI.persistance.IFacilityInvoiceRepository;
 import com.apiApp.CateringFacilityAPI.service.IFacilityInvoiceService;
+import com.apiApp.CateringFacilityAPI.service.ITaxAmountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class FacilityInvoiceServiceImpl implements IFacilityInvoiceService {
     
     @Autowired
     private IFacilityInvoiceRepository facilityInvoiceRepository;
+
+    @Autowired
+    private ITaxAmountService taxAmountService;
     
     @Override
-    public FacilityInvoice insertFacilityInvoice(SubscriptionPackage subscribe, Double taxAmount, LocalDateTime createdAt, Facility facility) {
+    public FacilityInvoice insertFacilityInvoice(SubscriptionPackage subscribe, LocalDateTime createdAt, Facility facility) {
         FacilityInvoice facilityInvoice = new FacilityInvoice();
         facilityInvoice.setSubscribe(subscribe);
-        facilityInvoice.setTaxAmount(taxAmount);
+        facilityInvoice.setOriginalPackagePrice(subscribe.getPrice());
+        facilityInvoice.setTaxAmount(taxAmountService.getTaxAmount());
         facilityInvoice.setCreatedAt(createdAt);
         facilityInvoice.setFacility(facility);
         facilityInvoice.setGrossPrice();
@@ -46,5 +52,10 @@ public class FacilityInvoiceServiceImpl implements IFacilityInvoiceService {
     @Override
     public Iterable<FacilityInvoice> findAll() {
         return facilityInvoiceRepository.findAll();
+    }
+
+    @Override
+    public List<FacilityInvoice> getAllFacilityInvoicesSortedByCreatedAt(){
+        return facilityInvoiceRepository.getAllFacilityInvoicesSortedByCreatedAt();
     }
 }

@@ -5,10 +5,11 @@ import com.apiApp.CateringFacilityAPI.model.jpa.Developer;
 import com.apiApp.CateringFacilityAPI.model.jpa.SubscriptionPackage;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public interface IApiInvoiceService {
 
-    ApiInvoice insertApiInvoice(SubscriptionPackage subscribe, Double taxAmount, LocalDateTime createdAt, Developer developer);
+    ApiInvoice insertApiInvoice(SubscriptionPackage subscribe, LocalDateTime createdAt, Developer developer);
 
     ApiInvoice findOne(Long id);
 
@@ -17,5 +18,7 @@ public interface IApiInvoiceService {
     void delete(Long id);
 
     Iterable<ApiInvoice> findAll();
+
+    List<ApiInvoice> getAllInvoicesSortedByCreatedAt();
     
 }

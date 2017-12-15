@@ -1,6 +1,7 @@
 package com.apiApp.CateringFacilityAPI.service.impl;
 
 import com.apiApp.CateringFacilityAPI.model.enums.CustomerStatus;
+import com.apiApp.CateringFacilityAPI.model.enums.Role;
 import com.apiApp.CateringFacilityAPI.model.jpa.*;
 import com.apiApp.CateringFacilityAPI.persistance.IFacilityRepository;
 import com.apiApp.CateringFacilityAPI.service.IFacilityService;
@@ -24,6 +25,7 @@ public class FacilityServiceImpl implements IFacilityService {
         facility.setEmail(email);
         facility.setStatus(CustomerStatus.ACTIVE);
         facility.setUsedTrial(false);
+        facility.setRole(Role.ROLE_CUSTOMER);
         return facilityRepository.save(facility);
     }
 

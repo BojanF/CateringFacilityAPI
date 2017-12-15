@@ -1,5 +1,9 @@
 package com.apiApp.CateringFacilityAPI.model.jpa;
 
+import com.apiApp.CateringFacilityAPI.model.enums.Role;
+
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.MappedSuperclass;
 import javax.validation.constraints.NotNull;
 
@@ -14,6 +18,10 @@ public class User extends BaseEntity {
 
     @NotNull
     private String password;
+
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
     public String getUsername() {
         return username;
@@ -37,5 +45,13 @@ public class User extends BaseEntity {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 }

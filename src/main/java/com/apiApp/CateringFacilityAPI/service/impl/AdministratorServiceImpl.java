@@ -1,5 +1,6 @@
 package com.apiApp.CateringFacilityAPI.service.impl;
 
+import com.apiApp.CateringFacilityAPI.model.enums.Role;
 import com.apiApp.CateringFacilityAPI.model.jpa.Administrator;
 import com.apiApp.CateringFacilityAPI.persistance.IAdministratorRepository;
 import com.apiApp.CateringFacilityAPI.service.IAdministratorService;
@@ -20,6 +21,7 @@ public class AdministratorServiceImpl implements IAdministratorService {
         admin.setUsername(username);
         admin.setPassword(password);
         admin.setEmail(email);
+        admin.setRole(Role.ROLE_ADMIN);
         return administratorRepository.save(admin);
     }
 

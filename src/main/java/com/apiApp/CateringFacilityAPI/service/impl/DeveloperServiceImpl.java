@@ -1,6 +1,7 @@
 package com.apiApp.CateringFacilityAPI.service.impl;
 
 import com.apiApp.CateringFacilityAPI.model.enums.CustomerStatus;
+import com.apiApp.CateringFacilityAPI.model.enums.Role;
 import com.apiApp.CateringFacilityAPI.model.jpa.ApiInvoice;
 import com.apiApp.CateringFacilityAPI.model.jpa.Developer;
 import com.apiApp.CateringFacilityAPI.persistance.IDeveloperRepository;
@@ -24,6 +25,7 @@ public class DeveloperServiceImpl implements IDeveloperService {
         developer.setEmail(email);
         developer.setStatus(status);
         developer.setUsedTrial(false);
+        developer.setRole(Role.ROLE_DEVELOPER);
         return developerRepository.save(developer);
     }
 

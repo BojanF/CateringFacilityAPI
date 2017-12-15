@@ -18,8 +18,9 @@ public class SubscriptionPackageServiceImpl implements ISubscriptionPackageServi
     private ISubscriptionPackageRepository packageRepository;
 
     @Override
-    public SubscriptionPackage insertPackage(Double price, int expiresIn, PackageStatus status, String description) {
+    public SubscriptionPackage insertPackage(String name, Double price, int expiresIn, PackageStatus status, String description) {
         SubscriptionPackage p = new SubscriptionPackage();
+        p.setName(name);
         p.setPrice(price);
         p.setExpiresIn(expiresIn);
         p.setStatus(status);

@@ -5,6 +5,7 @@ import com.apiApp.CateringFacilityAPI.model.enums.PackageStatus;
 import com.apiApp.CateringFacilityAPI.model.jpa.ApiInvoice;
 import com.apiApp.CateringFacilityAPI.model.jpa.Developer;
 import com.apiApp.CateringFacilityAPI.model.jpa.SubscriptionPackage;
+import com.apiApp.CateringFacilityAPI.model.jpa.TaxAmount;
 import com.apiApp.CateringFacilityAPI.service.IDeveloperService;
 import org.junit.Assert;
 import org.junit.Test;
@@ -31,6 +32,9 @@ public class DeveloperServiceTest {
 
     @Autowired
     private ISubscriptionPackageService packageService;
+
+    @Autowired
+    private ITaxAmountService taxAmountService;
 
     @Test
     public void crudTestDeveloper(){
@@ -86,6 +90,10 @@ public class DeveloperServiceTest {
 
     @Test
     public void developerInvoicesTest(){
+        //we need at least one entry in tax table for creating invoices
+        //tax attr is filled automatic with creation of invoice, in the constructor in service
+        TaxAmount ta = taxAmountService.insertTaxAmount(18d);
+
         Developer dev = developerService.insertDeveloper(
                 "VojcheS",
                 "peco",
@@ -101,6 +109,7 @@ public class DeveloperServiceTest {
         Assert.assertNotNull(developerService.findOne(dev2.getId()));
 
         SubscriptionPackage subscriptionPackage = packageService.insertPackage(
+                "Starter",
                 10d,
                 15,
                 PackageStatus.ACTIVE,
@@ -109,19 +118,19 @@ public class DeveloperServiceTest {
 
         ApiInvoice devInvoice1 = apiInvoiceService.insertApiInvoice(
                 subscriptionPackage,
-                0.18d,
+
                 LocalDateTime.now().minusDays(14),
                 dev);
         Assert.assertNotNull(apiInvoiceService.findOne(devInvoice1.getId()));
 
         ApiInvoice devInvoice2 = apiInvoiceService.insertApiInvoice(
                 subscriptionPackage,
-                0.18d,
+
                 LocalDateTime.now(),
                 dev);
         Assert.assertNotNull(apiInvoiceService.findOne(devInvoice2.getId()));
 
-
+        //test scenarios for developerInvoices method
         List<ApiInvoice> devInvoices = developerService.developerInvoices(dev.getId());
         Assert.assertEquals(2, devInvoices.size());
         List<Long> devInvoicesIDs = Arrays.asList(devInvoice1.getId(), devInvoice2.getId());
@@ -131,7 +140,7 @@ public class DeveloperServiceTest {
 
         ApiInvoice dev2Invoice1 = apiInvoiceService.insertApiInvoice(
                 subscriptionPackage,
-                0.18d,
+
                 LocalDateTime.now().minusDays(30),
                 dev2);
         Assert.assertNotNull(apiInvoiceService.findOne(dev2Invoice1.getId()));
@@ -143,7 +152,7 @@ public class DeveloperServiceTest {
 
         ApiInvoice dev2Invoice2 = apiInvoiceService.insertApiInvoice(
                 subscriptionPackage,
-                0.18d,
+
                 LocalDateTime.now().minusDays(15),
                 dev2);
         Assert.assertNotNull(apiInvoiceService.findOne(dev2Invoice2.getId()));
@@ -155,7 +164,7 @@ public class DeveloperServiceTest {
 
         ApiInvoice dev2Invoice3 = apiInvoiceService.insertApiInvoice(
                 subscriptionPackage,
-                0.18d,
+
                 LocalDateTime.now(),
                 dev2);
         Assert.assertNotNull(apiInvoiceService.findOne(dev2Invoice3.getId()));
@@ -186,5 +195,8 @@ public class DeveloperServiceTest {
         developerService.delete(dev2.getId());
         Assert.assertEquals(null, developerService.findOne(dev.getId()));
         Assert.assertEquals(null, developerService.findOne(dev2.getId()));
+
+        taxAmountService.delete(ta.getId());
+        Assert.assertEquals(null, taxAmountService.findOne(ta.getId()));
     }
 }

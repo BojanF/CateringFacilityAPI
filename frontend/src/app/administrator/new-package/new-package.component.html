@@ -1,0 +1,129 @@
+<div class="row">
+  <div class="col-md-12">
+    <h1 class="page-header">
+      Create new subscription package
+    </h1>
+    <ol class="breadcrumb">
+      <li>
+        <i class="fa fa-dashboard"></i>
+        <a href="admin/home"> Dashboard </a>
+      </li>
+      <li class="active">
+        <i class="fa fa-plus-square"></i> Create new
+      </li>
+    </ol>
+  </div>
+</div>
+<!-- /.row -->
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title"><i class="fa fa-plus-square fa-fw"></i> Add new package</h3>
+  </div>
+  <div class="panel-body">
+    <form (ngSubmit)="onSubmit()" #packageForm="ngForm" id="newPackage">
+      <div class="row">
+        <div class="form-group col-md-12">
+          <label for="name">Name</label>
+          <input type="text" class="form-control" id="name"
+                 required
+                 [(ngModel)]="package.name" name="name"
+                 #name="ngModel">
+          <div [hidden]="name.valid || name.pristine"
+               class="panel panel-danger">
+            <div class="panel-heading text-center text-danger">
+              Name is required
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="form-group col-md-4">
+          <label for="price">Price &euro;</label>
+          <input type="number" class="form-control" id="price"
+                 required
+                 [(ngModel)]="package.price" name="price"
+                 #price="ngModel">
+          <div [hidden]="price.valid || price.pristine"
+               class="panel panel-danger">
+            <div class="panel-heading text-center text-danger">
+              Price is required
+            </div>
+          </div>
+        </div>
+        <div class="form-group col-md-4">
+          <label for="expiresIn">Expires in *days</label>
+          <input type="number" class="form-control" id="expiresIn"
+                 required
+                 [(ngModel)]="package.expiresIn" name="expiresIn"
+                 #expiresIn="ngModel"
+                 min = 3>
+          <div [hidden]="expiresIn.valid || expiresIn.pristine"
+               class="panel panel-danger">
+            <div class="panel-heading text-center text-danger">
+              Expires in is required
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group col-md-4">
+          <label for="status">Package status</label>
+          <select class="form-control" id="status"
+                  required
+                  [(ngModel)]="package.status" name="status"
+                  #status="ngModel">
+            <option *ngFor="let status of packageStatuses" [value]="status">{{status}}</option>
+          </select>
+          <div [hidden]="status.valid || status.pristine"
+               class="panel panel-danger">
+            <div class="panel-heading text-center text-danger">
+              Package status is required
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="form-group col-md-12">
+          <label for="description">Package description</label>
+          <textarea class="form-control" id="description"
+                [(ngModel)]="package.description" name="description"
+                placeholder="Description..." rows="3">
+          </textarea>
+        </div>
+      </div>
+    </form>
+    <div class="panel panel-info" [hidden]="uiState.hiddenLoadingGif">
+      <div class="panel-heading text-center">
+        <img src="../../../pictures/loading.gif" style="width:20px; height:20px;">
+        <span>&nbsp;Saving...</span>
+      </div>
+    </div>
+    <div class="panel panel-success" [hidden]="uiState.hiddenSuccess">
+      <div class="panel-heading text-center text-success">
+        Success!
+      </div>
+    </div>
+    <div class="panel panel-danger" [hidden]="uiState.hiddenError">
+      <div class="panel-heading text-center text-danger">
+        <div> We run into an error!</div>
+        <div> Try again later!</div>
+      </div>
+    </div>
+
+  </div>
+  <div class="panel-footer text-right">
+    <button type="button"
+            class="btn btn-default"
+            (click)="resetForm();
+             packageForm.reset()">
+      <i class="fa fa-fw fa-refresh"></i> Clear
+    </button>
+    <button type="submit"
+            class="btn btn-success"
+            form="newPackage"
+            [disabled]="!packageForm.form.valid">
+      <i class="fa fa-fw fa-save"></i> Save
+    </button>
+
+  </div>
+</div>

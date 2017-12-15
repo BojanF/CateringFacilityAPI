@@ -40,6 +40,9 @@ public class FacilityServiceTest {
     @Autowired
     private ISubscriptionPackageService packageService;
 
+    @Autowired
+    private ITaxAmountService taxAmountService;
+
     @Test
     public void crudTestFacility(){
         Facility fac1 = facilityService.insertFacility(
@@ -432,6 +435,10 @@ public class FacilityServiceTest {
 
     @Test
     public void facilityInvoices(){
+        //we need at least one entry in tax table for creating invoices
+        //tax attr is filled automatic with creation of invoice, in the constructor in service
+        TaxAmount ta = taxAmountService.insertTaxAmount(18d);
+
         Facility fac1 = facilityService.insertFacility(
                 "Cafe Li",
                 "li",
@@ -453,6 +460,7 @@ public class FacilityServiceTest {
                 CustomerStatus.ACTIVE);
 
         SubscriptionPackage subscriptionPackage = packageService.insertPackage(
+                "Starter",
                 10d,
                 15,
                 PackageStatus.ACTIVE,
@@ -460,7 +468,7 @@ public class FacilityServiceTest {
 
         FacilityInvoice invoice = facilityInvoiceService.insertFacilityInvoice(
                 subscriptionPackage,
-                0.18d,
+
                 LocalDateTime.now().minusDays(15),
                 fac1);
         Assert.assertNotNull(facilityInvoiceService.findOne(invoice.getId()));
@@ -468,7 +476,7 @@ public class FacilityServiceTest {
         //new invoice for same facility after first package is out of date
         FacilityInvoice invoice2 = facilityInvoiceService.insertFacilityInvoice(
                 subscriptionPackage,
-                0.18d,
+
                 LocalDateTime.now(),
                 fac1);
         Assert.assertNotNull(facilityInvoiceService.findOne(invoice2.getId()));
@@ -476,11 +484,12 @@ public class FacilityServiceTest {
         //invoice 3
         FacilityInvoice invoice3 = facilityInvoiceService.insertFacilityInvoice(
                 subscriptionPackage,
-                0.18d,
+
                 LocalDateTime.now(),
                 fac2);
         Assert.assertNotNull(facilityInvoiceService.findOne(invoice3.getId()));
 
+        //test scenarios for method facilityInvoices
         List<FacilityInvoice> fac1Invoices = facilityService.facilityInvoices(fac1.getId());
         Assert.assertEquals(2, fac1Invoices.size());
         List<Long> fac1InvoicesIDs = Arrays.asList(invoice.getId(), invoice2.getId());
@@ -511,5 +520,8 @@ public class FacilityServiceTest {
         Assert.assertNull(facilityService.findOne(fac1.getId()));
         Assert.assertNull(facilityService.findOne(fac2.getId()));
         Assert.assertNull(facilityService.findOne(fac3.getId()));
+
+        taxAmountService.delete(ta.getId());
+        Assert.assertEquals(null, taxAmountService.findOne(ta.getId()));
     }
 }

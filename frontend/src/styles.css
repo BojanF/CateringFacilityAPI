@@ -1,1 +1,15 @@
-/* You can add global styles to this file, and also import other style files */
+td, th{
+  text-align: center !important;
+}
+
+.text-center{
+  text-align: center;
+}
+
+.td-left-align{
+  text-align: left !important;
+}
+
+.td-right-align{
+  text-align: right !important;
+}
