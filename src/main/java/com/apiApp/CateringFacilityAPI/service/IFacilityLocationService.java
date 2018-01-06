@@ -8,7 +8,10 @@ import java.util.List;
 
 public interface IFacilityLocationService {
 
-    FacilityLocation insertFacilityLocation(String country, String city, String address, Facility facility);
+    FacilityLocation insertFacilityLocation(String name,
+                                            String city,
+                                            String address,
+                                            Facility facility);
 
     FacilityLocation findOne(Long id);
 

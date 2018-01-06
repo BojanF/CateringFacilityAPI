@@ -9,12 +9,12 @@ import {PackageService} from "../../service/http/package/package.service";
 })
 export class NewPackageComponent implements OnInit {
 
-  public uiState = {
+  private uiState = {
     hiddenLoadingGif: true,
     hiddenError: true,
     hiddenSuccess: true
   };
-  public packageStatuses = ['Active', 'Suspended'];
+  private packageStatuses = ['Active', 'Suspended'];
 
   protected package: SubscriptionPackage;
 
@@ -39,10 +39,11 @@ export class NewPackageComponent implements OnInit {
         res => {
           console.log("Success");
           this.uiState = { hiddenLoadingGif: true, hiddenError:true, hiddenSuccess:false };
-          // this.resetForm();
+          this.package.status = '';
         },
         err => {
           this.uiState = { hiddenLoadingGif: true, hiddenError:false, hiddenSuccess:true };
+          this.package.status = '';
           console.log("Error occurred");
         }
       );

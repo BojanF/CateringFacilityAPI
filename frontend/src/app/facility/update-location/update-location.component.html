@@ -1,0 +1,302 @@
+<!-- row -->
+<div class="row">
+  <div class="col-md-12">
+    <h1 class="page-header">
+      {{locationName}}
+    </h1>
+    <ol class="breadcrumb">
+      <li>
+        <i class="fa fa-dashboard"></i>
+        <a href="facility/home"> Dashboard </a>
+      </li>
+      <li>
+        <i class="fa fa-map-o"></i>
+        <a href="facility/locations"> Locations </a>
+      </li>
+      <li class="active">
+        <i class="fa fa-map-marker"></i> Location details
+      </li>
+    </ol>
+  </div>
+</div>
+<!-- /.row -->
+
+<div [hidden]="uiState.showPage">
+  <div class="jumbotron">
+    <h1>Ooooops!</h1>
+    <p>We can`t find that location!</p>
+  </div>
+</div>
+
+<div class="row" [hidden]="!uiState.showPage">
+  <div class="col-md-12 col-sm-12">
+    <ul  class="nav nav-tabs">
+      <li class="active hand">
+        <a id="location-update" data-toggle="tab"><i class="fa fa-fw fa-pencil-square"></i>Update </a>
+      </li>
+      <li class="hand">
+        <a id="location-contact" data-toggle="tab"><i class="fa fa-fw fa-phone"></i>Contacts</a>
+      </li>
+
+    </ul>
+
+    <br/><br/>
+
+    <div class="tab-content clearfixtab-pane">
+
+      <div class="tab-pane active" id="location-update-tab">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">
+              <i class="fa fa-fw fa-pencil-square"></i> Update
+            </h3>
+          </div>
+          <div class="panel-body">
+
+            <form (ngSubmit)="updateLocationSubmit()"
+                  #locationForm="ngForm"
+                  id="updateLocation"
+                  [hidden]="uiState.update.hiddenForm">
+              <div class="row">
+                <div class="form-group col-md-12">
+                  <label for="address">Address</label>
+                  <input type="text" class="form-control" id="address"
+                         required
+                         [(ngModel)]="updateLocation.address" name="address"
+                         #address="ngModel">
+                  <div [hidden]="address.valid || address.pristine"
+                       class="panel panel-danger">
+                    <div class="panel-heading text-center text-danger">
+                      Address is required
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="form-group col-md-6">
+                  <label for="name">Location Name</label>
+                  <input type="text" class="form-control" id="name"
+                         required
+                         [(ngModel)]="updateLocation.name" name="name"
+                         #name="ngModel">
+                  <div [hidden]="name.valid || name.pristine"
+                       class="panel panel-danger">
+                    <div class="panel-heading text-center text-danger">
+                      Country is required
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group col-md-6">
+                  <label for="city">City</label>
+                  <input type="text" class="form-control" id="city"
+                         required
+                         [(ngModel)]="updateLocation.city" name="city"
+                         #city="ngModel">
+                  <div [hidden]="city.valid || city.pristine"
+                       class="panel panel-danger">
+                    <div class="panel-heading text-center text-danger">
+                      City is required
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+
+            <!-- UI experience fo updating beverage-->
+            <div class="panel panel-info" [hidden]="uiState.update.hiddenLoadingGif">
+              <div class="panel-heading text-center">
+                <img src="../../../assets/pictures/loading.gif" alt="L" style="width:20px; height:20px;">
+                <span>&nbsp;Loading...</span>
+              </div>
+            </div>
+            <div class="panel panel-success" [hidden]="uiState.update.hiddenSuccess">
+              <div class="panel-heading text-center text-success">
+                Successfully updated!
+              </div>
+            </div>
+            <div class="panel panel-danger" [hidden]="uiState.update.hiddenError">
+              <div class="panel-heading text-center text-danger">
+                <div> We run into an error!</div>
+                <div> Try again later!</div>
+              </div>
+            </div>
+            <!-- UI experience fo updating beverage END-->
+
+          </div>
+          <div class="panel-footer text-right">
+            <button type="submit"
+                    class="btn btn-success"
+                    form="updateLocation"
+                    [disabled]="!locationForm.form.valid">
+              <i class="fa fa-fw fa-pencil-square"></i> Update
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-pane" id="location-contact-tab">
+        <div class="row">
+
+          <div class="col-md-6 col-sm-12">
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-plus-square fa-fw"></i> Add contact</h3>
+              </div>
+              <div class="panel-body">
+                <form (ngSubmit)="addContact()"
+                      #locationContactForm="ngForm"
+                      id="addContact">
+                  <div class="row">
+                    <div class="form-group col-md-12">
+                      <label for="number">Number</label>
+                      <input type="text" class="form-control" id="number"
+                             required
+                             [(ngModel)]="newContactNumber" name="number"
+                             #number="ngModel">
+                      <div [hidden]="number.valid || number.pristine"
+                           class="panel panel-danger">
+                        <div class="panel-heading text-center text-danger">
+                          Number is required
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+
+                <!--saving contact UI experience-->
+                <div>
+                  <div class="panel panel-info" [hidden]="uiState.newContact.hiddenLoadingGif">
+                    <div class="panel-heading text-center">
+                      <img src="../../../assets/pictures/loading.gif" style="width:20px; height:20px;">
+                      <span>&nbsp;Saving...</span>
+                    </div>
+                  </div>
+                  <div class="panel panel-success" [hidden]="uiState.newContact.hiddenSuccessMsg">
+                    <div class="panel-heading text-center text-success">
+                      Success!
+                    </div>
+                  </div>
+                  <div class="panel panel-danger" [hidden]="uiState.newContact.hiddenErrorMsg">
+                    <div class="panel-heading text-center text-danger">
+                      <div> We run into an error!</div>
+                      <div> Try again later!</div>
+                    </div>
+                  </div>
+                </div>
+                <!--saving contact UI experience END-->
+
+              </div>
+
+              <div class="panel-footer text-right">
+                <button type="submit"
+                        class="btn btn-success"
+                        form="addContact"
+                        [disabled]="!locationContactForm.form.valid">
+                  <i class="fa fa-fw fa-save"></i> Save
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6 col-sm-12">
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-pencil-square fa-fw"></i> Location contacts</h3>
+              </div>
+              <div class="panel-body">
+                <!--loading contacts UI info-->
+                <div>
+                  <div class="panel panel-info" [hidden]="uiState.contactList.hiddenLoadingGif">
+                    <div class="panel-heading text-center">
+                      <img src="../../../assets/pictures/loading.gif" style="width:20px; height:20px;">
+                      <span>&nbsp;Loading...</span>
+                    </div>
+                  </div>
+                  <div class="panel panel-info" [hidden]="uiState.contactList.hiddenNoDataInfo">
+                    <div class="panel-heading text-center text-info">
+                      There is no contacts entered in the systems.
+                    </div>
+                  </div>
+                  <div class="panel panel-danger" [hidden]="uiState.contactList.hiddenErrorMsg">
+                    <div class="panel-heading text-center text-danger">
+                      <div> We run into an error!</div>
+                      <div> Try again later!</div>
+                    </div>
+                  </div>
+                </div>
+                <!--loading contacts UI info END-->
+
+                <!--delete contact UI info-->
+                <div>
+                  <div class="panel panel-info" [hidden]="uiState.deleteContact.hiddenDeletingGif">
+                    <div class="panel-heading text-center">
+                      <img src="../../../assets/pictures/loading.gif" style="width:20px; height:20px;">
+                      <span>&nbsp;Delete contact...</span>
+                    </div>
+                  </div>
+                  <!--<div class="panel panel-success" [hidden]="uiState.deleteContact.hiddenSuccessMsg">-->
+                    <!--<div class="panel-heading text-center text-info">-->
+                      <!--Contact successfully deleted-->
+                    <!--</div>-->
+                  <!--</div>-->
+                  <div class="panel panel-danger" [hidden]="uiState.deleteContact.hiddenErrorMsg">
+                    <div class="panel-heading text-center text-danger">
+                      <div> We run into an error!</div>
+                      <div> Try to delete contact later!</div>
+                    </div>
+                  </div>
+                </div>
+                <!--delete contact UI info END-->
+
+                <div class="table-responsive" [hidden]="uiState.contactList.hiddenTable">
+                  <table class="table table-responsive table-bordered table-striped">
+                    <thead>
+                    <tr>
+                      <th> Contact </th>
+                      <th> Action </th>
+                    </tr>
+                    <!--<tr>-->
+                    <!--<th colspan="7"> <input type="text" class="form-control" st-search="name" st-delay="400" type="search" placeholder="search by task name..."> </th>-->
+                    <!--</tr>-->
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let contact of facLocationContacts | paginate: { itemsPerPage: 3, currentPage: page }">
+                      <td>{{contact.id.telephoneNumber}}</td>
+                      <td>
+                        <button class="btn btn-xs btn-danger"
+                                (click)="deleteFacilityLocationContact(contact.id.facilityLocationId, contact.id.telephoneNumber)">
+                          <i class="fa fa-trash-o" aria-hidden="true"></i> Delete
+                        </button>
+                      </td>
+                    </tr>
+                    </tbody>
+                    <tfoot>
+                    <tr>
+                      <td colspan="2" class="text-center">
+                        <pagination-controls (pageChange)="page = $event"></pagination-controls>
+                      </td>
+                    </tr>
+
+                    </tfoot>
+                  </table>
+                </div>
+
+
+
+
+              </div>
+
+              <div class="panel-footer text-right">
+
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+
+  </div>
+</div>

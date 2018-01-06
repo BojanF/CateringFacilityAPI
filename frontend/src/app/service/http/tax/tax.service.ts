@@ -6,18 +6,22 @@ import {Observable} from "rxjs/Observable";
 @Injectable()
 export class TaxService {
 
-  constructor(private http: HttpClient) { }
+  private taxUrl: string;
+
+  constructor(private http: HttpClient) {
+    this.taxUrl = 'http://localhost:8080/fe/tax';
+  }
 
   getAllTaxesSorted(){
-    return this.http.get<Array<TaxAmount>>('http://localhost:8080/fe/tax/all-taxes-sorted');
+    return this.http.get<Array<TaxAmount>>(this.taxUrl + '/all-taxes-sorted');
   }
 
   createTax(tax: TaxAmount){
-    return this.http.post('http://localhost:8080/fe/tax/new-tax', tax);
+    return this.http.post(this.taxUrl + '/new-tax', tax);
   }
 
-  deleteTax(id: string){
-    return this.http.delete('http://localhost:8080/fe/tax/delete-tax/'+id);
+  deleteTax(id: number){
+    return this.http.delete(this.taxUrl + '/delete-tax/'+id);
   }
 
 }

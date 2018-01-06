@@ -10,4 +10,8 @@ export class ApiInvoiceService {
   getAllApiInvoicesSorted(){
     return this.http.get<Array<ApiInvoice>>("http://localhost:8080/fe/api-invoice/all-sorted")
   }
+
+  getAllApiInvoicesForDeveloper(id: number){
+    return this.http.get<Array<ApiInvoice>>("http://localhost:8080/fe/developer/invoices/"+id);
+  }
 }

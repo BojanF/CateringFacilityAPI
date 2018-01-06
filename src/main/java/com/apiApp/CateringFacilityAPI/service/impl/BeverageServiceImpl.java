@@ -7,6 +7,7 @@ import com.apiApp.CateringFacilityAPI.persistance.IBeverageRepository;
 import com.apiApp.CateringFacilityAPI.service.IBeverageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import java.util.List;
 
 @Service
 public class BeverageServiceImpl implements IBeverageService{
@@ -44,5 +45,10 @@ public class BeverageServiceImpl implements IBeverageService{
     @Override
     public Iterable<Beverage> findAll() {
         return beverageRepository.findAll();
+    }
+
+    @Override
+    public List<Beverage> getAllFacilityBeverages(Long facilityId) {
+        return beverageRepository.getAllFacilityBeverages(facilityId);
     }
 }

@@ -8,6 +8,8 @@ import com.apiApp.CateringFacilityAPI.service.ICourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class CourseServiceImpl implements ICourseService{
 
@@ -44,5 +46,10 @@ public class CourseServiceImpl implements ICourseService{
     @Override
     public Iterable<Course> findAll() {
         return courseRepository.findAll();
+    }
+
+    @Override
+    public List<Course> getAllFacilityCourses(Long facilityId) {
+        return courseRepository.getAllFacilityCourses(facilityId);
     }
 }

@@ -13,9 +13,10 @@ import java.util.List;
 public interface IDeveloperRepository extends CrudRepository<Developer, Long> {
 
     @Query(value =
-            "select inv " +
-            "from com.apiApp.CateringFacilityAPI.model.jpa.ApiInvoice inv " +
-            "where inv.developer.id = :devId")
+            "select inv\n" +
+            "from com.apiApp.CateringFacilityAPI.model.jpa.ApiInvoice inv\n" +
+            "where inv.developer.id = :devId\n" +
+            "ORDER BY inv.createdAt DESC")
     List<ApiInvoice> developerInvoices(@Param("devId")Long devId);
 
 }

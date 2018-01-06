@@ -43,12 +43,12 @@ export class PackageDetailsComponent implements OnInit {
     else{
       this.uiState.showPage = true;
       console.log("show");
-      this.getSubscriptionPackage(id);
+      this.getSubscriptionPackage(parseInt(id));
     }
 
   }
 
-  getSubscriptionPackage(id: string){
+  getSubscriptionPackage(id: number){
 
     console.log(id);
     this.uiState.view = {
@@ -80,11 +80,18 @@ export class PackageDetailsComponent implements OnInit {
         },
         err => {
           console.log("Error occurred");
-          this.uiState.view = {
-            hiddenTable: true,
-            hiddenErrorMsg: false,
-            hiddenLoadingGif: true
-          };
+          console.log(err.status);
+          if(err.status == 200){
+            this.uiState.showPage = false;
+          }
+          else {
+            this.uiState.showPage = true;
+            this.uiState.view = {
+              hiddenTable: true,
+              hiddenErrorMsg: false,
+              hiddenLoadingGif: true
+            };
+          }
         }
       );
   }

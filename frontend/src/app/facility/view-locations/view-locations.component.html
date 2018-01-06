@@ -1,0 +1,111 @@
+<!-- row -->
+<div class="row">
+  <div class="col-md-12">
+    <h1 class="page-header">
+      Your facility location
+    </h1>
+    <ol class="breadcrumb">
+      <li>
+        <i class="fa fa-dashboard"></i>
+        <a href="facility/home"> Dashboard </a>
+      </li>
+      <li class="active">
+        <i class="fa fa-map-marker"></i> Locations
+      </li>
+    </ol>
+  </div>
+</div>
+<!-- /.row -->
+
+<div class="panel panel-default">
+
+  <div class="panel-heading">
+    <h3 class="panel-title">
+      <i class="fa fa-fw fa-map"></i>Locations
+    </h3>
+  </div>
+  <div class="panel-body">
+
+    <!--loading locations UI info-->
+    <div>
+      <div class="panel panel-info" [hidden]="uiState.locationsList.hiddenLoadingGif">
+        <div class="panel-heading text-center">
+          <img src="../../../assets/pictures/loading.gif" style="width:20px; height:20px;">
+          <span>&nbsp;Loading...</span>
+        </div>
+      </div>
+      <div class="panel panel-info" [hidden]="uiState.locationsList.hiddenNoDataInfo">
+        <div class="panel-heading text-center text-info">
+          There is no locations added for your facility.
+        </div>
+      </div>
+      <div class="panel panel-danger" [hidden]="uiState.locationsList.hiddenErrorMsg">
+        <div class="panel-heading text-center text-danger">
+          <div> We run into an error!</div>
+          <div> Try again later!</div>
+        </div>
+      </div>
+    </div>
+    <!--loading locations UI info END-->
+
+    <!--delete course UI info-->
+    <div>
+      <div class="panel panel-info" [hidden]="uiState.deleteLocation.hiddenDeletingGif">
+        <div class="panel-heading text-center">
+          <img src="../../../assets/pictures/loading.gif" style="width:20px; height:20px;">
+          <span>&nbsp;Delete facility location...</span>
+        </div>
+      </div>
+      <!--<div class="panel panel-info" [hidden]="uiState.deleteLocation.hiddenSuccessMsg">-->
+      <!--<div class="panel-heading text-center text-info">-->
+      <!--Tax successfully deleted-->
+      <!--</div>-->
+      <!--</div>-->
+      <div class="panel panel-danger" [hidden]="uiState.deleteLocation.hiddenErrorMsg">
+        <div class="panel-heading text-center text-danger">
+          <div> We run into an error!</div>
+          <div> Try to delete course later!</div>
+        </div>
+      </div>
+    </div>
+    <!--delete course UI info END-->
+
+    <div class="table-responsive" [hidden]="uiState.locationsList.hiddenTable">
+      <table class="table table-responsive table-bordered table-striped">
+        <thead>
+          <tr>
+            <th>Location name</th>
+            <th>Address</th>
+            <th>City</th>
+            <th colspan="2">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let location of facilityLocations | paginate: { itemsPerPage: 3, currentPage: page} ">
+            <td> {{location.name}} </td>
+            <td> {{location.address}} </td>
+            <td> {{location.city}} </td>
+            <td>
+              <a href="facility/update-location/{{location.id}}" class="btn btn-info btn-xs">
+                <i class="fa fa-pencil-square-o" aria-hidden="true"></i> Update
+              </a>
+            </td>
+            <td>
+              <button class="btn btn-danger btn-xs delete-location" (click)="deleteLocation(location.id)">
+                <i class="fa fa-trash-o" aria-hidden="true"></i> Delete
+              </button>
+            </td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="5" class="text-center">
+              <pagination-controls (pageChange)="page = $event"></pagination-controls>
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>
+
+</div>

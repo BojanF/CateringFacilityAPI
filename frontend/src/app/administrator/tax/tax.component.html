@@ -9,7 +9,7 @@
         <a href="admin/home"> Dashboard </a>
       </li>
       <li class="active">
-        <i class="fa fa-usd"></i> Tax department
+        <i class="fa fa-eur"></i> Tax department
       </li>
     </ol>
   </div>
@@ -29,36 +29,50 @@
           <div class="row">
             <div class="form-group col-md-12">
               <label for="amount">Tax amount</label>
-              <input type="text" class="form-control" id="amount"
-                     required
-                     [(ngModel)]="newTax.amount" name="amount"
-                     #amount="ngModel">
+              <div class="input-group">
+                <input type="text" class="form-control" id="amount"
+                       required
+                       [(ngModel)]="newTax.amount" name="amount"
+                       #amount="ngModel">
+                <span class="input-group-addon">%</span>
+              </div>
               <div [hidden]="amount.valid || amount.pristine"
                    class="panel panel-danger">
                 <div class="panel-heading text-center text-danger">
                   Tax amount is required
                 </div>
               </div>
+              <!--<div [hidden]="amount.valid && (newTax.amount>=0 && newTax.amount<=100)"-->
+              <div [hidden]="(amount.valid || amount.pristine) && validateTax()"
+                   class="panel panel-danger">
+                <div class="panel-heading text-center text-danger">
+                  Tax amount requires value between 0 and 100
+                </div>
+              </div>
             </div>
           </div>
         </form>
-        <div class="panel panel-info" [hidden]="uiState.newTax.hiddenLoadingGif">
-          <div class="panel-heading text-center">
-            <img src="../../../pictures/loading.gif" style="width:20px; height:20px;">
-            <span>&nbsp;Saving...</span>
+        <!--saving tax UI experience-->
+        <div>
+          <div class="panel panel-info" [hidden]="uiState.newTax.hiddenLoadingGif">
+            <div class="panel-heading text-center">
+              <img src="../../../assets/pictures/loading.gif" style="width:20px; height:20px;">
+              <span>&nbsp;Saving...</span>
+            </div>
+          </div>
+          <div class="panel panel-success" [hidden]="uiState.newTax.hiddenSuccessMsg">
+            <div class="panel-heading text-center text-success">
+              Success!
+            </div>
+          </div>
+          <div class="panel panel-danger" [hidden]="uiState.newTax.hiddenErrorMsg">
+            <div class="panel-heading text-center text-danger">
+              <div> We run into an error!</div>
+              <div> Try again later!</div>
+            </div>
           </div>
         </div>
-        <div class="panel panel-success" [hidden]="uiState.newTax.hiddenSuccess">
-          <div class="panel-heading text-center text-success">
-            Success!
-          </div>
-        </div>
-        <div class="panel panel-danger" [hidden]="uiState.newTax.hiddenError">
-          <div class="panel-heading text-center text-danger">
-            <div> We run into an error!</div>
-            <div> Try again later!</div>
-          </div>
-        </div>
+        <!--saving tax UI experience END-->
       </div>
       <div class="panel-footer text-right">
         <button type="submit"
@@ -75,63 +89,90 @@
     <div class="panel panel-default">
       <div class="panel-heading">
         <h3 class="panel-title">
-          <i class="fa fa-fw fa-usd"></i>
+          <i class="fa fa-fw fa-eur"></i>
           Existing taxes
         </h3>
       </div>
       <div class="panel-body">
-        <div class="panel panel-info" [hidden]="uiState.taxList.hiddenLoadingGif">
-          <div class="panel-heading text-center">
-            <img src="../../../pictures/loading.gif" style="width:20px; height:20px;">
-            <span>&nbsp;Loading...</span>
+        <!--loading taxes UI info-->
+        <div>
+          <div class="panel panel-info" [hidden]="uiState.taxList.hiddenLoadingGif">
+            <div class="panel-heading text-center">
+              <img src="../../../assets/pictures/loading.gif" style="width:20px; height:20px;">
+              <span>&nbsp;Loading...</span>
+            </div>
+          </div>
+          <div class="panel panel-info" [hidden]="uiState.taxList.hiddenNoDataInfo">
+            <div class="panel-heading text-center text-info">
+              There is no taxes entered in the systems.
+            </div>
+          </div>
+          <div class="panel panel-danger" [hidden]="uiState.taxList.hiddenErrorMsg">
+            <div class="panel-heading text-center text-danger">
+              <div> We run into an error!</div>
+              <div> Try again later!</div>
+            </div>
           </div>
         </div>
-        <div class="panel panel-info" [hidden]="uiState.taxList.hiddenNoDataInfo">
-          <div class="panel-heading text-center text-info">
-            There is no taxes entered in the systems.
+        <!--loading taxes UI info END-->
+
+        <!--delete tax UI info-->
+        <div>
+          <div class="panel panel-info" [hidden]="uiState.deleteTax.hiddenDeletingGif">
+            <div class="panel-heading text-center">
+              <img src="../../../assets/pictures/loading.gif" style="width:20px; height:20px;">
+              <span>&nbsp;Delete tax...</span>
+            </div>
+          </div>
+          <!--<div class="panel panel-success" [hidden]="uiState.deleteTax.hiddenSuccessMsg">-->
+          <!--<div class="panel-heading text-center text-info">-->
+          <!--Tax successfully deleted-->
+          <!--</div>-->
+          <!--</div>-->
+          <div class="panel panel-danger" [hidden]="uiState.deleteTax.hiddenErrorMsg">
+            <div class="panel-heading text-center text-danger">
+              <div> We run into an error!</div>
+              <div> Try to delete tax later!</div>
+            </div>
           </div>
         </div>
-        <div class="panel panel-danger" [hidden]="uiState.taxList.hiddenErrorMsg">
-          <div class="panel-heading text-center text-danger">
-            <div> We run into an error!</div>
-            <div> Try again later!</div>
-          </div>
-        </div>
+        <!--delete tax UI info END-->
+
         <div class="table-responsive" [hidden]="uiState.taxList.hiddenTable">
           <table class="table table-responsive table-bordered table-striped">
             <thead>
-            <tr>
-              <th>Active since</th>
-              <th>Tax rate %</th>
-              <th>Delete</th>
-            </tr>
-            <!--<tr>-->
-            <!--<th colspan="7"> <input type="text" class="form-control" st-search="name" st-delay="400" type="search" placeholder="search by task name..."> </th>-->
-            <!--</tr>-->
+              <tr>
+                <th>Active since</th>
+                <th>Tax rate %</th>
+                <th>Delete</th>
+              </tr>
+              <!--<tr>-->
+              <!--<th colspan="7"> <input type="text" class="form-control" st-search="name" st-delay="400" type="search" placeholder="search by task name..."> </th>-->
+              <!--</tr>-->
             </thead>
             <tbody>
-            <tr *ngFor="let tax of taxList | paginate: { itemsPerPage: 3, currentPage: page }">
-              <td>{{dateParsing(tax.activeSince)}}</td>
-              <td>{{tax.amount}}</td>
-              <td>
-                <button class="btn btn-xs btn-danger" (click)="deleteTax(tax.id)"> Delete </button>
-              </td>
-
-
-            </tr>
+              <tr *ngFor="let tax of taxList | paginate: { itemsPerPage: 3, currentPage: page }">
+                <td>{{dateParsing(tax.activeSince)}}</td>
+                <td>{{tax.amount}}</td>
+                <td>
+                  <button class="btn btn-xs btn-danger" (click)="deleteTax(tax.id)">
+                    <i class="fa fa-trash-o" aria-hidden="true"></i> Delete
+                  </button>
+                </td>
+              </tr>
             </tbody>
             <tfoot>
-            <tr>
-              <td colspan="8" class="text-center">
-                <pagination-controls (pageChange)="page = $event"></pagination-controls>
-              </td>
-            </tr>
-
+              <tr>
+                <td colspan="8" class="text-center">
+                  <pagination-controls (pageChange)="page = $event"></pagination-controls>
+                </td>
+              </tr>
             </tfoot>
           </table>
+        </div>
       </div>
+      <div class="panel-footer"></div>
     </div>
-  </div>
 
 </div>
 

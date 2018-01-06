@@ -98,13 +98,20 @@ public class BeverageServiceTest {
         Assert.assertNotNull(beverageService.findOne(b6.getId()));
 
         Assert.assertNull(b2.getDescription());
+        Assert.assertEquals("Makijato", b2.getName());
         Assert.assertEquals(false, b2.isOnPromotion());
+        Assert.assertEquals(80d, b2.getPrice(), 0);
         b2.setDescription("Golemo makijato Julius...");
+        b2.setName("Makijato Julius");
         b2.setOnPromotion(true);
+        b2.setPrice(90d);
         b2 = beverageService.update(b2);
+
         Assert.assertNotNull(b2.getDescription());
-        Assert.assertEquals(true, b2.isOnPromotion());
         Assert.assertEquals("Golemo makijato Julius...", b2.getDescription());
+        Assert.assertEquals("Makijato Julius", b2.getName());
+        Assert.assertEquals(true, b2.isOnPromotion());
+        Assert.assertEquals(90d, b2.getPrice(), 0);
 
         Assert.assertEquals(false, b6.isOnPromotion());
         b6.setOnPromotion(true);

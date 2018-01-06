@@ -1,0 +1,120 @@
+<!-- row -->
+<div class="row">
+  <div class="col-md-12">
+    <h1 class="page-header">
+      Courses in your menu
+    </h1>
+    <ol class="breadcrumb">
+      <li>
+        <i class="fa fa-dashboard"></i>
+        <a href="facility/home"> Dashboard </a>
+      </li>
+      <li>
+        <i class="fa fa-list-alt"></i> Menu
+      </li>
+      <li class="active">
+        <i class="fa fa-cutlery"></i> Courses
+      </li>
+    </ol>
+  </div>
+</div>
+<!-- /.row -->
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">
+      <i class="fa fa-fw fa-cutlery"></i>
+      Courses
+    </h3>
+  </div>
+  <div class="panel-body">
+
+    <!--loading courses UI info-->
+    <div>
+      <div class="panel panel-info" [hidden]="uiState.courseList.hiddenLoadingGif">
+        <div class="panel-heading text-center">
+          <img src="../../../assets/pictures/loading.gif" style="width:20px; height:20px;">
+          <span>&nbsp;Loading...</span>
+        </div>
+      </div>
+      <div class="panel panel-info" [hidden]="uiState.courseList.hiddenNoDataInfo">
+        <div class="panel-heading text-center text-info">
+          There is no courses in your menu.
+        </div>
+      </div>
+      <div class="panel panel-danger" [hidden]="uiState.courseList.hiddenErrorMsg">
+        <div class="panel-heading text-center text-danger">
+          <div> We run into an error!</div>
+          <div> Try again later!</div>
+        </div>
+      </div>
+    </div>
+    <!--loading courses UI info END-->
+
+    <!--delete course UI info-->
+    <div>
+      <div class="panel panel-info" [hidden]="uiState.deleteCourse.hiddenDeletingGif">
+        <div class="panel-heading text-center">
+          <img src="../../../assets/pictures/loading.gif" style="width:20px; height:20px;">
+          <span>&nbsp;Delete course...</span>
+        </div>
+      </div>
+      <!--<div class="panel panel-info" [hidden]="uiState.deleteCourse.hiddenSuccessMsg">-->
+      <!--<div class="panel-heading text-center text-info">-->
+      <!--Tax successfully deleted-->
+      <!--</div>-->
+      <!--</div>-->
+      <div class="panel panel-danger" [hidden]="uiState.deleteCourse.hiddenErrorMsg">
+        <div class="panel-heading text-center text-danger">
+          <div> We run into an error!</div>
+          <div> Try to delete course later!</div>
+        </div>
+      </div>
+    </div>
+    <!--delete course UI info END-->
+
+    <div class="table-responsive" [hidden]="uiState.courseList.hiddenTable">
+      <table class="table table-responsive table-bordered table-striped">
+        <thead>
+        <tr>
+          <th>Name</th>
+          <th>Price </th>
+          <th>Promoted</th>
+          <th>Type</th>
+          <th>Delete</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr *ngFor="let course of facilityCourses | paginate: { itemsPerPage: 3, currentPage: page } ">
+          <td> <a href="facility/course/{{course.id}}">{{course.name}} </a> </td>
+          <td> {{course.price}} &euro; </td>
+          <td>
+            <!--{{course.onPromotion}}-->
+            <span class="label" [ngClass]="{
+                'label-success': course.onPromotion,
+                'label-danger': !course.onPromotion}">
+                  {{course.onPromotion ? "YES" : "NO"}}
+              </span>
+          </td>
+          <td> {{getCourseValue(course.type)}} </td>
+          <td>
+            <button class="btn btn-xs btn-danger" (click)="deleteCourse(course.id)">
+              <i class="fa fa-trash-o" aria-hidden="true"></i> Delete
+            </button>
+          </td>
+        </tr>
+        </tbody>
+
+        <tfoot>
+        <tr>
+          <td colspan="5" class="text-center">
+            <pagination-controls (pageChange)="page = $event"></pagination-controls>
+          </td>
+        </tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>
+
+</div>

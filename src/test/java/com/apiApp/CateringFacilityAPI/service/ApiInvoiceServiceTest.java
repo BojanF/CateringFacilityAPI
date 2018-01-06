@@ -80,7 +80,6 @@ public class ApiInvoiceServiceTest {
     public void crudTestApiInvoice(){
         ApiInvoice invoice = apiInvoiceService.insertApiInvoice(
                  subscriptionPackage,
-
                  LocalDateTime.now(),
                  dev);
 
@@ -104,7 +103,6 @@ public class ApiInvoiceServiceTest {
         //new invoice for same devloper after first package is out of date
         ApiInvoice invoice2 = apiInvoiceService.insertApiInvoice(
                  subscriptionPackage,
-
                  invoice.getCreatedAt().plusDays(15l),
                  dev);
         //testing for total prize(with tax)
@@ -120,7 +118,6 @@ public class ApiInvoiceServiceTest {
         //invoice 3
         ApiInvoice invoice3 = apiInvoiceService.insertApiInvoice(
                  subscriptionPackage2,
-
                  LocalDateTime.now(),
                  dev2);
         Assert.assertNotNull(apiInvoiceService.findOne(invoice3.getId()));

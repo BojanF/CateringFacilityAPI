@@ -12,27 +12,28 @@ import java.util.List;
 public interface IFacilityRepository extends CrudRepository<Facility, Long> {
 
     @Query(value =
-            "select course " +
-            "from com.apiApp.CateringFacilityAPI.model.jpa.Course course " +
+            "select course\n " +
+            "from com.apiApp.CateringFacilityAPI.model.jpa.Course course\n " +
             "where course.facility.id=:facilityId")
     List<Course> facilityCourses(@Param("facilityId") Long facilityId);
 
     @Query(value =
-            "select beverage " +
-            "from com.apiApp.CateringFacilityAPI.model.jpa.Beverage beverage " +
+            "select beverage\n " +
+            "from com.apiApp.CateringFacilityAPI.model.jpa.Beverage beverage\n " +
             "where beverage.facility.id=:facilityId")
     List<Beverage> facilityBeverages(@Param("facilityId") Long facilityId);
 
     @Query(value =
-            "select location " +
-            "from com.apiApp.CateringFacilityAPI.model.jpa.FacilityLocation location " +
+            "select location\n " +
+            "from com.apiApp.CateringFacilityAPI.model.jpa.FacilityLocation location\n " +
             "where location.facility.id=:facilityId")
     List<FacilityLocation> facilityLocations(@Param("facilityId") Long facilityId);
 
     @Query(value =
-            "select invoice " +
-            "from com.apiApp.CateringFacilityAPI.model.jpa.FacilityInvoice invoice " +
-            "where invoice.facility.id=:facilityId")
+            "select invoice\n " +
+            "from com.apiApp.CateringFacilityAPI.model.jpa.FacilityInvoice invoice\n " +
+            "where invoice.facility.id=:facilityId\n" +
+            "order by invoice.createdAt desc")
     List<FacilityInvoice> facilityInvoices(@Param("facilityId") Long facilityId);
 
 

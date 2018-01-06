@@ -55,28 +55,28 @@ public class FacilityLocationServiceTest {
     public void crudTestFacilityLocation(){
 
         FacilityLocation cafeLi = locationService.insertFacilityLocation(
-                "Macedonia",
+                "Cafe Li Mlecen",
                 "Skopje",
                 "Mlecen na kosh",
                  fac1);
         Assert.assertNotNull(locationService.findOne(cafeLi.getId()));
 
         FacilityLocation trendCityMall = locationService.insertFacilityLocation(
-                "Macedonia",
+                "City Mall",
                 "Skopje",
                 "Karposh 4 City Mall",
                  fac2);
         Assert.assertNotNull(locationService.findOne(trendCityMall.getId()));
 
         FacilityLocation telekomTrend = locationService.insertFacilityLocation(
-                "Macedonia",
+                "TElekom Trend",
                 "Skopje",
                 "Kej 13ti Noemvri",
                  fac2);
         Assert.assertNotNull(locationService.findOne(telekomTrend.getId()));
 
         FacilityLocation trendGastro = locationService.insertFacilityLocation(
-                "Macedonia",
+                "Trend Gastro",
                 "Skopje",
                 "Bul. Jane Sandanski Aerodrom",
                  fac2);
@@ -103,7 +103,7 @@ public class FacilityLocationServiceTest {
     @Test
     public void facLocationContacts(){
         FacilityLocation cafeLi = locationService.insertFacilityLocation(
-                "Macedonia",
+                "Cafe Li Mlecen",
                 "Skopje",
                 "Mlecen na kosh",
                 fac1);
@@ -125,7 +125,7 @@ public class FacilityLocationServiceTest {
         }
 
         FacilityLocation trendCityMall = locationService.insertFacilityLocation(
-                "Macedonia",
+                "City Mall",
                 "Skopje",
                 "Karposh 4 City Mall",
                 fac2);

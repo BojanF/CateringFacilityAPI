@@ -1,5 +1,8 @@
 package com.apiApp.CateringFacilityAPI.model.jpa;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.persistence.Column;
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
@@ -23,12 +26,14 @@ public class MenuItem extends BaseEntity {
 
     @NotNull
     @ManyToOne
+    @JsonIgnore
     private Facility facility;
 
     public Facility getFacility() {
         return facility;
     }
 
+    @JsonProperty
     public void setFacility(Facility facility) {
         this.facility = facility;
     }

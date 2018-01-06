@@ -26,10 +26,10 @@ public class TaxAmountServiceTest {
         Assert.assertNotNull(taxAmountService.findOne(ta1.getId()));
 
         //update test
-        Assert.assertEquals(2017, ta1.getActiveSince().getYear());
+        Assert.assertEquals(2018, ta1.getActiveSince().getYear());
         ta1.setActiveSince(LocalDateTime.now().minusYears(1));
         ta1 = taxAmountService.update(ta1);
-        Assert.assertEquals(2016, ta1.getActiveSince().getYear());
+        Assert.assertEquals(2017, ta1.getActiveSince().getYear());
 
         TaxAmount ta2 = taxAmountService.insertTaxAmount(18d);
         Assert.assertNotNull(taxAmountService.findOne(ta2.getId()));

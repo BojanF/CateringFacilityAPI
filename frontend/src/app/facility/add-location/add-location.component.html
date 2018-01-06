@@ -1,0 +1,114 @@
+<!-- row -->
+<div class="row">
+  <div class="col-md-12">
+    <h1 class="page-header">
+      Add new facility location
+    </h1>
+    <ol class="breadcrumb">
+      <li>
+        <i class="fa fa-dashboard"></i>
+        <a href="facility/home"> Dashboard </a>
+      </li>
+      <li>
+        <i class="fa fa-map-marker"></i> Locations
+      </li>
+      <li class="active">
+        <i class="fa fa-plus-square"></i> Add new
+      </li>
+    </ol>
+  </div>
+</div>
+<!-- /.row -->
+
+<div class="panel panel-default">
+
+  <div class="panel-heading">
+    <h3 class="panel-title">
+      <i class="fa fa-plus-square"></i> Add new location
+    </h3>
+  </div>
+
+  <div class="panel-body">
+    <form (ngSubmit)="insertLocation()" #locationForm="ngForm" id="newLocation">
+      <div class="row">
+        <div class="form-group col-md-12">
+          <label for="address">Address</label>
+          <input type="text" class="form-control" id="address"
+                 required
+                 [(ngModel)]="newLocation.address" name="address"
+                 #address="ngModel">
+          <div [hidden]="address.valid || address.pristine"
+               class="panel panel-danger">
+            <div class="panel-heading text-center text-danger">
+              Address is required
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="form-group col-md-6">
+          <label for="name">Location Name</label>
+          <input type="text" class="form-control" id="name"
+                 required
+                 [(ngModel)]="newLocation.name" name="name"
+                 #name="ngModel">
+          <div [hidden]="name.valid || name.pristine"
+               class="panel panel-danger">
+            <div class="panel-heading text-center text-danger">
+              Country is required
+            </div>
+          </div>
+        </div>
+        <div class="form-group col-md-6">
+          <label for="city">City</label>
+          <input type="text" class="form-control" id="city"
+                 required
+                 [(ngModel)]="newLocation.city" name="city"
+                 #city="ngModel">
+          <div [hidden]="city.valid || city.pristine"
+               class="panel panel-danger">
+            <div class="panel-heading text-center text-danger">
+              City is required
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+
+    <!-- UI experience for inserting beverage-->
+    <div class="panel panel-info" [hidden]="uiState.hiddenLoadingGif">
+      <div class="panel-heading text-center">
+        <img src="../../../assets/pictures/loading.gif" alt="L" style="width:20px; height:20px;">
+        <span>&nbsp;Saving...</span>
+      </div>
+    </div>
+    <div class="panel panel-success" [hidden]="uiState.hiddenSuccess">
+      <div class="panel-heading text-center text-success">
+        Success!
+      </div>
+    </div>
+    <div class="panel panel-danger" [hidden]="uiState.hiddenError">
+      <div class="panel-heading text-center text-danger">
+        <div> We run into an error!</div>
+        <div> Try again later!</div>
+      </div>
+    </div>
+    <!-- UI experience for inserting beverage END-->
+
+  </div>
+
+  <div class="panel-footer text-right">
+    <button type="button"
+            class="btn btn-default"
+            (click)="resetForm();
+             locationForm.reset()">
+      <i class="fa fa-fw fa-refresh"></i> Clear
+    </button>
+    <button type="submit"
+            class="btn btn-success"
+            form="newLocation"
+            [disabled]="!locationForm.form.valid">
+      <i class="fa fa-fw fa-save"></i> Save
+    </button>
+  </div>
+</div>

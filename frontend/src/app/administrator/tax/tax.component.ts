@@ -19,14 +19,19 @@ export class TaxComponent implements OnInit {
   public uiState = {
     newTax: {
       hiddenLoadingGif: true,
-      hiddenError: true,
-      hiddenSuccess: true
+      hiddenErrorMsg: true,
+      hiddenSuccessMsg: true
     },
     taxList: {
       hiddenTable: true,
       hiddenNoDataInfo: true,
       hiddenErrorMsg: true,
       hiddenLoadingGif: false
+    },
+    deleteTax: {
+      hiddenDeletingGif: true,
+      hiddenSuccessMsg: true,
+      hiddenErrorMsg: true
     }
   };
 
@@ -36,19 +41,37 @@ export class TaxComponent implements OnInit {
   }
 
   newTask(){
-    console.log(this.newTax);
-    this.uiState.newTax = { hiddenLoadingGif: false, hiddenError:true, hiddenSuccess:true };
+    this.uiState.newTax = {
+      hiddenLoadingGif: false,
+      hiddenErrorMsg:true,
+      hiddenSuccessMsg:true
+    };
+
+    this.uiState.deleteTax = {
+      hiddenDeletingGif: true,
+      hiddenSuccessMsg: true,
+      hiddenErrorMsg: true
+    };
+
     this.taxService
       .createTax(this.newTax)
       .subscribe(
         res => {
-          console.log(res);
-          this.uiState.newTax = { hiddenLoadingGif: true, hiddenError:true, hiddenSuccess:false };
+          console.log("Successfully created tax!");
+          this.uiState.newTax = {
+            hiddenLoadingGif: true,
+            hiddenErrorMsg:true,
+            hiddenSuccessMsg:false
+          };
           this.loadTaxes();
         },
         err => {
-          this.uiState.newTax = { hiddenLoadingGif: true, hiddenError:false, hiddenSuccess:true };
-          console.log("Error occurred");
+          this.uiState.newTax = {
+            hiddenLoadingGif: true,
+            hiddenErrorMsg:false,
+            hiddenSuccessMsg:true
+          };
+          console.log("Error occurred creating tax");
         }
       );
   }
@@ -60,10 +83,18 @@ export class TaxComponent implements OnInit {
       hiddenErrorMsg: true,
       hiddenLoadingGif: false
     };
+
+    this.uiState.deleteTax = {
+      hiddenDeletingGif: true,
+      hiddenSuccessMsg: true,
+      hiddenErrorMsg: true
+    };
+
     this.taxService
       .getAllTaxesSorted()
       .subscribe(
         res => {
+          console.log("Taxes successfully loaded");
           this.taxList = res;
           if(this.taxList.length > 0){
             this.uiState.taxList = {
@@ -89,25 +120,48 @@ export class TaxComponent implements OnInit {
             hiddenErrorMsg: false,
             hiddenLoadingGif: true
           };
-          console.log("Error occurred");
+          console.log("Error occurred loading taxes");
         }
       );
   }
 
-  deleteTax(id: string){
+  deleteTax(id: number){
+    this.uiState.deleteTax.hiddenDeletingGif = false;
     this.taxService
       .deleteTax(id)
       .subscribe(
         res => {
           console.log("Successfully deleted tax");
+          this.uiState.deleteTax = {
+            hiddenDeletingGif: true,
+            hiddenSuccessMsg: false,
+            hiddenErrorMsg: true
+          };
+          this.loadTaxes();
         },
         err => {
-          console.log("Error occurred");
+          console.log("Error occurred REAL");
+          this.uiState.deleteTax = {
+            hiddenDeletingGif: true,
+            hiddenSuccessMsg: true,
+            hiddenErrorMsg: false
+          };
+          console.log(err.message);
         }
       );
   }
 
   dateParsing(date){
     return this.dateParseService.dateParsing(date);
+  }
+
+  validateTax(){
+    if(this.newTax.amount>=0 && this.newTax.amount<=100){
+      return true;
+    }
+    else{
+      this.newTax.amount = null;
+      return false;
+    }
   }
 }

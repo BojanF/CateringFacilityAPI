@@ -30,7 +30,13 @@ public class TaxAmountController {
     }
 
     @RequestMapping(value = "/delete-tax/{taxId}", method = RequestMethod.DELETE)
-    public void deleteTask(@PathVariable Long taxId){
+    public boolean deleteTask(@PathVariable Long taxId){
         taxAmountService.delete(taxId);
+        if(taxAmountService.findOne(taxId) == null){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 }

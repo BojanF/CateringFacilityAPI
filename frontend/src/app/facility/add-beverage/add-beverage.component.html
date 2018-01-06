@@ -1,0 +1,135 @@
+<!-- row -->
+<div class="row">
+  <div class="col-md-12">
+    <h1 class="page-header">
+      Add new beverage for your facility
+    </h1>
+    <ol class="breadcrumb">
+      <li>
+        <i class="fa fa-dashboard"></i>
+        <a href="facility/home"> Dashboard </a>
+      </li>
+      <li>
+        <i class="fa fa-plus-square"></i> Add new
+      </li>
+      <li class="active">
+        <i class="fa fa-glass"></i> Beverage
+      </li>
+    </ol>
+  </div>
+</div>
+<!-- /.row -->
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title"><i class="fa fa-plus-square fa-fw"></i> Add new beverage</h3>
+  </div>
+  <div class="panel-body">
+    <form (ngSubmit)="insertBeverage()" #beverageForm="ngForm" id="newBeverage">
+      <div class="row">
+        <div class="form-group col-md-12">
+          <label for="name">Name</label>
+          <input type="text" class="form-control" id="name"
+                 required
+                 [(ngModel)]="newBeverage.name" name="name"
+                 #name="ngModel">
+          <div [hidden]="name.valid || name.pristine"
+               class="panel panel-danger">
+            <div class="panel-heading text-center text-danger">
+              Name is required
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="form-group col-md-4">
+          <label for="price">Price &euro;</label>
+          <input type="number" class="form-control" id="price"
+                 required
+                 [(ngModel)]="newBeverage.price" name="price"
+                 #price="ngModel">
+          <div [hidden]="price.valid || price.pristine"
+               class="panel panel-danger">
+            <div class="panel-heading text-center text-danger">
+              Price is required
+            </div>
+          </div>
+        </div>
+        <div class="form-group col-md-4">
+          <label>Promoted</label>
+          <div class="checkbox">
+            <label for="onPromotion">
+              <input type="checkbox"  id="onPromotion"
+
+                     [(ngModel)]="newBeverage.onPromotion" name="onPromotion"
+                     #onPromotion="ngModel">
+              On promotion
+            </label>
+          </div>
+        </div>
+
+        <div class="form-group col-md-4">
+          <label for="type">Beverage type</label>
+          <select class="form-control" id="type"
+                  required
+                  [(ngModel)]="newBeverage.type" name="type"
+                  #type="ngModel">
+            <option *ngFor="let type of beverageTypes" [value]="type.key">{{type.val}}</option>
+          </select>
+          <div [hidden]="type.valid || type.pristine"
+               class="panel panel-danger">
+            <div class="panel-heading text-center text-danger">
+              Beverage type is required
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="form-group col-md-12">
+          <label for="description">Beverage description</label>
+          <textarea class="form-control" id="description"
+                    [(ngModel)]="newBeverage.description" name="description"
+                    placeholder="Description..." rows="3">
+          </textarea>
+        </div>
+      </div>
+    </form>
+
+    <!-- UI expirience fo inserting beverage-->
+    <div class="panel panel-info" [hidden]="uiState.hiddenLoadingGif">
+      <div class="panel-heading text-center">
+        <img src="../../../assets/pictures/loading.gif" alt="L" style="width:20px; height:20px;">
+        <span>&nbsp;Saving...</span>
+      </div>
+    </div>
+    <div class="panel panel-success" [hidden]="uiState.hiddenSuccess">
+      <div class="panel-heading text-center text-success">
+        Success!
+      </div>
+    </div>
+    <div class="panel panel-danger" [hidden]="uiState.hiddenError">
+      <div class="panel-heading text-center text-danger">
+        <div> We run into an error!</div>
+        <div> Try again later!</div>
+      </div>
+    </div>
+    <!-- UI expirience fo inserting beverage END-->
+
+  </div>
+
+  <div class="panel-footer text-right">
+    <button type="button"
+            class="btn btn-default"
+            (click)="resetForm();
+             beverageForm.reset()">
+      <i class="fa fa-fw fa-refresh"></i> Clear
+    </button>
+    <button type="submit"
+            class="btn btn-success"
+            form="newBeverage"
+            [disabled]="!beverageForm.form.valid">
+      <i class="fa fa-fw fa-save"></i> Save
+    </button>
+
+  </div>
+</div>

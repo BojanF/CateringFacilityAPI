@@ -5,6 +5,7 @@ public enum BeverageType {
     JUICE,
     VINE,
     ALCOHOL,
+    COCKTAIL,
     BEER,
     TEA,
     ICE_TEA

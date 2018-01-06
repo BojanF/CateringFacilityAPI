@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull;
 public class FacilityLocation extends BaseEntity{
 
     @NotNull
-    private String country;
+    private String name;
 
     @NotNull
     private String city;
@@ -23,12 +23,12 @@ public class FacilityLocation extends BaseEntity{
     @JsonIgnore
     private Facility facility;
 
-    public String getCountry() {
-        return country;
+    public String getName() {
+        return name;
     }
 
-    public void setCountry(String country) {
-        this.country = country;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getCity() {

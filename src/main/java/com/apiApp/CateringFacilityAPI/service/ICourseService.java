@@ -4,9 +4,16 @@ import com.apiApp.CateringFacilityAPI.model.enums.CourseType;
 import com.apiApp.CateringFacilityAPI.model.jpa.Course;
 import com.apiApp.CateringFacilityAPI.model.jpa.Facility;
 
+import java.util.List;
+
 public interface ICourseService {
 
-    Course insertCourse(String name, Double price, boolean onPromotion, Facility facility, CourseType type, String description);
+    Course insertCourse(String name,
+                        Double price,
+                        boolean onPromotion,
+                        Facility facility,
+                        CourseType type,
+                        String description);
 
     Course findOne(Long id);
 
@@ -15,5 +22,8 @@ public interface ICourseService {
     void delete(Long id);
 
     Iterable<Course> findAll();
+
+    //nema unit testovi
+    List<Course> getAllFacilityCourses(Long facilityId);
     
 }
