@@ -1,5 +1,6 @@
 package com.apiApp.CateringFacilityAPI.persistance;
 
+import com.apiApp.CateringFacilityAPI.model.enums.PackageStatus;
 import com.apiApp.CateringFacilityAPI.model.jpa.ApiInvoice;
 import com.apiApp.CateringFacilityAPI.model.jpa.FacilityInvoice;
 import com.apiApp.CateringFacilityAPI.model.jpa.SubscriptionPackage;
@@ -48,5 +49,18 @@ public interface ISubscriptionPackageRepository extends CrudRepository<Subscript
             "from com.apiApp.CateringFacilityAPI.model.jpa.FacilityInvoice fi " +
             "where fi.subscribe.id=:packageId and fi.invoicePayed=:paid")
     Double sumOfFacilityInvoicesForPackage(@Param("packageId")Long packageId, @Param("paid") boolean paid);
+
+    @Query(value =
+            "select package " +
+            "from com.apiApp.CateringFacilityAPI.model.jpa.SubscriptionPackage package " +
+            "where package.status = com.apiApp.CateringFacilityAPI.model.enums.PackageStatus.ACTIVE")
+    List<SubscriptionPackage> getActivePackages();
+
+    @Query(value =
+            "select count(package.id) " +
+            "from com.apiApp.CateringFacilityAPI.model.jpa.SubscriptionPackage package " +
+            "where package.status = :status")
+    int countPackagesWithStatus(@Param("status") PackageStatus status);
+
 
 }

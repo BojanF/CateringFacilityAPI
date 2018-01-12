@@ -15,7 +15,7 @@ export class ApiInvoicesComponent implements OnInit {
   public apiInvoices: Array<ApiInvoice>;
   public page: number = 1;
 
-  uiState = {
+  private uiState = {
     hiddenTable: true,
     hiddenNoDataInfo: true,
     hiddenErrorMsg: true,

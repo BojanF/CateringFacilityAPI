@@ -17,12 +17,16 @@ export class ViewPackagesComponent implements OnInit {
   };
 
   private data:Array<SubscriptionPackage>;
-  public page: number = 1;
+  private page: number = 1;
   public constructor(private packageService: PackageService) {
 
   }
 
   ngOnInit() {
+    this.getAllPackages();
+  }
+
+  getAllPackages(){
     this.packageService
       .getAllPackages()
       .subscribe(

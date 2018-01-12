@@ -16,5 +16,10 @@ public interface IAdministratorService {
 
     Iterable<Administrator> findAll();
 
+    //no unit test
+    List<Double> percentageStats();
+
+    List<Double>invoicesIncomeStats();
+
 
 }

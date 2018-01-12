@@ -9,7 +9,8 @@ import java.util.List;
 
 public interface IFacilityInvoiceService {
 
-    FacilityInvoice insertFacilityInvoice(SubscriptionPackage subscribe, LocalDateTime createdAt, Facility facility);
+    FacilityInvoice insertFacilityInvoice(SubscriptionPackage subscribe,
+                                          Facility facility);
 
     FacilityInvoice findOne(Long id);
 
@@ -20,4 +21,15 @@ public interface IFacilityInvoiceService {
     Iterable<FacilityInvoice> findAll();
 
     List<FacilityInvoice> getAllFacilityInvoicesSortedByCreatedAt();
+
+    //no junit test
+    Double countAllFacilityInvoices();
+
+    Double countPaidFacilityInvoices();
+
+    List<FacilityInvoice> notPaidInvoicesAfterReliefPeriod(LocalDateTime now);
+
+    Double sumOfFacilityInvoices(boolean paid);
+
+    List<Double> facilityInvoicesIncomeStats();
 }

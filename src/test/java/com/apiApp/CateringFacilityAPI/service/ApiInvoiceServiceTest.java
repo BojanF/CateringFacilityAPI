@@ -80,7 +80,7 @@ public class ApiInvoiceServiceTest {
     public void crudTestApiInvoice(){
         ApiInvoice invoice = apiInvoiceService.insertApiInvoice(
                  subscriptionPackage,
-                 LocalDateTime.now(),
+//                 LocalDateTime.now(),
                  dev);
 
         Assert.assertNotNull(apiInvoiceService.findOne(invoice.getId()));
@@ -103,22 +103,25 @@ public class ApiInvoiceServiceTest {
         //new invoice for same devloper after first package is out of date
         ApiInvoice invoice2 = apiInvoiceService.insertApiInvoice(
                  subscriptionPackage,
-                 invoice.getCreatedAt().plusDays(15l),
+//                 invoice.getCreatedAt().plusDays(15l),
                  dev);
         //testing for total prize(with tax)
 //        Double grossPrice2 = (1+invoice2.getTaxAmount()/100d)*invoice2.getSubscribe().getPrice();
         Double grossPrice2 = (1+invoice2.getTaxAmount()/100d)*invoice2.getOriginalPackagePrice();
         grossPrice2 = Math.round( grossPrice2 * 100d ) / 100d;
         Assert.assertEquals(grossPrice2, invoice2.getGrossPrice());
-
         Assert.assertNotNull(apiInvoiceService.findOne(invoice2.getId()));
+        invoice2.setCreatedAt(invoice.getCreatedAt().plusDays(15l));
+        invoice2.setPayUntil(invoice.getCreatedAt().plusDays(15));
+        invoice2 = apiInvoiceService.update(invoice2);
+
         Assert.assertEquals(false, invoice2.getPayedStatus());
         Assert.assertNull(invoice2.getPayedAt());
 
         //invoice 3
         ApiInvoice invoice3 = apiInvoiceService.insertApiInvoice(
                  subscriptionPackage2,
-                 LocalDateTime.now(),
+//                 LocalDateTime.now(),
                  dev2);
         Assert.assertNotNull(apiInvoiceService.findOne(invoice3.getId()));
         Assert.assertEquals(false, invoice3.getPayedStatus());

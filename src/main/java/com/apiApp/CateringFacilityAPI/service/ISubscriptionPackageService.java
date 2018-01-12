@@ -30,4 +30,13 @@ public interface ISubscriptionPackageService {
 
     Double sumOfInvoicesForPackage(Long packageId, boolean paid);
 
+    // nema unit test
+    List<SubscriptionPackage> getActivePackages();
+
+    List<Integer> packageStats(Long packageId);
+
+    List<Integer> packagesStatusStats();
+
+    List<Double> packageIncomeStats(Long packageId);
+
 }

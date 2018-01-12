@@ -6,6 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @CrossOrigin(maxAge = 5600)
 @RestController
 @RequestMapping(value = "/fe/package", produces = "application/json")
@@ -33,6 +36,26 @@ public class SubscriptionPackageController {
     @RequestMapping(value = "/update-package", method = RequestMethod.PATCH)
     public SubscriptionPackage updatePackage(@RequestBody SubscriptionPackage sb){
         return packageService.update(sb);
+    }
+
+    @RequestMapping(value = "/active-packages", method =  RequestMethod.GET)
+    public List<SubscriptionPackage> getActivePackages(){
+        return packageService.getActivePackages();
+    }
+
+    @RequestMapping(value = "/stats/{packageId}", method = RequestMethod.GET)
+    public List<Integer> packageStats(@PathVariable Long packageId){
+        return packageService.packageStats(packageId);
+    }
+
+    @RequestMapping(value = "/income-stats/{packageId}", method = RequestMethod.GET)
+    public List<Double> packageIncomeStats(@PathVariable Long packageId){
+        return packageService.packageIncomeStats(packageId);
+    }
+
+    @RequestMapping(value = "/status-stats", method = RequestMethod.GET)
+    public List<Integer> packagesStatusStats(){
+        return packageService.packagesStatusStats();
     }
 
     @RequestMapping(value = "/all-packages", method = RequestMethod.GET)

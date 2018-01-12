@@ -9,7 +9,8 @@ import java.util.List;
 
 public interface IApiInvoiceService {
 
-    ApiInvoice insertApiInvoice(SubscriptionPackage subscribe, LocalDateTime createdAt, Developer developer);
+    ApiInvoice insertApiInvoice(SubscriptionPackage subscribe,
+                                Developer developer);
 
     ApiInvoice findOne(Long id);
 
@@ -20,5 +21,16 @@ public interface IApiInvoiceService {
     Iterable<ApiInvoice> findAll();
 
     List<ApiInvoice> getAllInvoicesSortedByCreatedAt();
+
+    //no unit test
+    Double countAllApiInvoices();
+
+    Double countPaidApiInvoices();
+
+    List<ApiInvoice> notPaidInvoicesAfterReliefPeriod(LocalDateTime now);
+
+    Double sumOfApiInvoices(boolean paid);
+
+    List<Double> apiInvoicesIncomeStats();
     
 }

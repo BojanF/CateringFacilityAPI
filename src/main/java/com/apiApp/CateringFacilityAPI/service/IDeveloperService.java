@@ -1,8 +1,11 @@
 package com.apiApp.CateringFacilityAPI.service;
 
+import com.apiApp.CateringFacilityAPI.model.enums.AllowSubscription;
 import com.apiApp.CateringFacilityAPI.model.enums.CustomerStatus;
 import com.apiApp.CateringFacilityAPI.model.jpa.ApiInvoice;
 import com.apiApp.CateringFacilityAPI.model.jpa.Developer;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
@@ -18,5 +21,7 @@ public interface IDeveloperService {
 
     Iterable<Developer> findAll();
 
-    List<ApiInvoice> developerInvoices(Long devId);
+    List<ApiInvoice> developerInvoices(Long devId, Pageable page);
+
+    AllowSubscription allowSubscription(Long developerId);
 }

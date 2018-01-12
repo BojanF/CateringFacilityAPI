@@ -19,6 +19,22 @@ export class PackageService {
     return this.http.post(this.packageUrl + '/new-package', subscriptionPackage);
   }
 
+  getActivePackages(){
+    return this.http.get<Array<SubscriptionPackage>>(this.packageUrl + '/active-packages');
+  }
+
+  packageStats(id: number){
+    return this.http.get<Array<number>>(this.packageUrl + '/stats/' + id);
+  }
+
+  packageIncomeStats(id: number){
+    return this.http.get<Array<number>>(this.packageUrl + '/income-stats/' + id);
+  }
+
+  packagesStatusStats(){
+    return this.http.get<Array<number>>(this.packageUrl + '/status-stats');
+  }
+
   getAllPackages(){
     return this.http.get<Array<SubscriptionPackage>>(this.packageUrl + '/all-packages');
   }

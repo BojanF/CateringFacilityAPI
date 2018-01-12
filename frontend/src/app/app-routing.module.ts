@@ -24,11 +24,16 @@ import {UpdateLocationComponent} from "./facility/update-location/update-locatio
 import {AddLocationComponent} from "./facility/add-location/add-location.component";
 import {ViewLocationsComponent} from "./facility/view-locations/view-locations.component";
 import {CourseDetailsComponent} from "./facility/course-details/course-details.component";
+import {FacGetSubscriptionComponent} from "./facility/fac-get-subscription/fac-get-subscription.component";
+import {DevGetSubscriptionComponent} from "./developer/dev-get-subscription/dev-get-subscription.component";
+import { DevViewActivePackagesComponent } from './developer/dev-view-active-packages/dev-view-active-packages.component';
+import { FacViewActivePackagesComponent } from './facility/fac-view-active-packages/fac-view-active-packages.component';
 
 const routes: Routes = [
   {path: '', redirectTo: 'login', pathMatch: 'full'},
   {path: 'admin', redirectTo: 'admin', pathMatch: 'full'},
   {path: 'developer', redirectTo: 'developer', pathMatch: 'full'},
+  {path: 'facility', redirectTo: 'facility', pathMatch: 'full'},
   {path: 'login', component: LoginComponent},
   {path: 'admin', component: AdministratorComponent,
    children:[
@@ -46,7 +51,9 @@ const routes: Routes = [
     children:[
       {path: '', redirectTo: 'home', pathMatch: 'full'},
       {path: 'home', component: DevHomeComponent},
-      {path: 'invoices', component: DeveloperInvoicesComponent}
+      {path: 'invoices', component: DeveloperInvoicesComponent},
+      {path: 'active-packages', component: DevViewActivePackagesComponent},
+      {path: 'subscribe/:id', component: DevGetSubscriptionComponent}
     ]
   },
   {
@@ -63,7 +70,9 @@ const routes: Routes = [
         {path: 'course/:id', component: CourseDetailsComponent},
         {path: 'add-location', component: AddLocationComponent},
         {path: 'locations', component: ViewLocationsComponent},
-        {path: 'update-location/:id', component: UpdateLocationComponent}
+        {path: 'update-location/:id', component: UpdateLocationComponent},
+        {path: 'active-packages', component: FacViewActivePackagesComponent},
+        {path: 'subscribe/:id', component: FacGetSubscriptionComponent}
 
       ]
   }

@@ -469,15 +469,18 @@ public class FacilityServiceTest {
         FacilityInvoice invoice = facilityInvoiceService.insertFacilityInvoice(
                 subscriptionPackage,
 
-                LocalDateTime.now().minusDays(15),
+//                LocalDateTime.now().minusDays(15),
                 fac1);
         Assert.assertNotNull(facilityInvoiceService.findOne(invoice.getId()));
+        invoice.setCreatedAt(invoice.getCreatedAt().minusDays(15));
+        invoice.setPayUntil(invoice.getPayUntil().minusDays(15));
+        invoice = facilityInvoiceService.update(invoice);
 
         //new invoice for same facility after first package is out of date
         FacilityInvoice invoice2 = facilityInvoiceService.insertFacilityInvoice(
                 subscriptionPackage,
 
-                LocalDateTime.now(),
+//                LocalDateTime.now(),
                 fac1);
         Assert.assertNotNull(facilityInvoiceService.findOne(invoice2.getId()));
 
@@ -485,23 +488,23 @@ public class FacilityServiceTest {
         FacilityInvoice invoice3 = facilityInvoiceService.insertFacilityInvoice(
                 subscriptionPackage,
 
-                LocalDateTime.now(),
+//                LocalDateTime.now(),
                 fac2);
         Assert.assertNotNull(facilityInvoiceService.findOne(invoice3.getId()));
 
         //test scenarios for method facilityInvoices
-        List<FacilityInvoice> fac1Invoices = facilityService.facilityInvoices(fac1.getId());
+        List<FacilityInvoice> fac1Invoices = facilityService.facilityInvoices(fac1.getId(), null);
         Assert.assertEquals(2, fac1Invoices.size());
         List<Long> fac1InvoicesIDs = Arrays.asList(invoice.getId(), invoice2.getId());
         for(FacilityInvoice fi : fac1Invoices){
             Assert.assertEquals(true, fac1InvoicesIDs.contains(fi.getId()));
         }
 
-        List<FacilityInvoice> fac2Invoices = facilityService.facilityInvoices(fac2.getId());
+        List<FacilityInvoice> fac2Invoices = facilityService.facilityInvoices(fac2.getId(), null);
         Assert.assertEquals(1, fac2Invoices.size());
         Assert.assertEquals(invoice3.getId(), fac2Invoices.get(0).getId());
 
-        List<FacilityInvoice> fac3Invoices = facilityService.facilityInvoices(fac3.getId());
+        List<FacilityInvoice> fac3Invoices = facilityService.facilityInvoices(fac3.getId(), null);
         Assert.assertEquals(0, fac3Invoices.size());
 
         facilityInvoiceService.delete(invoice.getId());

@@ -82,10 +82,13 @@ public class FacilityInvoiceServiceTest {
     public void crudTestFacilityInvoice(){
         FacilityInvoice invoice = facilityInvoiceService.insertFacilityInvoice(
                 subscriptionPackage,
-                LocalDateTime.now().minusDays(15),
+//                LocalDateTime.now().minusDays(15),
                 fac1);
-
         Assert.assertNotNull(facilityInvoiceService.findOne(invoice.getId()));
+        invoice.setCreatedAt(invoice.getCreatedAt().minusDays(15));
+        invoice.setPayUntil(invoice.getPayUntil().minusDays(15));
+        invoice = facilityInvoiceService.update(invoice);
+
 //        Double grossPrice = (1+invoice.getTaxAmount()/100d)*invoice.getSubscribe().getPrice();
         Double grossPrice = (1+invoice.getTaxAmount()/100d)*invoice.getOriginalPackagePrice();
         grossPrice = Math.round(grossPrice * 100d) / 100d;
@@ -104,8 +107,9 @@ public class FacilityInvoiceServiceTest {
         //new invoice for same facility after first package is out of date
         FacilityInvoice invoice2 = facilityInvoiceService.insertFacilityInvoice(
                 subscriptionPackage,
-                LocalDateTime.now(),
+//                LocalDateTime.now(),
                 fac1);
+
         Assert.assertNotNull(facilityInvoiceService.findOne(invoice2.getId()));
         Assert.assertEquals(false, invoice2.getPayedStatus());
         Assert.assertNull(invoice2.getPayedAt());
@@ -119,8 +123,9 @@ public class FacilityInvoiceServiceTest {
         ta2 = taxAmountService.insertTaxAmount(0d);
         FacilityInvoice invoice3 = facilityInvoiceService.insertFacilityInvoice(
                 subscriptionPackage2,
-                LocalDateTime.now(),
+//                LocalDateTime.now(),
                 fac2);
+
         Assert.assertNotNull(facilityInvoiceService.findOne(invoice3.getId()));
         Assert.assertEquals(false, invoice3.getPayedStatus());
         Assert.assertNull(invoice3.getPayedAt());
@@ -142,12 +147,6 @@ public class FacilityInvoiceServiceTest {
         Assert.assertNull(facilityInvoiceService.findOne(invoice.getId()));
         Assert.assertNull(facilityInvoiceService.findOne(invoice2.getId()));
         Assert.assertNull(facilityInvoiceService.findOne(invoice3.getId()));
-
-
-
-
-
-
     }
 
     @After

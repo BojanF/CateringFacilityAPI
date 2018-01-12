@@ -24,6 +24,9 @@ public class Invoice extends BaseEntity {
     @NotNull
     private LocalDateTime createdAt;
 
+    @NotNull
+    private LocalDateTime payUntil;
+
     private LocalDateTime payedAt;
 
     @NotNull
@@ -98,5 +101,13 @@ public class Invoice extends BaseEntity {
 
     public void setGrossPrice(Double grossPrice) {
         this.grossPrice = grossPrice;
+    }
+
+    public LocalDateTime getPayUntil() {
+        return payUntil;
+    }
+
+    public void setPayUntil(LocalDateTime payUntil) {
+        this.payUntil = payUntil;
     }
 }

@@ -1,0 +1,109 @@
+<div class="row">
+  <div class="col-md-12">
+    <h1 class="page-header">
+      {{package.name}}
+    </h1>
+    <ol class="breadcrumb">
+      <li>
+        <i class="fa fa-dashboard"></i>
+        <a href="facility/home"> Dashboard </a>
+      </li>
+      <li>
+        <i class="fa fa=fw fa-paper-plane-o" aria-hidden="true"></i>
+        <a href="facility/active-packages"> Subscribe </a>
+      </li>
+      <li class="active">
+        <i class="fa fa-info-circle"></i> Subscription packages details
+      </li>
+    </ol>
+  </div>
+</div>
+
+<div [hidden]="uiState.showPage">
+  <div class="jumbotron">
+    <h1>Ooooops!</h1>
+    <p>We can`t find that subscription package!</p>
+  </div>
+</div>
+
+<div class="row" [hidden]="!uiState.showPage">
+
+  <div class="col-md-12 col-sm-12">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">
+          <i class="fa fa-info-circle"></i>
+          Subscription package details
+        </h3>
+      </div>
+      <div class="panel-body">
+        <div class="panel panel-info" [hidden]="uiState.view.hiddenLoadingGif">
+          <div class="panel-heading text-center">
+            <img src="../../../assets/pictures/loading.gif" style="width:20px; height:20px;">
+            <span>&nbsp;Loading...</span>
+          </div>
+        </div>
+
+        <div [hidden]="uiState.view.hiddenTable">
+          <div class="table-responsive">
+            <table class="table  table-responsive table-striped">
+              <tbody>
+              <tr>
+                <th class="td-right-align col-md-2"> Name:</th>
+                <td class="td-left-align col-md-10">{{package.name}}</td>
+              </tr>
+              <tr>
+                <th class="td-right-align"> Price:</th>
+                <td class="td-left-align"> {{package.price}} &euro;</td>
+              </tr>
+              <tr>
+                <th class="td-right-align"> Expires in:</th>
+                <td class="td-left-align">{{package.expiresIn}} days</td>
+              </tr>
+              <tr>
+                <th class="td-right-align"> Status:</th>
+                <td class="td-left-align">
+                    <span class="label label-success">
+                      {{package.status}}
+                    </span>
+                </td>
+              </tr>
+              <tr>
+                <th class="td-right-align"> Description:</th>
+                <td class="td-left-align">{{package.description}}</td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="panel panel-success" [hidden]="uiState.subscribe.hiddenSuccessMsg">
+          <div class="panel-heading text-center text-success">
+            <div> Your subscription is successful!</div>
+          </div>
+        </div>
+        <div class="panel panel-danger" [hidden]="uiState.view.hiddenErrorMsg">
+          <div class="panel-heading text-center text-danger" >
+            <div> We run into an error!</div>
+            <div> Try again later!</div>
+          </div>
+        </div>
+      </div>
+      <div class="panel-footer">
+        <div class="row">
+          <div class="col-md-offset-2 col-md-8"
+               [hidden]="uiState.subscribe.hiddenSubscribeButton">
+            <button id="subscribe"
+                    type="button"
+                    class="btn btn-success btn-block"
+                    (click)="subscribe()"
+                    [disabled]="!allowSubscription">
+              <i class="fa fa=fw fa-paper-plane-o" aria-hidden="true"> </i> Subscribe
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

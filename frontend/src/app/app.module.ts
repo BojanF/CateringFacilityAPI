@@ -43,6 +43,13 @@ import { ViewLocationsComponent } from './facility/view-locations/view-locations
 import { UpdateLocationComponent } from './facility/update-location/update-location.component';
 import {CourseTypeService} from "./service/course-type/course-type.service";
 import {FacilityLocationContactService} from "./service/http/facility-location-contact/facility-location-contact.service";
+import { FacGetSubscriptionComponent } from './facility/fac-get-subscription/fac-get-subscription.component';
+import { DevGetSubscriptionComponent } from './developer/dev-get-subscription/dev-get-subscription.component';
+import { DevViewActivePackagesComponent } from './developer/dev-view-active-packages/dev-view-active-packages.component';
+import { FacViewActivePackagesComponent } from './facility/fac-view-active-packages/fac-view-active-packages.component';
+import {AdministratorService} from "./service/http/administrator/administrator.service";
+import {DeveloperService} from "./service/http/developer/developer.service";
+
 
 // import {NgxSelectOptions} from "ngx-select-options";
 
@@ -72,7 +79,11 @@ import {FacilityLocationContactService} from "./service/http/facility-location-c
     CourseDetailsComponent,
     AddLocationComponent,
     ViewLocationsComponent,
-    UpdateLocationComponent
+    UpdateLocationComponent,
+    FacGetSubscriptionComponent,
+    DevGetSubscriptionComponent,
+    DevViewActivePackagesComponent,
+    FacViewActivePackagesComponent
   ],
   imports: [
     BrowserModule,
@@ -95,7 +106,9 @@ import {FacilityLocationContactService} from "./service/http/facility-location-c
     BeverageTypeService,
     CourseTypeService,
     FacilityLocationService,
-    FacilityLocationContactService
+    FacilityLocationContactService,
+    AdministratorService,
+    DeveloperService
   ],
   bootstrap: [AppComponent]
 })

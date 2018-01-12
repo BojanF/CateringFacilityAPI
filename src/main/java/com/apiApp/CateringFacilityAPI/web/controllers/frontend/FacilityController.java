@@ -1,5 +1,6 @@
 package com.apiApp.CateringFacilityAPI.web.controllers.frontend;
 
+import com.apiApp.CateringFacilityAPI.model.enums.AllowSubscription;
 import com.apiApp.CateringFacilityAPI.model.jpa.Facility;
 import com.apiApp.CateringFacilityAPI.model.jpa.FacilityInvoice;
 import com.apiApp.CateringFacilityAPI.model.jpa.FacilityLocation;
@@ -24,11 +25,16 @@ public class FacilityController {
 
     @RequestMapping(value = "/invoices/{facilityId}", method = RequestMethod.GET)
     public List<FacilityInvoice> facilityInvoices(@PathVariable Long facilityId){
-        return facilityService.facilityInvoices(facilityId);
+        return facilityService.facilityInvoices(facilityId, null);
     }
 
     @RequestMapping(value = "/locations/{facilityId}", method = RequestMethod.GET)
     public List<FacilityLocation> facilityLocations(@PathVariable Long facilityId){
         return facilityService.facilityLocations(facilityId);
+    }
+
+    @RequestMapping(value = "/allow-subscription/{facilityId}", method = RequestMethod.GET)
+    public AllowSubscription allowSubscription(@PathVariable Long facilityId){
+        return facilityService.allowSubscription(facilityId);
     }
 }

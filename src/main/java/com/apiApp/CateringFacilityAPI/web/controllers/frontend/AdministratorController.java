@@ -19,5 +19,15 @@ public class AdministratorController {
     @Autowired
     private IAdministratorService administratorService;
 
+    @RequestMapping(value = "/paid-invoices-stats", method = RequestMethod.GET)
+    public List<Double> percentageOfPaidInvoices(){
+        return administratorService.percentageStats();
+    }
+
+    @RequestMapping(value =  "/income-stats", method = RequestMethod.GET)
+    List<Double> invoicesIncomeStats(){
+        return  administratorService.invoicesIncomeStats();
+    }
+
 
 }

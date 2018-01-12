@@ -59,11 +59,7 @@
         </thead>
         <tbody>
         <tr *ngFor="let invoice of apiInvoices | paginate: { itemsPerPage: 3, currentPage: page }">
-          <td>
-            <a href="admin/package-details/{{invoice.subscribe.id}}">
-              {{invoice.subscribe.name}}
-            </a>
-          </td>
+          <td>{{invoice.subscribe.name}}</td>
           <td>{{dateParsing(invoice.createdAt)}}</td>
           <td>{{invoice.originalPackagePrice}}&euro;</td>
           <td>{{invoice.taxAmount}}%</td>

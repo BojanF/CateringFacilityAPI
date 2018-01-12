@@ -24,4 +24,8 @@ export class FacilityService {
   facilityLocations(facilityId: number){
     return this.http.get<Array<FacilityLocation>>(this.facilityUrl + '/locations/' + facilityId);
   }
+
+  allowSubscription(facilityId: number){
+    return this.http.get(this.facilityUrl + '/allow-subscription/' + facilityId);
+  }
 }

@@ -1,0 +1,81 @@
+<div class="row">
+  <div class="col-md-12">
+    <h1 class="page-header">
+      Active subscription packages
+    </h1>
+    <ol class="breadcrumb">
+      <li>
+        <i class="fa fa-dashboard"></i>
+        <a href="developer/home"> Dashboard </a>
+      </li>
+      <li class="active">
+        <i class="fa fa-paper-plane-o" aria-hidden="true"></i>  Get subscription
+      </li>
+    </ol>
+  </div>
+</div>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title"><i class="fa fa-fw fa-check-circle" aria-hidden="true"></i>Active packages</h3>
+  </div>
+  <div class="panel-body">
+    <div class="panel panel-info" [hidden]="uiState.hiddenLoadingGif">
+      <div class="panel-heading text-center">
+        <img src="../../../assets/pictures/loading.gif" style="width:20px; height:20px;">
+        <span>&nbsp;Loading...</span>
+      </div>
+    </div>
+    <div class="panel panel-info" [hidden]="uiState.hiddenNoDataInfo">
+      <div class="panel-heading text-center text-info">
+        There is no active packages.
+      </div>
+    </div>
+    <div class="panel panel-danger" [hidden]="uiState.hiddenErrorMsg">
+      <div class="panel-heading text-center text-danger">
+        <div> We run into an error!</div>
+        <div> Try again later!</div>
+      </div>
+    </div>
+    <div class="table-responsive" [hidden]="uiState.hiddenTable">
+      <table class="table table-responsive table-bordered table-striped">
+        <thead>
+        <tr>
+          <th>Name</th>
+          <th>Price &euro;</th>
+          <th>Expires in *days</th>
+          <th>Subscribe</th>
+        </tr>
+        <!--<tr>-->
+        <!--<th colspan="7"> <input type="text" class="form-control" st-search="name" st-delay="400" type="search" placeholder="search by task name..."> </th>-->
+        <!--</tr>-->
+        </thead>
+        <tbody>
+        <tr *ngFor="let package of activePackages | paginate: { itemsPerPage: 3, currentPage: page }">
+          <td>{{package.name}}</td>
+          <td>{{package.price}}</td>
+          <td>{{package.expiresIn}}</td>
+          <td>
+            <a href="developer/subscribe/{{package.id}}" class="btn btn-xs btn-success">
+              <i class="fa fa-paper-plane-o" aria-hidden="true"></i> Subscribe
+            </a>
+          </td>
+        </tr>
+        </tbody>
+        <tfoot>
+        <tr>
+          <td colspan="4" class="text-center">
+            <pagination-controls (pageChange)="page = $event"></pagination-controls>
+          </td>
+        </tr>
+
+        </tfoot>
+      </table>
+
+    </div>
+
+  </div>
+</div>
+
+
+

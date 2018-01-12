@@ -1,6 +1,7 @@
 package com.apiApp.CateringFacilityAPI.persistance;
 
 import com.apiApp.CateringFacilityAPI.model.jpa.*;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -34,7 +35,7 @@ public interface IFacilityRepository extends CrudRepository<Facility, Long> {
             "from com.apiApp.CateringFacilityAPI.model.jpa.FacilityInvoice invoice\n " +
             "where invoice.facility.id=:facilityId\n" +
             "order by invoice.createdAt desc")
-    List<FacilityInvoice> facilityInvoices(@Param("facilityId") Long facilityId);
+    List<FacilityInvoice> facilityInvoices(@Param("facilityId") Long facilityId, Pageable page);
 
 
 }

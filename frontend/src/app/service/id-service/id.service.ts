@@ -6,7 +6,7 @@ export class IdService {
   //temporary service
   // temoporary service until login is not in function for returning identificators, as logged in users
 
-  private facilityId: number = 2;
+  private facilityId: number = 12;
   private developerId: number = 1;
   constructor() { }
 

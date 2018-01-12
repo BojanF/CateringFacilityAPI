@@ -119,19 +119,22 @@ public class DeveloperServiceTest {
         ApiInvoice devInvoice1 = apiInvoiceService.insertApiInvoice(
                 subscriptionPackage,
 
-                LocalDateTime.now().minusDays(14),
+//                LocalDateTime.now().minusDays(14),
                 dev);
         Assert.assertNotNull(apiInvoiceService.findOne(devInvoice1.getId()));
+        devInvoice1.setCreatedAt(devInvoice1.getCreatedAt().minusDays(15));
+        devInvoice1.setPayUntil(devInvoice1.getPayUntil().minusDays(15));
+        devInvoice1 = apiInvoiceService.update(devInvoice1);
 
         ApiInvoice devInvoice2 = apiInvoiceService.insertApiInvoice(
                 subscriptionPackage,
 
-                LocalDateTime.now(),
+//                LocalDateTime.now(),
                 dev);
         Assert.assertNotNull(apiInvoiceService.findOne(devInvoice2.getId()));
 
         //test scenarios for developerInvoices method
-        List<ApiInvoice> devInvoices = developerService.developerInvoices(dev.getId());
+        List<ApiInvoice> devInvoices = developerService.developerInvoices(dev.getId(), null);
         Assert.assertEquals(2, devInvoices.size());
         List<Long> devInvoicesIDs = Arrays.asList(devInvoice1.getId(), devInvoice2.getId());
         for(ApiInvoice ai : devInvoices){
@@ -141,9 +144,13 @@ public class DeveloperServiceTest {
         ApiInvoice dev2Invoice1 = apiInvoiceService.insertApiInvoice(
                 subscriptionPackage,
 
-                LocalDateTime.now().minusDays(30),
+//                LocalDateTime.now().minusDays(30),
                 dev2);
         Assert.assertNotNull(apiInvoiceService.findOne(dev2Invoice1.getId()));
+        dev2Invoice1.setCreatedAt(devInvoice1.getCreatedAt().minusDays(30));
+        dev2Invoice1.setPayUntil(dev2Invoice1.getPayUntil().minusDays(30));
+        dev2Invoice1 = apiInvoiceService.update(dev2Invoice1);
+
         dev2Invoice1.setInvoicePayed(true);
         dev2Invoice1.setPayedAt(dev2Invoice1.getCreatedAt().plusDays(9l));
         dev2Invoice1 = apiInvoiceService.update(dev2Invoice1);
@@ -153,9 +160,13 @@ public class DeveloperServiceTest {
         ApiInvoice dev2Invoice2 = apiInvoiceService.insertApiInvoice(
                 subscriptionPackage,
 
-                LocalDateTime.now().minusDays(15),
+//                LocalDateTime.now().minusDays(15),
                 dev2);
         Assert.assertNotNull(apiInvoiceService.findOne(dev2Invoice2.getId()));
+        dev2Invoice2.setCreatedAt(dev2Invoice2.getCreatedAt().minusDays(15));
+        dev2Invoice2.setPayUntil(dev2Invoice2.getPayUntil().minusDays(15));
+        dev2Invoice2 = apiInvoiceService.update(dev2Invoice2);
+
         dev2Invoice2.setInvoicePayed(true);
         dev2Invoice2.setPayedAt(dev2Invoice2.getCreatedAt().plusDays(9l));
         dev2Invoice2 = apiInvoiceService.update(dev2Invoice2);
@@ -165,11 +176,11 @@ public class DeveloperServiceTest {
         ApiInvoice dev2Invoice3 = apiInvoiceService.insertApiInvoice(
                 subscriptionPackage,
 
-                LocalDateTime.now(),
+//                LocalDateTime.now(),
                 dev2);
         Assert.assertNotNull(apiInvoiceService.findOne(dev2Invoice3.getId()));
 
-        List<ApiInvoice> dev2Invoices = developerService.developerInvoices(dev2.getId());
+        List<ApiInvoice> dev2Invoices = developerService.developerInvoices(dev2.getId(), null);
         Assert.assertEquals(3, dev2Invoices.size());
         List<Long> dev2InvoicesIDs = Arrays.asList(dev2Invoice1.getId(), dev2Invoice2.getId(), dev2Invoice3.getId());
         for(ApiInvoice ai : dev2Invoices){

@@ -5,10 +5,17 @@ import {HttpClient} from "@angular/common/http";
 @Injectable()
 export class FacilityInvoiceService {
 
-  constructor(private http: HttpClient) { }
+  private facilityInvoiceUrl: string;
+  constructor(private http: HttpClient) {
+    this.facilityInvoiceUrl = 'http://localhost:8080/fe/fac-invoice';
+  }
+
+  insertFacilityInvoice(facilityInvoice: FacilityInvoice){
+    return this.http.post(this.facilityInvoiceUrl + '/new', facilityInvoice);
+  }
 
   getAllFacilityInvoicesSorted(){
-    return this.http.get<Array<FacilityInvoice>>("http://localhost:8080/fe/fac-invoice/all-sorted");
+    return this.http.get<Array<FacilityInvoice>>(this.facilityInvoiceUrl + '/all-sorted');
   }
 
 }
