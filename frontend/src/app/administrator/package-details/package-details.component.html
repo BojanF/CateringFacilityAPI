@@ -130,11 +130,14 @@
               </div>
               <div class="row">
                 <div class="form-group col-md-4">
-                  <label for="price">Price &euro;</label>
-                  <input type="number" class="form-control" id="price"
-                         required
-                         [(ngModel)]="updatePackage.price" name="price"
-                         #price="ngModel">
+                  <label for="price">Price </label>
+                  <div class="input-group">
+                    <input type="number" class="form-control" id="price"
+                           required
+                           [(ngModel)]="updatePackage.price" name="price"
+                           #price="ngModel">
+                    <span class="input-group-addon">&euro;</span>
+                  </div>
                   <div [hidden]="price.valid || price.pristine"
                        class="panel panel-danger">
                     <div class="panel-heading text-center text-danger">
@@ -143,12 +146,15 @@
                   </div>
                 </div>
                 <div class="form-group col-md-4">
-                  <label for="expiresIn">Expires in *days</label>
-                  <input type="number" class="form-control" id="expiresIn"
-                         required
-                         [(ngModel)]="updatePackage.expiresIn" name="expiresIn"
-                         #expiresIn="ngModel"
-                         min = 3>
+                  <label for="expiresIn">Expires in</label>
+                  <div class="input-group">
+                    <input type="number" class="form-control" id="expiresIn"
+                           required
+                           [(ngModel)]="updatePackage.expiresIn" name="expiresIn"
+                           #expiresIn="ngModel"
+                           min = 3>
+                    <span class="input-group-addon">days</span>
+                  </div>
                   <div [hidden]="expiresIn.valid || expiresIn.pristine"
                        class="panel panel-danger">
                     <div class="panel-heading text-center text-danger">
@@ -165,12 +171,6 @@
                           #status="ngModel">
                     <option *ngFor="let status of packageStatuses" [value]="status">{{status}}</option>
                   </select>
-                  <div [hidden]="status.valid || status.pristine"
-                       class="panel panel-danger">
-                    <div class="panel-heading text-center text-danger">
-                      Package status is required
-                    </div>
-                  </div>
                 </div>
               </div>
               <div class="row">
@@ -212,7 +212,93 @@
         </div>
       </div>
       <div class="tab-pane" id="package-stats-tab">
-        <div class="col-md-6">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h3 class="panel-title">
+                  <i class="fa fa-percent" aria-hidden="true"></i> Percentage of paid invoices for package
+                </h3>
+              </div>
+              <div class="panel-body">
+                <div class="row">
+                  <div class="col-md-6">
+                    <!--UI experience stats loading-->
+                    <div>
+                      <div class="panel panel-info" [hidden]="uiState.stats.hiddenLoadingGif">
+                        <div class="panel-heading text-center">
+                          <img src="../../../assets/pictures/loading.gif" style="width:20px; height:20px;">
+                          <span>&nbsp;Loading...</span>
+                        </div>
+                      </div>
+                      <div class="panel panel-info" [hidden]="uiState.stats.hiddenNoInvoicesMsg">
+                        <div class="panel-heading text-center text-info">
+                          There is no invoices for this package!
+                        </div>
+                      </div>
+                      <div class="panel panel-danger" [hidden]="uiState.stats.hiddenError">
+                        <div class="panel-heading text-center text-danger">
+                          <div> We run into an error!</div>
+                          <div> Try again later!</div>
+                        </div>
+                      </div>
+                    </div>
+                    <!--UI experience stats loading END-->
+                    <div id="percentage-paid"></div>
+                  </div>
+                  <div class="col-md-6">
+                    <!--UI experience income stats loading-->
+                    <div>
+                      <div class="panel panel-info" [hidden]="uiState.incomeStats.hiddenLoadingGif">
+                        <div class="panel-heading text-center">
+                          <img src="../../../assets/pictures/loading.gif" style="width:20px; height:20px;">
+                          <span>&nbsp;Loading...</span>
+                        </div>
+                      </div>
+                      <div class="panel panel-danger" [hidden]="uiState.incomeStats.hiddenError">
+                        <div class="panel-heading text-center text-danger">
+                          <div> We run into an error!</div>
+                          <div> Try again later!</div>
+                        </div>
+                      </div>
+                    </div>
+                    <!--UI experience income stats loading END-->
+
+                    <br/>
+                    <div [hidden]="uiState.incomeStats.hiddenTable">
+                      <div class="table-responsive">
+                        <table class="table table-responsive table-striped">
+                          <thead>
+                          <tr>
+                            <th colspan="2">
+                              <i class="fa fa-fw fa-balance-scale" aria-hidden="true"></i> Invoices paying balance
+                            </th>
+                          </tr>
+                          </thead>
+                          <tbody>
+                          <tr>
+                            <th class="td-right-align col-md-5">Total invoices:</th>
+                            <th class="td-left-align col-md-7">{{numberOfInvoicesForPackage}}</th>
+                          </tr>
+                          <tr>
+                            <th class="td-right-align"> Paid invoices price:</th>
+                            <th class="td-left-align text-success"> {{sumOfPaidInvoices}} &euro;</th>
+                          </tr>
+                          <tr>
+                            <th class="td-right-align"> Unpaid invoices price:</th>
+                            <th class="td-left-align text-danger">{{sumOfUnpaidInvoices}} &euro;</th>
+                          </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            <div class="panel-footer"></div>
+          </div>
+        </div>
+        <div class="col-md-12">
           <div class="panel panel-default">
             <div class="panel-heading">
               <h3 class="panel-title">
@@ -243,61 +329,6 @@
               <!--UI experience stats loading END-->
               <div id="usage-stats"></div>
 
-
-            </div>
-            <div class="panel-footer"></div>
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="panel panel-default">
-            <div class="panel-heading">
-              <h3 class="panel-title">
-                <i class="fa fa-fw fa-balance-scale" aria-hidden="true"></i> Income from package
-              </h3>
-            </div>
-            <div class="panel-body">
-              <!--UI experience income stats loading-->
-              <div>
-                <div class="panel panel-info" [hidden]="uiState.incomeStats.hiddenLoadingGif">
-                  <div class="panel-heading text-center">
-                    <img src="../../../assets/pictures/loading.gif" style="width:20px; height:20px;">
-                    <span>&nbsp;Loading...</span>
-                  </div>
-                </div>
-                <div class="panel panel-danger" [hidden]="uiState.incomeStats.hiddenError">
-                  <div class="panel-heading text-center text-danger">
-                    <div> We run into an error!</div>
-                    <div> Try again later!</div>
-                  </div>
-                </div>
-              </div>
-              <!--UI experience income stats loading END-->
-
-              <br/><br/>
-              <div [hidden]="uiState.incomeStats.hiddenTable">
-                <div class="table-responsive">
-                  <table class="table table-responsive table-striped">
-                    <thead>
-                    <tr>
-                      <th colspan="2">
-                        <i class="fa fa-fw fa-balance-scale" aria-hidden="true"></i> Invoices paying balance
-                      </th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>  </tr>
-                    <tr>
-                      <th class="td-right-align col-md-5"> Paid invoices price:</th>
-                      <th class="td-left-align text-success col-md-7"> {{sumOfPaidInvoices}} &euro;</th>
-                    </tr>
-                    <tr>
-                      <th class="td-right-align"> Unpaid invoices price:</th>
-                      <th class="td-left-align text-danger">{{sumOfUnpaidInvoices}} &euro;</th>
-                    </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
 
             </div>
             <div class="panel-footer"></div>

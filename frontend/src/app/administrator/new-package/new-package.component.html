@@ -23,7 +23,7 @@
   <div class="panel-body">
     <form (ngSubmit)="onSubmit()" #packageForm="ngForm" id="newPackage">
       <div class="row">
-        <div class="form-group col-md-12">
+        <div class="form-group col-md-4">
           <label for="name">Name</label>
           <input type="text" class="form-control" id="name"
                  required
@@ -36,14 +36,15 @@
             </div>
           </div>
         </div>
-      </div>
-      <div class="row">
         <div class="form-group col-md-4">
-          <label for="price">Price &euro;</label>
-          <input type="number" class="form-control" id="price"
-                 required
-                 [(ngModel)]="package.price" name="price"
-                 #price="ngModel">
+          <label for="price">Price </label>
+          <div class="input-group">
+            <input type="number" class="form-control" id="price"
+                   required
+                   [(ngModel)]="package.price" name="price"
+                   #price="ngModel">
+            <span class="input-group-addon">&euro;</span>
+          </div>
           <div [hidden]="price.valid || price.pristine"
                class="panel panel-danger">
             <div class="panel-heading text-center text-danger">
@@ -52,12 +53,15 @@
           </div>
         </div>
         <div class="form-group col-md-4">
-          <label for="expiresIn">Expires in *days</label>
-          <input type="number" class="form-control" id="expiresIn"
-                 required
-                 [(ngModel)]="package.expiresIn" name="expiresIn"
-                 #expiresIn="ngModel"
-                 min = 3>
+          <label for="expiresIn">Expires in </label>
+          <div class="input-group">
+            <input type="number" class="form-control" id="expiresIn"
+                   required
+                   [(ngModel)]="package.expiresIn" name="expiresIn"
+                   #expiresIn="ngModel"
+                   min = 3>
+            <span class="input-group-addon">days</span>
+          </div>
           <div [hidden]="expiresIn.valid || expiresIn.pristine"
                class="panel panel-danger">
             <div class="panel-heading text-center text-danger">
@@ -66,21 +70,6 @@
           </div>
         </div>
 
-        <div class="form-group col-md-4">
-          <label for="status">Package status</label>
-          <select class="form-control" id="status"
-                  required
-                  [(ngModel)]="package.status" name="status"
-                  #status="ngModel">
-            <option *ngFor="let status of packageStatuses" [value]="status">{{status}}</option>
-          </select>
-          <div [hidden]="status.valid || status.pristine"
-               class="panel panel-danger">
-            <div class="panel-heading text-center text-danger">
-              Package status is required
-            </div>
-          </div>
-        </div>
       </div>
       <div class="row">
         <div class="form-group col-md-12">

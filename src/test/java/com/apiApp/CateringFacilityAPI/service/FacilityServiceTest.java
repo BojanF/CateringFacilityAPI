@@ -2,8 +2,6 @@ package com.apiApp.CateringFacilityAPI.service;
 
 import com.apiApp.CateringFacilityAPI.model.enums.BeverageType;
 import com.apiApp.CateringFacilityAPI.model.enums.CourseType;
-import com.apiApp.CateringFacilityAPI.model.enums.CustomerStatus;
-import com.apiApp.CateringFacilityAPI.model.enums.PackageStatus;
 import com.apiApp.CateringFacilityAPI.model.jpa.*;
 import org.junit.Assert;
 import org.junit.Test;
@@ -49,8 +47,7 @@ public class FacilityServiceTest {
                 "Cafe Li",
                 "li",
                 "passLI",
-                "li@mail.c",
-                 CustomerStatus.ACTIVE);
+                "li@mail.c");
         Assert.assertNotNull(facilityService.findOne(fac1.getId()));
         Assert.assertEquals(facilityService.findOne(fac1.getId()).getId(), fac1.getId());
 
@@ -58,8 +55,7 @@ public class FacilityServiceTest {
                 "Martini",
                 "martini",
                 "mariniPass",
-                "martini@email.com",
-                 CustomerStatus.ACTIVE);
+                "martini@email.com");
         Assert.assertNotNull(facilityService.findOne(fac2.getId()));
         Assert.assertEquals(facilityService.findOne(fac2.getId()).getId(), fac2.getId());
 
@@ -90,16 +86,14 @@ public class FacilityServiceTest {
                 "Trend",
                 "trend",
                 "trendPass",
-                "trend@email.com",
-                CustomerStatus.ACTIVE);
+                "trend@email.com");
         Assert.assertNotNull(facilityService.findOne(fac1.getId()));
 
         Facility fac2 = facilityService.insertFacility(
                 "Martini",
                 "martini",
                 "mariniPass",
-                "martini@email.com",
-                CustomerStatus.ACTIVE);
+                "martini@email.com");
         Assert.assertNotNull(facilityService.findOne(fac2.getId()));
 
         Course course1 = courseService.insertCourse(
@@ -226,15 +220,13 @@ public class FacilityServiceTest {
                 "Cafe Li",
                 "li",
                 "passLI",
-                "li@mail.c",
-                CustomerStatus.ACTIVE);
+                "li@mail.c");
 
         Facility fac2 = facilityService.insertFacility(
                 "Martini",
                 "martini",
                 "mariniPass",
-                "martini@email.com",
-                CustomerStatus.ACTIVE);
+                "martini@email.com");
         Assert.assertNotNull(facilityService.findOne(fac2.getId()));
 
         Beverage b1 = beverageService.insertBeverage(
@@ -342,24 +334,21 @@ public class FacilityServiceTest {
                 "Restoran sidro",
                 "anchor",
                 "passSidro",
-                "sidro@mail.com",
-                CustomerStatus.ACTIVE);
+                "sidro@mail.com");
         Assert.assertNotNull(facilityService.findOne(fac1.getId()));
 
         Facility fac2 = facilityService.insertFacility(
                 "Trend",
                 "trend",
                 "trendPass",
-                "trend@email.com",
-                CustomerStatus.ACTIVE);
+                "trend@email.com");
         Assert.assertNotNull(facilityService.findOne(fac2.getId()));
 
         Facility fac3 = facilityService.insertFacility(
                 "McDonald`s",
                 "mcd",
                 "none",
-                "kljucNaBrava",
-                CustomerStatus.SUSPENDED);
+                "kljucNaBrava");
         Assert.assertNotNull(facilityService.findOne(fac3.getId()));
 
         FacilityLocation sidroKarposh1 = locationService.insertFacilityLocation(
@@ -443,27 +432,23 @@ public class FacilityServiceTest {
                 "Cafe Li",
                 "li",
                 "passLI",
-                "li@mail.c",
-                CustomerStatus.ACTIVE);
+                "li@mail.c");
         Facility fac2 = facilityService.insertFacility(
                 "Martini",
                 "martini",
                 "mariniPass",
-                "martini@email.com",
-                CustomerStatus.ACTIVE);
+                "martini@email.com");
 
         Facility fac3 = facilityService.insertFacility(
                 "New cafe",
                 "newCafe",
                 "newPasss",
-                "newCafe@newcafe.com",
-                CustomerStatus.ACTIVE);
+                "newCafe@newcafe.com");
 
         SubscriptionPackage subscriptionPackage = packageService.insertPackage(
                 "Starter",
                 10d,
                 15,
-                PackageStatus.ACTIVE,
                 "Ordinary 15 days package");
 
         FacilityInvoice invoice = facilityInvoiceService.insertFacilityInvoice(

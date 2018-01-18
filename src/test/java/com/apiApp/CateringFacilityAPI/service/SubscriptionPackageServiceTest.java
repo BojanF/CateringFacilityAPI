@@ -1,6 +1,5 @@
 package com.apiApp.CateringFacilityAPI.service;
 
-import com.apiApp.CateringFacilityAPI.model.enums.CustomerStatus;
 import com.apiApp.CateringFacilityAPI.model.enums.PackageStatus;
 import com.apiApp.CateringFacilityAPI.model.jpa.*;
 import org.junit.After;
@@ -52,25 +51,21 @@ public class SubscriptionPackageServiceTest {
                 "Cafe Li",
                 "li",
                 "passLI",
-                "li@mail.c",
-                CustomerStatus.ACTIVE);
+                "li@mail.c");
         fac2 = facilityService.insertFacility(
                 "Martini",
                 "martini",
                 "mariniPass",
-                "martini@email.com",
-                CustomerStatus.ACTIVE);
+                "martini@email.com");
 
         dev = developerService.insertDeveloper(
                 "VojcheS",
                 "peco",
-                "v@mail.com",
-                CustomerStatus.ACTIVE);
+                "v@mail.com");
         dev2 = developerService.insertDeveloper(
                 "MarijoK",
                 "black",
-                "marijo@email.com",
-                CustomerStatus.ACTIVE);
+                "marijo@email.com");
 
         //we need at least one entry in tax table for creating invoices
         //tax attr is filled automatic with creation of invoice, in the constructor in service
@@ -84,7 +79,7 @@ public class SubscriptionPackageServiceTest {
                 "Christmas special",
                 5d,
                 7,
-                 PackageStatus.ACTIVE,
+                 
                 "Christmas 2017 special offer. 50% off!!!");
         Assert.assertNotNull(packageService.findOne(p.getId()));
         Assert.assertEquals(packageService.findOne(p.getId()).getId(), p.getId());
@@ -99,7 +94,7 @@ public class SubscriptionPackageServiceTest {
                 "Starter",
                 10d,
                 15,
-                 PackageStatus.ACTIVE,
+                 
                 "Ordinary 15 days package");
         Assert.assertNotNull(packageService.findOne(p2.getId()));
         Assert.assertEquals(packageService.findOne(p2.getId()).getId(), p2.getId());
@@ -126,7 +121,7 @@ public class SubscriptionPackageServiceTest {
                 "Starter",
                 10d,
                 15,
-                PackageStatus.ACTIVE,
+                
                 "Ordinary 15 days package");
         Assert.assertNotNull(packageService.findOne(packageOne.getId()));
 
@@ -134,7 +129,7 @@ public class SubscriptionPackageServiceTest {
                 "Christmas special",
                 5d,
                 7,
-                PackageStatus.ACTIVE,
+                
                 "Christmas 2017 special offer. 50% off!!!");
         Assert.assertNotNull(packageService.findOne(packageTwo.getId()));
 
@@ -289,7 +284,6 @@ public class SubscriptionPackageServiceTest {
                 "Starter",
                 10d,
                 15,
-                PackageStatus.ACTIVE,
                 "Ordinary 15 days package");
         Assert.assertNotNull(packageService.findOne(packageOne.getId()));
 
@@ -297,7 +291,6 @@ public class SubscriptionPackageServiceTest {
                 "Christmas special",
                 5d,
                 7,
-                PackageStatus.ACTIVE,
                 "Christmas 2017 special offer. 50% off!!!");
         Assert.assertNotNull(packageService.findOne(packageTwo.getId()));
 

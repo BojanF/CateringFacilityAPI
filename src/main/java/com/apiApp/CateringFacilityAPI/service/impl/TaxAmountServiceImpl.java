@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
-public class ITaxAmountServiceImpl implements ITaxAmountService {
+public class TaxAmountServiceImpl implements ITaxAmountService {
 
     @Autowired
     private ITaxAmountRepository taxAmountRepository;

@@ -37,4 +37,9 @@ public class FacilityController {
     public AllowSubscription allowSubscription(@PathVariable Long facilityId){
         return facilityService.allowSubscription(facilityId);
     }
+
+    @RequestMapping(value = "/invoices-stats/{facilityId}", method = RequestMethod.GET)
+    public List<Double> facilityInvoicesStats(@PathVariable Long facilityId){
+        return  facilityService.facilityInvoicesStats(facilityId);
+    }
 }

@@ -23,8 +23,10 @@ public class DeveloperController {
 
     @RequestMapping(value = "/allow-subscription/{developerId}", method = RequestMethod.GET)
     public AllowSubscription allowSubscription(@PathVariable Long developerId){
-        AllowSubscription x = developerService.allowSubscription(developerId);
-        int z = 0;
-        return x;
+       return developerService.allowSubscription(developerId);
+    }
+    @RequestMapping(value = "/invoices-stats/{developerId}", method = RequestMethod.GET)
+    public List<Double> facilityInvoicesStats(@PathVariable Long developerId){
+        return  developerService.developerInvoicesStats(developerId);
     }
 }

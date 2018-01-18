@@ -1,7 +1,6 @@
 package com.apiApp.CateringFacilityAPI.service;
 
 import com.apiApp.CateringFacilityAPI.model.enums.CourseType;
-import com.apiApp.CateringFacilityAPI.model.enums.CustomerStatus;
 import com.apiApp.CateringFacilityAPI.model.jpa.Course;
 import com.apiApp.CateringFacilityAPI.model.jpa.Facility;
 import org.junit.After;
@@ -36,8 +35,7 @@ public class CourseServiceTest {
                 "Trend",
                 "trend",
                 "trendPass",
-                "trend@email.com",
-                CustomerStatus.ACTIVE);
+                "trend@email.com");
     }
 
     @Test

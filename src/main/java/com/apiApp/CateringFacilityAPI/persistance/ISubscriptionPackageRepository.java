@@ -34,9 +34,23 @@ public interface ISubscriptionPackageRepository extends CrudRepository<Subscript
 
     @Query(value =
             "select count(invoice.id) " +
+            "from com.apiApp.CateringFacilityAPI.model.jpa.ApiInvoice invoice " +
+            "where invoice.subscribe.id = :packageId and " +
+            "invoice.invoicePayed = :status")
+    int countApiInvoicesForPackageByPaidStatus(@Param("packageId")Long packageId, @Param("status")boolean status);
+
+    @Query(value =
+            "select count(invoice.id) " +
             "from com.apiApp.CateringFacilityAPI.model.jpa.FacilityInvoice invoice " +
             "where invoice.subscribe.id = :packageId")
     int countFacilityInvoicesForPackage(@Param("packageId")Long packageId);
+
+    @Query(value =
+            "select count(invoice.id) " +
+            "from com.apiApp.CateringFacilityAPI.model.jpa.FacilityInvoice invoice " +
+            "where invoice.subscribe.id = :packageId and " +
+            "invoice.invoicePayed = :status")
+    int countFacilityInvoicesForPackageByPaidStatus(@Param("packageId")Long packageId, @Param("status")boolean status);
 
     @Query(value =
             "select COALESCE(sum(ai.grossPrice),0) as sum " +
@@ -61,6 +75,12 @@ public interface ISubscriptionPackageRepository extends CrudRepository<Subscript
             "from com.apiApp.CateringFacilityAPI.model.jpa.SubscriptionPackage package " +
             "where package.status = :status")
     int countPackagesWithStatus(@Param("status") PackageStatus status);
+
+    @Query(value =
+            "select package " +
+            "from com.apiApp.CateringFacilityAPI.model.jpa.SubscriptionPackage package " +
+            "where package.sendMail = true")
+    List<SubscriptionPackage> packagesForMailSending();
 
 
 }

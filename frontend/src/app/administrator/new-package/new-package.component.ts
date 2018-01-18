@@ -14,7 +14,6 @@ export class NewPackageComponent implements OnInit {
     hiddenError: true,
     hiddenSuccess: true
   };
-  private packageStatuses = ['Active', 'Suspended'];
 
   protected package: SubscriptionPackage;
 
@@ -27,23 +26,26 @@ export class NewPackageComponent implements OnInit {
 
   resetForm(){
     this.package = new SubscriptionPackage();
-    this.uiState = { hiddenLoadingGif: true, hiddenError:true, hiddenSuccess:true };
+    this.uiState = { hiddenLoadingGif: true,
+                     hiddenError:true,
+                     hiddenSuccess:true };
   }
 
   onSubmit(){
-    this.package.status = this.package.status.toUpperCase();
-    this.uiState = { hiddenLoadingGif: false, hiddenError:true, hiddenSuccess:true };
+    this.uiState = { hiddenLoadingGif: false,
+                     hiddenError:true,
+                     hiddenSuccess:true };
     this.packageService
       .createPackage(this.package)
       .subscribe(
         res => {
           console.log("Success");
-          this.uiState = { hiddenLoadingGif: true, hiddenError:true, hiddenSuccess:false };
-          this.package.status = '';
+          this.uiState = { hiddenLoadingGif: true,
+                           hiddenError:true,
+                           hiddenSuccess:false };
         },
         err => {
           this.uiState = { hiddenLoadingGif: true, hiddenError:false, hiddenSuccess:true };
-          this.package.status = '';
           console.log("Error occurred");
         }
       );

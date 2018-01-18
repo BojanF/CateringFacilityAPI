@@ -24,7 +24,6 @@ public class SubscriptionPackageController {
                 sb.getName(),
                 sb.getPrice(),
                 sb.getExpiresIn(),
-                sb.getStatus(),
                 sb.getDescription());
     }
 

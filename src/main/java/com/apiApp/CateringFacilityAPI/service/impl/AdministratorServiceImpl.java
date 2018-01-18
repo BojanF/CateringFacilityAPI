@@ -32,7 +32,7 @@ public class AdministratorServiceImpl implements IAdministratorService {
         admin.setUsername(username);
         admin.setPassword(password);
         admin.setEmail(email);
-        admin.setRole(Role.ROLE_ADMIN);
+        admin.setRole(Role.ADMIN);
         return administratorRepository.save(admin);
     }
 
@@ -62,14 +62,15 @@ public class AdministratorServiceImpl implements IAdministratorService {
         List<Double> result = new ArrayList<Double>();
         Double apiInvoices = apiInvoiceService.countAllApiInvoices();
         Double facInvoices = facilityInvoiceService.countAllFacilityInvoices();
-
+        Double numberOfInvoices = apiInvoices + facInvoices;
         Double paidApiInvoices = apiInvoiceService.countPaidApiInvoices();
         Double paidFacInvoices = facilityInvoiceService.countPaidFacilityInvoices();
-        Double percentage = ((paidApiInvoices + paidFacInvoices) / (apiInvoices + facInvoices)) * 100;
+        Double percentage = ((paidApiInvoices + paidFacInvoices) / numberOfInvoices) * 100;
         percentage = Math.round(percentage * 100d ) / 100d;
         result.add(percentage);
         result.add(apiInvoices);
         result.add(facInvoices);
+        result.add(numberOfInvoices);
         return result;
     }
 

@@ -20,4 +20,23 @@ public interface IDeveloperRepository extends CrudRepository<Developer, Long> {
             "ORDER BY inv.createdAt DESC")
     List<ApiInvoice> developerInvoices(@Param("devId")Long devId, Pageable page);
 
+    @Query(value =
+            "select dev\n" +
+            "from com.apiApp.CateringFacilityAPI.model.jpa.Developer dev\n" +
+            "where dev.status = com.apiApp.CateringFacilityAPI.model.enums.CustomerStatus.ACTIVE")
+    List<Developer> activeDevelopers();
+
+    @Query(value =
+            "select count(invoice.id)\n " +
+            "from com.apiApp.CateringFacilityAPI.model.jpa.ApiInvoice invoice\n " +
+            "where invoice.developer.id=:developerId and \n" +
+            "invoice.invoicePayed = :status")
+    Double countInvoicesForDeveloperByPaidStatus(@Param("developerId") Long developerId, @Param("status") boolean status);
+
+    @Query(value =
+            "select COALESCE(sum(fi.grossPrice),0) as sum " +
+            "from com.apiApp.CateringFacilityAPI.model.jpa.ApiInvoice fi " +
+            "where fi.developer.id = :developerId and fi.invoicePayed=:paid")
+    Double sumOfInvoicesForDeveloper(@Param("developerId") Long developerId, @Param("paid") boolean paid);
+
 }

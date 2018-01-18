@@ -1,6 +1,5 @@
 package com.apiApp.CateringFacilityAPI.service;
 
-import com.apiApp.CateringFacilityAPI.model.enums.CustomerStatus;
 import com.apiApp.CateringFacilityAPI.model.jpa.Facility;
 import com.apiApp.CateringFacilityAPI.model.jpa.FacilityLocation;
 import com.apiApp.CateringFacilityAPI.model.jpa.FacilityLocationContact;
@@ -38,8 +37,7 @@ public class FacilityLocationContactServiceTest {
                 "Cafe Li",
                 "li",
                 "passLI",
-                "li@mail.c",
-                 CustomerStatus.ACTIVE);
+                "li@mail.c");
 
         cafeLi = locationService.insertFacilityLocation(
                 "Macedonia",

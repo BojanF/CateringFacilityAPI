@@ -1,5 +1,6 @@
 package com.apiApp.CateringFacilityAPI.service.impl;
 
+import com.apiApp.CateringFacilityAPI.model.enums.CustomerStatus;
 import com.apiApp.CateringFacilityAPI.model.jpa.ApiInvoice;
 import com.apiApp.CateringFacilityAPI.model.jpa.Developer;
 import com.apiApp.CateringFacilityAPI.model.jpa.SubscriptionPackage;
@@ -64,6 +65,12 @@ public class ApiInvoiceServiceImpl implements IApiInvoiceService {
         apiInvoice.setDeveloper(developer);
         apiInvoice.setGrossPrice();
         apiInvoice.setInvoicePayed(false);
+
+        if(developer.getStatus() == CustomerStatus.SUSPENDED){
+            developer.setStatus(CustomerStatus.ACTIVE);
+            developerService.update(developer);
+        }
+
         return apiInvoiceRepository.save(apiInvoice);
     }
 

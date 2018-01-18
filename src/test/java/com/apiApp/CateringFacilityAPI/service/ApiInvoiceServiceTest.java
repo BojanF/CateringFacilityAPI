@@ -1,7 +1,6 @@
 package com.apiApp.CateringFacilityAPI.service;
 
 import com.apiApp.CateringFacilityAPI.model.enums.CustomerStatus;
-import com.apiApp.CateringFacilityAPI.model.enums.PackageStatus;
 import com.apiApp.CateringFacilityAPI.model.jpa.ApiInvoice;
 import com.apiApp.CateringFacilityAPI.model.jpa.Developer;
 import com.apiApp.CateringFacilityAPI.model.jpa.SubscriptionPackage;
@@ -48,27 +47,23 @@ public class ApiInvoiceServiceTest {
         dev = developerService.insertDeveloper(
                 "MarijoK",
                 "black",
-                "marijo@email.com",
-                 CustomerStatus.ACTIVE);
+                "marijo@email.com");
 
         dev2 = developerService.insertDeveloper(
                 "Bidik",
                 "vlad",
-                "bidik@email.com",
-                 CustomerStatus.ACTIVE);
+                "bidik@email.com");
 
         subscriptionPackage = packageService.insertPackage(
                 "Starter",
                 10d,
                 15,
-                 PackageStatus.ACTIVE,
                 "Ordinary 15 days package");
 
         subscriptionPackage2 = packageService.insertPackage(
                 "Christmas special",
                 5d,
                 7,
-                 PackageStatus.ACTIVE,
                 "Christmas 2017 special offer. 50% off!!!");
 
         //we need at least one entry in tax table for creating invoices
@@ -78,12 +73,14 @@ public class ApiInvoiceServiceTest {
 
     @Test
     public void crudTestApiInvoice(){
+        Assert.assertEquals(CustomerStatus.SUSPENDED, dev.getStatus());
         ApiInvoice invoice = apiInvoiceService.insertApiInvoice(
                  subscriptionPackage,
 //                 LocalDateTime.now(),
                  dev);
 
         Assert.assertNotNull(apiInvoiceService.findOne(invoice.getId()));
+        Assert.assertEquals(CustomerStatus.ACTIVE, invoice.getDeveloper().getStatus());
         //testing for total prize(with tax)
 //        Double grossPrice = (1+invoice.getTaxAmount()/100d)*invoice.getSubscribe().getPrice();
         Double grossPrice = (1+invoice.getTaxAmount()/100d)*invoice.getOriginalPackagePrice();

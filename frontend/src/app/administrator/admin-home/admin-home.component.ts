@@ -13,9 +13,12 @@ export class AdminHomeComponent implements OnInit {
 
   private sumOfPaidInvoices: number;
   private sumOfUnpaidInvoices: number;
-
+  private numberOfInvoices: number;
   constructor(private administratorService: AdministratorService,
-              private packageService: PackageService) { }
+              private packageService: PackageService) {
+    this.numberOfInvoices = 0;
+  }
+
   private uiState = {
     stats1: {
       hiddenLoadingGif: false,
@@ -37,6 +40,7 @@ export class AdminHomeComponent implements OnInit {
       hiddenNoInvoicesMsg: true
     }
   };
+
   ngOnInit() {
     this.getPercentageOfPaidInvoices();
     this.getIncomeStats();
@@ -55,9 +59,11 @@ export class AdminHomeComponent implements OnInit {
             hiddenError: true
           };
           this.paidInvoicesPercentageChart(res[0]);
+          this.numberOfInvoices = res[3];
 
-          if(res[1]+res[2] > 0) {
+          if(this.numberOfInvoices > 0) {
             this.apiVsFacilityInvoicesChart(res[1], res[2]);
+
             this.uiState.stats3 = {
               hiddenLoadingGif: true,
               hiddenError: true,

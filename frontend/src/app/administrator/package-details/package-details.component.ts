@@ -13,11 +13,14 @@ export class PackageDetailsComponent implements OnInit {
 
   private sumOfPaidInvoices: number;
   private sumOfUnpaidInvoices: number;
+  private numberOfInvoicesForPackage: number;
   public originalPackage: SubscriptionPackage;
   public updatePackage: SubscriptionPackage;
   public packageStatuses = [];
   constructor( private route: ActivatedRoute,
-               private packageService: PackageService) { }
+               private packageService: PackageService) {
+    this.numberOfInvoicesForPackage = 0;
+  }
 
 
   private uiState = {
@@ -147,8 +150,11 @@ export class PackageDetailsComponent implements OnInit {
       .packageStats(id)
       .subscribe(
         res => {
-          if(res[0]+res[1] > 0) {
+          console.log(res);
+          if(res[2] > 0) {
             this.statsChart(res);
+            this.numberOfInvoicesForPackage = res[2];
+            this.percentagePaid(res[3]);
             this.uiState.stats = {
               hiddenLoadingGif: true,
               hiddenError: true,
@@ -174,6 +180,30 @@ export class PackageDetailsComponent implements OnInit {
           }
         }
       );
+  }
+
+  percentagePaid(percentage: number){
+    let chart = c3.generate({
+      bindto: '#percentage-paid',
+      data: {
+        columns: [
+          ['Percentage', percentage]
+        ],
+        type: 'gauge'
+      },
+      color: {
+        pattern: ['#d9534f', '#F97600', '#F6C600', '#5cb85c'], // the three color levels for the percentage values.
+        threshold: {
+//            unit: 'value', // percentage is default
+//            max: 200, // 100 is default
+          values: [30, 60, 90, 100]
+        }
+      },
+      size: {
+        height: 180
+      }
+    });
+
   }
 
   statsChart(stats: Array<number>){
@@ -258,7 +288,8 @@ export class PackageDetailsComponent implements OnInit {
       this.packageStatuses = ['Active', 'Suspended', 'Defunct'];
     }
     else{
-      this.packageStatuses = ['Suspended', 'Defunct'];
+      // this.packageStatuses = ['Suspended', 'Defunct'];
+      this.packageStatuses = [];
     }
   }
 }

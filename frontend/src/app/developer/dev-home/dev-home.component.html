@@ -16,31 +16,69 @@
   <div class="col-md-12 col-sm-12">
     <div class="panel panel-default">
       <div class="panel-heading">
-        <h3 class="panel-title"> Chart 1</h3>
+        <i class="fa fa-percent" aria-hidden="true"></i> Percentage of paid invoices
       </div>
-      <div class="panel-body"></div>
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-md-12">
+            <!--UI experience stats loading-->
+            <div>
+              <div class="panel panel-info" [hidden]="uiState.stats.hiddenLoadingGif">
+                <div class="panel-heading text-center">
+                  <img src="../../../assets/pictures/loading.gif" style="width:20px; height:20px;">
+                  <span>&nbsp;Loading...</span>
+                </div>
+              </div>
+              <div class="panel panel-danger" [hidden]="uiState.stats.hiddenError">
+                <div class="panel-heading text-center text-danger">
+                  <div> We run into an error!</div>
+                  <div> Try again later!</div>
+                </div>
+              </div>
+            </div>
+            <!--UI experience stats loading END-->
+          </div>
+
+          <div class="col-md-6">
+            <div id="percentage-paid"></div>
+          </div>
+
+          <div class="col-md-6">
+            <br/>
+            <div>
+              <div class="table-responsive">
+                <table class="table table-responsive table-striped" [hidden]="uiState.stats.hiddenStats" >
+                  <thead>
+                  <tr>
+                    <th colspan="2">
+                      <i class="fa fa-fw fa-balance-scale" aria-hidden="true"></i> Invoices paying balance
+                    </th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr>
+                    <th class="td-right-align col-md-5"> Total invoices:</th>
+                    <th class="td-left-align  col-md-7"> {{numberOfInvoices}}</th>
+                  </tr>
+                  <tr>
+                    <th class="td-right-align"> Paid invoices price:</th>
+                    <th class="td-left-align text-success"> {{sumOfPaidInvoices}} &euro;</th>
+                  </tr>
+                  <tr>
+                    <th class="td-right-align"> Unpaid invoices price:</th>
+                    <th class="td-left-align text-danger">{{sumOfUnpaidInvoices}} &euro;</th>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
       <div class="panel-footer"></div>
     </div>
   </div>
 
-  <div class="col-md-6 col-sm-12">
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        <h3 class="panel-title"> Chart 2</h3>
-      </div>
-      <div class="panel-body"></div>
-      <div class="panel-footer"></div>
-    </div>
-  </div>
 
-  <div class="col-md-6 col-sm-12">
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        <h3 class="panel-title"> Chart 3</h3>
-      </div>
-      <div class="panel-body"></div>
-      <div class="panel-footer"></div>
-    </div>
-  </div>
 </div>
 <!-- /.row -->

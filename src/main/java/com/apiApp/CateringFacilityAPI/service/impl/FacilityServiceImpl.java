@@ -5,6 +5,7 @@ import com.apiApp.CateringFacilityAPI.model.enums.CustomerStatus;
 import com.apiApp.CateringFacilityAPI.model.enums.Role;
 import com.apiApp.CateringFacilityAPI.model.jpa.*;
 import com.apiApp.CateringFacilityAPI.persistance.IFacilityRepository;
+import com.apiApp.CateringFacilityAPI.service.IFacilityInvoiceService;
 import com.apiApp.CateringFacilityAPI.service.IFacilityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -21,16 +23,19 @@ public class FacilityServiceImpl implements IFacilityService {
     @Autowired
     private IFacilityRepository facilityRepository;
 
+    @Autowired
+    private IFacilityInvoiceService facilityInvoiceService;
+
     @Override
-    public Facility insertFacility(String name, String username, String password, String email, CustomerStatus status) {
+    public Facility insertFacility(String name, String username, String password, String email) {
         Facility facility = new Facility();
         facility.setName(name);
         facility.setUsername(username);
         facility.setPassword(password);
         facility.setEmail(email);
-        facility.setStatus(CustomerStatus.ACTIVE);
+        facility.setStatus(CustomerStatus.SUSPENDED);
         facility.setUsedTrial(false);
-        facility.setRole(Role.ROLE_CUSTOMER);
+        facility.setRole(Role.FACILITY);
         return facilityRepository.save(facility);
     }
 
@@ -75,6 +80,11 @@ public class FacilityServiceImpl implements IFacilityService {
     }
 
     @Override
+    public List<Facility> activeFacilities(){
+        return facilityRepository.activeFacilities();
+    }
+
+    @Override
     public AllowSubscription allowSubscription(Long facilityId) {
 
         List<FacilityInvoice> lastTwo = facilityInvoices(facilityId, new PageRequest(0, 2));
@@ -113,5 +123,57 @@ public class FacilityServiceImpl implements IFacilityService {
             }
         }
 //        return false;
+    }
+
+    @Override
+    public void suspendingFacilitiesStatusForUnpaidInvoices() {
+        List<FacilityInvoice> invoices = facilityInvoiceService.notPaidInvoicesAfterReliefPeriod(LocalDateTime.now());
+        for(FacilityInvoice invoice : invoices){
+            invoice.getFacility().setStatus(CustomerStatus.SUSPENDED);
+            update(invoice.getFacility());
+        }
+    }
+
+    @Override
+    public void suspendingFacilitiesForExpiredSubscription(){
+        List<Facility> activeFacilities = activeFacilities();
+        for(Facility f : activeFacilities){
+           FacilityInvoice lastInvoice = facilityInvoices(f.getId(), new PageRequest(0, 1)).get(0);
+            LocalDateTime expiresAt = lastInvoice.getCreatedAt().plusDays(lastInvoice.getSubscribe().getExpiresIn()-1);
+            if(expiresAt.isBefore(LocalDateTime.now())){
+                f.setStatus(CustomerStatus.SUSPENDED);
+                update(f);
+            }
+        }
+    }
+
+    @Override
+    public Double countInvoicesForFacilityByPaidStatus(Long facilityId, boolean status){
+        return facilityRepository.countInvoicesForFacilityByPaidStatus(facilityId, status);
+    }
+
+    @Override
+    public List<Double> facilityInvoicesStats(Long facilityId){
+        List<Double> stats = new ArrayList<Double>();
+        Double numberOfPaidInvoices = countInvoicesForFacilityByPaidStatus(facilityId, true);
+        Double numberOfUnpaidInvoices = countInvoicesForFacilityByPaidStatus(facilityId, false);
+
+        Double numberOfInvoicesForFacility = numberOfPaidInvoices + numberOfUnpaidInvoices;
+        Double sumOfPaidInvoices = sumOfInvoicesForFacility(facilityId, true);
+        Double sumOdUnpaidInvoices = sumOfInvoicesForFacility(facilityId, false);
+        Double percentageOfPaidInvoices = (numberOfPaidInvoices / numberOfInvoicesForFacility) * 100;
+        percentageOfPaidInvoices = Math.round(percentageOfPaidInvoices * 100d ) / 100d;
+
+        stats.add(percentageOfPaidInvoices);
+        stats.add(sumOfPaidInvoices);
+        stats.add(sumOdUnpaidInvoices);
+        stats.add(numberOfInvoicesForFacility);
+
+        return stats;
+    }
+
+    @Override
+    public Double sumOfInvoicesForFacility(Long facilityId, boolean paid){
+        return facilityRepository.sumOfInvoicesForFacility(facilityId, paid);
     }
 }

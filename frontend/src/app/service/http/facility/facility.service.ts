@@ -28,4 +28,8 @@ export class FacilityService {
   allowSubscription(facilityId: number){
     return this.http.get(this.facilityUrl + '/allow-subscription/' + facilityId);
   }
+
+  facilityInvoicesStats(facilityId: number){
+    return this.http.get<Array<number>>(this.facilityUrl + '/invoices-stats/' + facilityId);
+  }
 }

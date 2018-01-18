@@ -1,5 +1,6 @@
 package com.apiApp.CateringFacilityAPI.service.impl;
 
+import com.apiApp.CateringFacilityAPI.model.enums.CustomerStatus;
 import com.apiApp.CateringFacilityAPI.model.jpa.Facility;
 import com.apiApp.CateringFacilityAPI.model.jpa.FacilityInvoice;
 import com.apiApp.CateringFacilityAPI.model.jpa.SubscriptionPackage;
@@ -65,6 +66,12 @@ public class FacilityInvoiceServiceImpl implements IFacilityInvoiceService {
         facilityInvoice.setFacility(facility);
         facilityInvoice.setGrossPrice();
         facilityInvoice.setInvoicePayed(false);
+
+        if(facility.getStatus() == CustomerStatus.SUSPENDED){
+            facility.setStatus(CustomerStatus.ACTIVE);
+            facilityService.update(facility);
+        }
+
         return facilityInvoiceRepository.save(facilityInvoice);
     }
 

@@ -37,5 +37,24 @@ public interface IFacilityRepository extends CrudRepository<Facility, Long> {
             "order by invoice.createdAt desc")
     List<FacilityInvoice> facilityInvoices(@Param("facilityId") Long facilityId, Pageable page);
 
+    @Query(value =
+            "select fac\n" +
+            "from com.apiApp.CateringFacilityAPI.model.jpa.Facility fac\n" +
+            "where fac.status = com.apiApp.CateringFacilityAPI.model.enums.CustomerStatus.ACTIVE")
+    List<Facility> activeFacilities();
+
+    @Query(value =
+            "select count(invoice.id)\n " +
+            "from com.apiApp.CateringFacilityAPI.model.jpa.FacilityInvoice invoice\n " +
+            "where invoice.facility.id=:facilityId and \n" +
+            "invoice.invoicePayed = :status")
+    Double countInvoicesForFacilityByPaidStatus(@Param("facilityId") Long facilityId, @Param("status") boolean status);
+
+    @Query(value =
+            "select COALESCE(sum(fi.grossPrice),0) as sum " +
+            "from com.apiApp.CateringFacilityAPI.model.jpa.FacilityInvoice fi " +
+            "where fi.facility.id = :facilityId and fi.invoicePayed=:paid")
+    Double sumOfInvoicesForFacility(@Param("facilityId") Long facilityId, @Param("paid") boolean paid);
+
 
 }

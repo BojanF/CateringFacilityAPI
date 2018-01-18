@@ -1,7 +1,6 @@
 package com.apiApp.CateringFacilityAPI.service;
 
 import com.apiApp.CateringFacilityAPI.model.enums.BeverageType;
-import com.apiApp.CateringFacilityAPI.model.enums.CustomerStatus;
 import com.apiApp.CateringFacilityAPI.model.jpa.Beverage;
 import com.apiApp.CateringFacilityAPI.model.jpa.Facility;
 import org.junit.After;
@@ -36,8 +35,7 @@ public class BeverageServiceTest {
                 "Cafe Li",
                 "li",
                 "passLI",
-                "li@mail.c",
-                 CustomerStatus.ACTIVE);
+                "li@mail.c");
     }
 
     @Test

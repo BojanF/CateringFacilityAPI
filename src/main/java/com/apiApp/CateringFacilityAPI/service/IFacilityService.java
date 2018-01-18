@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface IFacilityService {
 
-    Facility insertFacility(String name, String username, String password, String email, CustomerStatus status);
+    Facility insertFacility(String name, String username, String password, String email);
 
     Facility findOne(Long id);
 
@@ -27,5 +27,19 @@ public interface IFacilityService {
 
     List<FacilityInvoice> facilityInvoices(Long facilityId, Pageable page);
 
+    //no junit test
+    List<Facility> activeFacilities();
+
     AllowSubscription allowSubscription(Long facilityId);
+
+    void suspendingFacilitiesStatusForUnpaidInvoices();
+
+    void suspendingFacilitiesForExpiredSubscription();
+
+    Double countInvoicesForFacilityByPaidStatus(Long facilityId, boolean status);
+
+    List<Double> facilityInvoicesStats(Long facilityId);
+
+    Double sumOfInvoicesForFacility(Long facilityId, boolean paid);
+
 }

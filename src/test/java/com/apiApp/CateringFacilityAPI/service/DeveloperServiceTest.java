@@ -1,12 +1,9 @@
 package com.apiApp.CateringFacilityAPI.service;
 
-import com.apiApp.CateringFacilityAPI.model.enums.CustomerStatus;
-import com.apiApp.CateringFacilityAPI.model.enums.PackageStatus;
 import com.apiApp.CateringFacilityAPI.model.jpa.ApiInvoice;
 import com.apiApp.CateringFacilityAPI.model.jpa.Developer;
 import com.apiApp.CateringFacilityAPI.model.jpa.SubscriptionPackage;
 import com.apiApp.CateringFacilityAPI.model.jpa.TaxAmount;
-import com.apiApp.CateringFacilityAPI.service.IDeveloperService;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -42,8 +39,7 @@ public class DeveloperServiceTest {
         Developer dev = developerService.insertDeveloper(
                 "VojcheS",
                 "peco",
-                "v@mail.com",
-                 CustomerStatus.ACTIVE);
+                "v@mail.com");
         Assert.assertNotNull(developerService.findOne(dev.getId()));
         Assert.assertEquals(developerService.findOne(dev.getId()).getId(), dev.getId());
 
@@ -60,13 +56,11 @@ public class DeveloperServiceTest {
         Developer dev2 = developerService.insertDeveloper(
                 "MarijoK",
                 "black",
-                "marijo@email.com",
-                 CustomerStatus.ACTIVE);
+                "marijo@email.com");
         Developer dev3 = developerService.insertDeveloper(
                 "Bidik",
                 "vlad",
-                "bidik@email.com",
-                 CustomerStatus.ACTIVE);
+                "bidik@email.com");
         Assert.assertNotNull(developerService.findOne(dev2.getId()));
         Assert.assertNotNull(developerService.findOne(dev3.getId()));
 
@@ -97,22 +91,19 @@ public class DeveloperServiceTest {
         Developer dev = developerService.insertDeveloper(
                 "VojcheS",
                 "peco",
-                "v@mail.com",
-                CustomerStatus.ACTIVE);
+                "v@mail.com");
         Assert.assertNotNull(developerService.findOne(dev.getId()));
 
         Developer dev2 = developerService.insertDeveloper(
                 "MarijoK",
                 "black",
-                "marijo@email.com",
-                CustomerStatus.ACTIVE);
+                "marijo@email.com");
         Assert.assertNotNull(developerService.findOne(dev2.getId()));
 
         SubscriptionPackage subscriptionPackage = packageService.insertPackage(
                 "Starter",
                 10d,
                 15,
-                PackageStatus.ACTIVE,
                 "Ordinary 15 days package");
         Assert.assertNotNull(packageService.findOne(subscriptionPackage.getId()));
 

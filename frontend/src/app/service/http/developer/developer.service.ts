@@ -14,4 +14,8 @@ export class DeveloperService {
     return this.http.get(this.developerUrl + '/allow-subscription/' + developerId);
   }
 
+  developerInvoicesStats(developerId: number){
+    return this.http.get<Array<number>>(this.developerUrl + '/invoices-stats/' + developerId);
+  }
+
 }

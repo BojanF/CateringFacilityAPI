@@ -1,7 +1,6 @@
 package com.apiApp.CateringFacilityAPI.service;
 
 import com.apiApp.CateringFacilityAPI.model.enums.CustomerStatus;
-import com.apiApp.CateringFacilityAPI.model.enums.PackageStatus;
 import com.apiApp.CateringFacilityAPI.model.jpa.Facility;
 import com.apiApp.CateringFacilityAPI.model.jpa.FacilityInvoice;
 import com.apiApp.CateringFacilityAPI.model.jpa.SubscriptionPackage;
@@ -50,27 +49,23 @@ public class FacilityInvoiceServiceTest {
                 "Cafe Li",
                 "li",
                 "passLI",
-                "li@mail.c",
-                CustomerStatus.ACTIVE);
+                "li@mail.c");
         fac2 = facilityService.insertFacility(
                 "Martini",
                 "martini",
                 "mariniPass",
-                "martini@email.com",
-                CustomerStatus.ACTIVE);
+                "martini@email.com");
 
         subscriptionPackage = packageService.insertPackage(
                 "Starter",
                 10d,
                 15,
-                 PackageStatus.ACTIVE,
                 "Ordinary 15 days package");
 
         subscriptionPackage2 = packageService.insertPackage(
                 "Christmas special",
                 5d,
                 7,
-                 PackageStatus.ACTIVE,
                 "Christmas 2017 special offer. 50% off!!!");
 
         //we need at least one entry in tax table for creating invoices
@@ -80,11 +75,13 @@ public class FacilityInvoiceServiceTest {
 
     @Test
     public void crudTestFacilityInvoice(){
+        Assert.assertEquals(CustomerStatus.SUSPENDED, fac1.getStatus());
         FacilityInvoice invoice = facilityInvoiceService.insertFacilityInvoice(
                 subscriptionPackage,
 //                LocalDateTime.now().minusDays(15),
                 fac1);
         Assert.assertNotNull(facilityInvoiceService.findOne(invoice.getId()));
+        Assert.assertEquals(CustomerStatus.ACTIVE, invoice.getFacility().getStatus());
         invoice.setCreatedAt(invoice.getCreatedAt().minusDays(15));
         invoice.setPayUntil(invoice.getPayUntil().minusDays(15));
         invoice = facilityInvoiceService.update(invoice);

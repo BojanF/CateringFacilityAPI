@@ -43,11 +43,14 @@
       </div>
       <div class="row">
         <div class="form-group col-md-4">
-          <label for="price">Price &euro;</label>
-          <input type="number" class="form-control" id="price"
-                 required
-                 [(ngModel)]="newBeverage.price" name="price"
-                 #price="ngModel">
+          <label for="price">Price</label>
+          <div class="input-group">
+            <input type="number" class="form-control" id="price"
+                   required
+                   [(ngModel)]="newBeverage.price" name="price"
+                   #price="ngModel">
+            <span class="input-group-addon">&euro;</span>
+          </div>
           <div [hidden]="price.valid || price.pristine"
                class="panel panel-danger">
             <div class="panel-heading text-center text-danger">

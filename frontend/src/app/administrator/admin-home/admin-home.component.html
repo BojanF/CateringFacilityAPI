@@ -61,7 +61,7 @@
             </div>
             <!--UI experience income stats loading END-->
 
-            <br/><br/>
+            <br/>
             <div [hidden]="uiState.incomeStats.hiddenTable">
               <div class="table-responsive">
                 <table class="table table-responsive table-striped">
@@ -73,10 +73,13 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>  </tr>
                     <tr>
-                      <th class="td-right-align col-md-5"> Paid invoices price:</th>
-                      <th class="td-left-align text-success col-md-7"> {{sumOfPaidInvoices}} &euro;</th>
+                      <th class="td-right-align col-md-5"> Total invoices:</th>
+                      <th class="td-left-align  col-md-7"> {{numberOfInvoices}}</th>
+                    </tr>
+                    <tr>
+                      <th class="td-right-align"> Paid invoices price:</th>
+                      <th class="td-left-align text-success"> {{sumOfPaidInvoices}} &euro;</th>
                     </tr>
                     <tr>
                       <th class="td-right-align"> Unpaid invoices price:</th>

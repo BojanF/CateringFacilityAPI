@@ -24,7 +24,10 @@ public class SubscriptionPackage extends BaseEntity{
     private PackageStatus status;
 
     @Column(length = 5000)
-    public String description;
+    private String description;
+
+    @NotNull
+    private boolean sendMail;
 
     public Double getPrice() {
         return price;
@@ -64,5 +67,13 @@ public class SubscriptionPackage extends BaseEntity{
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public boolean isSendMail() {
+        return sendMail;
+    }
+
+    public void setSendMail(boolean sendMail) {
+        this.sendMail = sendMail;
     }
 }
