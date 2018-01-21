@@ -1,10 +1,12 @@
 package com.apiApp.CateringFacilityAPI.service.impl;
 
-import com.apiApp.CateringFacilityAPI.model.enums.AllowSubscription;
-import com.apiApp.CateringFacilityAPI.model.enums.CustomerStatus;
-import com.apiApp.CateringFacilityAPI.model.enums.Role;
+import com.apiApp.CateringFacilityAPI.exceptions.NotExisting;
+import com.apiApp.CateringFacilityAPI.model.api.*;
+import com.apiApp.CateringFacilityAPI.model.enums.*;
 import com.apiApp.CateringFacilityAPI.model.jpa.*;
 import com.apiApp.CateringFacilityAPI.persistance.IFacilityRepository;
+import com.apiApp.CateringFacilityAPI.service.IBeverageService;
+import com.apiApp.CateringFacilityAPI.service.ICourseService;
 import com.apiApp.CateringFacilityAPI.service.IFacilityInvoiceService;
 import com.apiApp.CateringFacilityAPI.service.IFacilityService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,12 @@ public class FacilityServiceImpl implements IFacilityService {
 
     @Autowired
     private IFacilityInvoiceService facilityInvoiceService;
+
+    @Autowired
+    private IBeverageService beverageService;
+
+    @Autowired
+    private ICourseService courseService;
 
     @Override
     public Facility insertFacility(String name, String username, String password, String email) {
@@ -175,5 +183,96 @@ public class FacilityServiceImpl implements IFacilityService {
     @Override
     public Double sumOfInvoicesForFacility(Long facilityId, boolean paid){
         return facilityRepository.sumOfInvoicesForFacility(facilityId, paid);
+    }
+
+    //api
+
+    @Override
+    public List<ApiFacility> getActiveFacilities(){
+        return facilityRepository.getActiveFacilities();
+    }
+
+    @Override
+    public ApiFacilityDetails facilityDetails(Long facilityId) throws NotExisting {
+        Facility fac = findOne(facilityId);
+        checkFacility(fac, facilityId);
+        List<ApiFacilityLocation> locations = facilityRepository.getFacilityLocations(facilityId);
+        return new ApiFacilityDetails(fac.getId(), fac.getName(), locations);
+    }
+
+    @Override
+    public List<ApiMenuItem> facilityCoursesByType(Long facilityId, CourseType type) throws NotExisting {
+        Facility fac = findOne(facilityId);
+        checkFacility(fac, facilityId);
+        return facilityRepository.facilityCoursesByType(facilityId, type);
+    }
+
+    @Override
+    public List<ApiMenuItem> facilityBeveragesByType(Long facilityId,  BeverageType type) throws NotExisting {
+        Facility fac = findOne(facilityId);
+        checkFacility(fac, facilityId);
+        return facilityRepository.facilityBeveragesByType(facilityId, type);
+    }
+
+    @Override
+    public List<BeverageType> getBeveragesTypesForFacility(Long facilityId) throws NotExisting {
+        Facility fac = findOne(facilityId);
+        checkFacility(fac, facilityId);
+        return facilityRepository.getBeveragesTypesForFacility(facilityId);
+    }
+
+    @Override
+    public List<CourseType> getCoursesTypesForFacility(Long facilityId) throws NotExisting{
+        Facility fac = findOne(facilityId);
+        checkFacility(fac, facilityId);
+        return facilityRepository.getCoursesTypesForFacility(facilityId);
+    }
+
+    @Override
+    public  List<ApiMenuItemDetails> allCoursesForType(CourseType courseType){
+        return facilityRepository.allCoursesForType(courseType);
+    }
+
+    @Override
+    public List<ApiMenuItemDetails> allBeveragesForType(BeverageType beverageType){
+        return facilityRepository.allBeveragesForType(beverageType);
+    }
+
+    @Override
+    public ApiMenuItemDetailsTyped getDetailedMenuItem(Long menuItemId) throws NotExisting {
+        Course course = courseService.findOne(menuItemId);
+        Beverage beverage = beverageService.findOne(menuItemId);
+        if (course != null
+                && course.getListedInMenu()
+                && course.getFacility().getStatus() == CustomerStatus.ACTIVE) {
+            return new ApiMenuItemDetailsTyped(
+                    course.getId(),
+                    course.getName(),
+                    course.getPrice(),
+                    course.getDescription(),
+                    course.getFacility().getId(),
+                    course.getFacility().getName(),
+                    course.getType().toString());
+        }
+
+        if (beverage != null
+                && beverage.getListedInMenu()
+                && beverage.getFacility().getStatus() == CustomerStatus.ACTIVE) {
+            return new ApiMenuItemDetailsTyped(
+                    course.getId(),
+                    beverage.getName(),
+                    beverage.getPrice(),
+                    beverage.getDescription(),
+                    beverage.getFacility().getId(),
+                    beverage.getFacility().getName(),
+                    beverage.getType().toString());
+        }
+        throw new NotExisting("Menu item with id:" + menuItemId + " is not found");
+    }
+
+    private void checkFacility(Facility fac, Long facilityId) throws NotExisting{
+        if(fac==null || fac.getStatus()==CustomerStatus.SUSPENDED){
+            throw new NotExisting("Facility with id:" + facilityId +" is not found");
+        }
     }
 }

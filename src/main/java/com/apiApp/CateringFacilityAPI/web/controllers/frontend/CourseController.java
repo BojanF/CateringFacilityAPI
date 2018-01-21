@@ -28,7 +28,7 @@ public class CourseController {
         return courseService.insertCourse(
                 course.getName(),
                 course.getPrice(),
-                course.isOnPromotion(),
+                course.getListedInMenu(),
                 facility,
                 course.getType(),
                 course.getDescription());

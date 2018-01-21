@@ -17,12 +17,17 @@ public class CourseServiceImpl implements ICourseService{
     private ICourseRepository courseRepository;
 
     @Override
-    public Course insertCourse(String name, Double price, boolean onPromotion, Facility facility, CourseType type, String description) {
+    public Course insertCourse(String name,
+                               Double price,
+                               boolean listedInMenu,
+                               Facility facility,
+                               CourseType type,
+                               String description) {
         Course course = new Course();
         course.setName(name);
         course.setPrice(price);
         course.setDescription(description);
-        course.setOnPromotion(onPromotion);
+        course.getListedInMenu(listedInMenu);
         course.setFacility(facility);
         course.setType(type);
         return courseRepository.save(course);

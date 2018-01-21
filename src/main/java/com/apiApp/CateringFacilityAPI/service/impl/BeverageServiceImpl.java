@@ -16,11 +16,11 @@ public class BeverageServiceImpl implements IBeverageService{
     private IBeverageRepository beverageRepository;
 
     @Override
-    public Beverage insertBeverage(String name, Double price, boolean onPromotion, Facility facility, BeverageType type, String description) {
+    public Beverage insertBeverage(String name, Double price, boolean listedInMenu, Facility facility, BeverageType type, String description) {
         Beverage beverage = new Beverage();
         beverage.setName(name);
         beverage.setPrice(price);
-        beverage.setOnPromotion(onPromotion);
+        beverage.getListedInMenu(listedInMenu);
         beverage.setFacility(facility);
         beverage.setType(type);
         beverage.setDescription(description);

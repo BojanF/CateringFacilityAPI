@@ -10,7 +10,7 @@ public interface ICourseService {
 
     Course insertCourse(String name,
                         Double price,
-                        boolean onPromotion,
+                        boolean listedInMenu,
                         Facility facility,
                         CourseType type,
                         String description);

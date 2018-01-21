@@ -79,7 +79,7 @@
           <tr>
             <th>Name</th>
             <th>Price </th>
-            <th>Promoted</th>
+            <th>Listed in menu</th>
             <th>Type</th>
             <th>Delete</th>
           </tr>
@@ -90,11 +90,11 @@
             <td> <a href="facility/beverage/{{beverage.id}}">{{beverage.name}} </a> </td>
             <td> {{beverage.price}} &euro; </td>
             <td>
-              <!--{{beverage.onPromotion}}-->
+              <!--{{beverage.listedInMenu}}-->
               <span class="label" [ngClass]="{
-                'label-success': beverage.onPromotion,
-                'label-danger': !beverage.onPromotion}">
-                  {{beverage.onPromotion ? "YES" : "NO"}}
+                'label-success': beverage.listedInMenu,
+                'label-danger': !beverage.listedInMenu}">
+                  {{beverage.listedInMenu ? "YES" : "NO"}}
               </span>
             </td>
             <td> {{getBeverageValue(beverage.type)}} </td>

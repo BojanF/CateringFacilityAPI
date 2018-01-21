@@ -162,4 +162,11 @@ public class DeveloperServiceImpl implements IDeveloperService {
         return developerRepository.sumOfInvoicesForDeveloper(developerId, paid);
     }
 
+    //api
+    @Override
+    public Developer getDeveloperByApiKey(String key){
+        return  developerRepository.getDeveloperByApiKey(key);
+    }
+
+
 }

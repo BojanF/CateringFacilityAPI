@@ -76,9 +76,9 @@
                     <th class="td-right-align"> Listed:</th>
                     <td class="td-left-align">
                       <span class="label" [ngClass]="{
-                        'label-success': originalBeverage.onPromotion,
-                        'label-danger': !originalBeverage.onPromotion}">
-                          {{originalBeverage.onPromotion ? "YES" : "NO"}}
+                        'label-success': originalBeverage.listedInMenu,
+                        'label-danger': !originalBeverage.listedInMenu}">
+                          {{originalBeverage.listedInMenu ? "YES" : "NO"}}
                       </span>
                     </td>
                   </tr>
@@ -146,14 +146,14 @@
                   </div>
                 </div>
                 <div class="form-group col-md-4">
-                  <label>Promoted</label>
+                  <label>Listed </label>
                   <div class="checkbox">
-                    <label for="onPromotion">
-                      <input type="checkbox"  id="onPromotion"
+                    <label for="listedInMenu">
+                      <input type="checkbox"  id="listedInMenu"
 
-                             [(ngModel)]="updateBeverage.onPromotion" name="onPromotion"
-                             #onPromotion="ngModel">
-                      On promotion
+                             [(ngModel)]="updateBeverage.listedInMenu" name="listedInMenu"
+                             #listedInMenu="ngModel">
+                      Listed in menu
                     </label>
                   </div>
                 </div>
@@ -166,12 +166,6 @@
                           #type="ngModel">
                     <option *ngFor="let type of beverageTypes" [value]="type.key">{{type.val}}</option>
                   </select>
-                  <div [hidden]="type.valid || type.pristine"
-                       class="panel panel-danger">
-                    <div class="panel-heading text-center text-danger">
-                      Beverage type is required
-                    </div>
-                  </div>
                 </div>
               </div>
               <div class="row">

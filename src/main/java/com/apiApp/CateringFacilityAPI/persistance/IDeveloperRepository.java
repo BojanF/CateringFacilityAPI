@@ -39,4 +39,11 @@ public interface IDeveloperRepository extends CrudRepository<Developer, Long> {
             "where fi.developer.id = :developerId and fi.invoicePayed=:paid")
     Double sumOfInvoicesForDeveloper(@Param("developerId") Long developerId, @Param("paid") boolean paid);
 
+    //api queries
+    @Query(value =
+            "select dev " +
+                    "from com.apiApp.CateringFacilityAPI.model.jpa.Developer dev " +
+                    "where dev.apiKey = :key")
+    Developer getDeveloperByApiKey(@Param("key") String key);
+
 }

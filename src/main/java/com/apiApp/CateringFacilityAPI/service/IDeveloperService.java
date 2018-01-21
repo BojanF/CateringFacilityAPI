@@ -36,4 +36,7 @@ public interface IDeveloperService {
     List<Double>developerInvoicesStats(Long developerId);
 
     Double sumOfInvoicesForDeveloper(Long developerId, boolean paid);
+
+    //api
+    Developer getDeveloperByApiKey(String key);
 }

@@ -1,5 +1,7 @@
 package com.apiApp.CateringFacilityAPI.service;
 
+import com.apiApp.CateringFacilityAPI.exceptions.NotExisting;
+import com.apiApp.CateringFacilityAPI.model.api.ApiFacilityLocationContacts;
 import com.apiApp.CateringFacilityAPI.model.jpa.Facility;
 import com.apiApp.CateringFacilityAPI.model.jpa.FacilityLocation;
 import com.apiApp.CateringFacilityAPI.model.jpa.FacilityLocationContact;
@@ -22,5 +24,7 @@ public interface IFacilityLocationService {
     Iterable<FacilityLocation> findAll();
 
     List<FacilityLocationContact> facLocationContacts(Long locationId);
-    
+
+    //api
+    ApiFacilityLocationContacts contactsForFacilityLocation(Long locationId) throws NotExisting;
 }

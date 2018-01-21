@@ -22,7 +22,7 @@ public class MenuItem extends BaseEntity {
     private String description;
 
     @NotNull
-    private boolean onPromotion;
+    private boolean listedInMenu;
 
     @NotNull
     @ManyToOne
@@ -54,12 +54,12 @@ public class MenuItem extends BaseEntity {
         this.description = description;
     }
 
-    public boolean isOnPromotion() {
-        return onPromotion;
+    public boolean getListedInMenu() {
+        return listedInMenu;
     }
 
-    public void setOnPromotion(boolean onPromotion) {
-        this.onPromotion = onPromotion;
+    public void getListedInMenu(boolean listedInMenu) {
+        this.listedInMenu = listedInMenu;
     }
 
     public String getName() {

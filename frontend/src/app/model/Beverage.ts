@@ -3,10 +3,10 @@ import {Facility} from "./Facility";
 
 export class Beverage extends MenuItem{
 
-  constructor(id?: number, name?: string, price?: number, description?: string, onPromotion?: boolean, facility?: Facility, type?: string);
+  constructor(id?: number, name?: string, price?: number, description?: string, listedInMenu?: boolean, facility?: Facility, type?: string);
 
-  constructor(id: number, name: string, price: number, description: string, onPromotion: boolean, facility: Facility, type: string) {
-    super(id, name, price, description, onPromotion, facility);
+  constructor(id: number, name: string, price: number, description: string, listedInMenu: boolean, facility: Facility, type: string) {
+    super(id, name, price, description, listedInMenu, facility);
     this.type = type;
   }
   public type: string

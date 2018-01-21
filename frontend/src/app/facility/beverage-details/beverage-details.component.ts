@@ -75,7 +75,7 @@ export class BeverageDetailsComponent implements OnInit {
             this.originalBeverage.name,
             this.originalBeverage.price,
             this.originalBeverage.description,
-            this.originalBeverage.onPromotion,
+            this.originalBeverage.listedInMenu,
             this.originalBeverage.facility,
             this.originalBeverage.type
           );
@@ -129,7 +129,7 @@ export class BeverageDetailsComponent implements OnInit {
             this.originalBeverage.name,
             this.originalBeverage.price,
             this.originalBeverage.description,
-            this.originalBeverage.onPromotion,
+            this.originalBeverage.listedInMenu,
             this.originalBeverage.facility,
             this.originalBeverage.type
           );

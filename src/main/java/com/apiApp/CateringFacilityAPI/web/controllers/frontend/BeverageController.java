@@ -30,7 +30,7 @@ public class BeverageController {
         return beverageService.insertBeverage(
                 beverage.getName(),
                 beverage.getPrice(),
-                beverage.isOnPromotion(),
+                beverage.getListedInMenu(),
                 facility,
                 beverage.getType(),
                 beverage.getDescription());

@@ -18,4 +18,11 @@ public interface IFacilityLocationRepository extends CrudRepository<FacilityLoca
             "where contact.location.id = :locationId")
     List<FacilityLocationContact> facLocationContacts(@Param("locationId") Long locationId);
 
+    //api queries
+    @Query(value =
+            "select contact.id.telephoneNumber " +
+                    "from com.apiApp.CateringFacilityAPI.model.jpa.FacilityLocationContact contact " +
+                    "where contact.location.id = :locationId")
+    List<String> facilityLocationContacts(@Param("locationId") Long locationId);
+
 }

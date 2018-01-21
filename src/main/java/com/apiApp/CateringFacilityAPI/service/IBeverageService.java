@@ -11,7 +11,7 @@ public interface IBeverageService {
 
     Beverage insertBeverage(String name,
                             Double price,
-                            boolean onPromotion,
+                            boolean listedInMenu,
                             Facility facility,
                             BeverageType type,
                             String description);

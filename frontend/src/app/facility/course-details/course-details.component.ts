@@ -76,7 +76,7 @@ export class CourseDetailsComponent implements OnInit {
             this.originalCourse.name,
             this.originalCourse.price,
             this.originalCourse.description,
-            this.originalCourse.onPromotion,
+            this.originalCourse.listedInMenu,
             this.originalCourse.facility,
             this.originalCourse.type
           );
@@ -129,7 +129,7 @@ export class CourseDetailsComponent implements OnInit {
             this.originalCourse.name,
             this.originalCourse.price,
             this.originalCourse.description,
-            this.originalCourse.onPromotion,
+            this.originalCourse.listedInMenu,
             this.originalCourse.facility,
             this.originalCourse.type
           );

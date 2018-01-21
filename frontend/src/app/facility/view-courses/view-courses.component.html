@@ -79,7 +79,7 @@
         <tr>
           <th>Name</th>
           <th>Price </th>
-          <th>Promoted</th>
+          <th>Listed in menu</th>
           <th>Type</th>
           <th>Delete</th>
         </tr>
@@ -90,11 +90,11 @@
           <td> <a href="facility/course/{{course.id}}">{{course.name}} </a> </td>
           <td> {{course.price}} &euro; </td>
           <td>
-            <!--{{course.onPromotion}}-->
+            <!--{{course.listedInMenu}}-->
             <span class="label" [ngClass]="{
-                'label-success': course.onPromotion,
-                'label-danger': !course.onPromotion}">
-                  {{course.onPromotion ? "YES" : "NO"}}
+                'label-success': course.listedInMenu,
+                'label-danger': !course.listedInMenu}">
+                  {{course.listedInMenu ? "YES" : "NO"}}
               </span>
           </td>
           <td> {{getCourseValue(course.type)}} </td>
