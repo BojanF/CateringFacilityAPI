@@ -6,7 +6,7 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "administrators")
-public class Administrator extends User {
+public class Administrator extends BaseEntity {
 
     @NotNull
     private String name;

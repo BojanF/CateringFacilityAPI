@@ -2,12 +2,11 @@ package com.apiApp.CateringFacilityAPI.model.jpa;
 
 import com.apiApp.CateringFacilityAPI.model.enums.Role;
 
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
-@MappedSuperclass
+@Entity
+@Table(name = "users")
 public class User extends BaseEntity {
 
     @NotNull

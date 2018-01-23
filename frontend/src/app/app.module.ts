@@ -49,6 +49,7 @@ import { DevViewActivePackagesComponent } from './developer/dev-view-active-pack
 import { FacViewActivePackagesComponent } from './facility/fac-view-active-packages/fac-view-active-packages.component';
 import {AdministratorService} from "./service/http/administrator/administrator.service";
 import {DeveloperService} from "./service/http/developer/developer.service";
+import {LoginService} from "./service/http/login/login.service";
 
 
 // import {NgxSelectOptions} from "ngx-select-options";
@@ -108,7 +109,8 @@ import {DeveloperService} from "./service/http/developer/developer.service";
     FacilityLocationService,
     FacilityLocationContactService,
     AdministratorService,
-    DeveloperService
+    DeveloperService,
+    LoginService
   ],
   bootstrap: [AppComponent]
 })

@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import {Router} from "@angular/router";
+import {LoginService} from "../service/http/login/login.service";
 
 @Component({
   selector: 'app-facility',
@@ -7,9 +9,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class FacilityComponent implements OnInit {
 
-  constructor() { }
+  constructor(private router:Router, private loginService:LoginService) { }
 
   ngOnInit() {
+    if(localStorage.role!="facility"){
+      this.router.navigateByUrl("/");
+    }
+  }
+
+  logout(){
+    this.loginService.logOut();
   }
 
 }

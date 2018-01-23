@@ -38,12 +38,12 @@ public class FacilityServiceImpl implements IFacilityService {
     public Facility insertFacility(String name, String username, String password, String email) {
         Facility facility = new Facility();
         facility.setName(name);
-        facility.setUsername(username);
-        facility.setPassword(password);
-        facility.setEmail(email);
+//        facility.setUsername(username);
+//        facility.setPassword(password);
+//        facility.setEmail(email);
         facility.setStatus(CustomerStatus.SUSPENDED);
         facility.setUsedTrial(false);
-        facility.setRole(Role.FACILITY);
+//        facility.setRole(Role.FACILITY);
         return facilityRepository.save(facility);
     }
 

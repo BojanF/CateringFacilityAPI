@@ -183,13 +183,13 @@ public class SubscriptionPackageServiceImpl implements ISubscriptionPackageServi
                 }
 
                 for(Developer d : developers){
-                    messageContent = String.format("<h3>Dear %s</h3> <div><p> %s </p> <p> Sincerely yours,\n CateringAPI team. </p> </div>", d.getUsername(), packageInfo);
-                    emailService.sendSimpleMessage(d.getEmail(), messageSubject, messageContent);
+                   // messageContent = String.format("<h3>Dear %s</h3> <div><p> %s </p> <p> Sincerely yours,\n CateringAPI team. </p> </div>", d.getUsername(), packageInfo);
+                    //emailService.sendSimpleMessage(d.getEmail(), messageSubject, messageContent);
                 }
 
                 for(Facility f : facilities){
-                    String.format(messageContent, "<h3>Dear %s</h3> <div> %s </div> <div> Sincerely yours CateringAPI team. </div>", f.getUsername(), packageInfo);
-                    emailService.sendSimpleMessage(f.getEmail(), messageSubject, messageContent);
+                   // String.format(messageContent, "<h3>Dear %s</h3> <div> %s </div> <div> Sincerely yours CateringAPI team. </div>", f.getUsername(), packageInfo);
+                   // emailService.sendSimpleMessage(f.getEmail(), messageSubject, messageContent);
                 }
                 p.setSendMail(false);
                 update(p);

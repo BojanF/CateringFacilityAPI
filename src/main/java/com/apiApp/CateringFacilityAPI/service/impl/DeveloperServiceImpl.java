@@ -30,12 +30,12 @@ public class DeveloperServiceImpl implements IDeveloperService {
     @Override
     public Developer insertDeveloper(String username, String password, String email) {
         Developer developer = new Developer();
-        developer.setUsername(username);
-        developer.setPassword(password);
-        developer.setEmail(email);
+//        developer.setUsername(username);
+//        developer.setPassword(password);
+//        developer.setEmail(email);
         developer.setStatus(CustomerStatus.SUSPENDED);
         developer.setUsedTrial(false);
-        developer.setRole(Role.DEVELOPER);
+//        developer.setRole(Role.DEVELOPER);
         return developerRepository.save(developer);
     }
 

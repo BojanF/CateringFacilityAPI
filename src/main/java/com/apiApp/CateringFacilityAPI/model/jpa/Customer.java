@@ -8,7 +8,7 @@ import javax.persistence.MappedSuperclass;
 import javax.validation.constraints.NotNull;
 
 @MappedSuperclass
-public class Customer extends User {
+public class Customer extends BaseEntity {
 
     @NotNull
     @Enumerated(EnumType.STRING)

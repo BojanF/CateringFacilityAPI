@@ -29,10 +29,10 @@ public class AdministratorServiceImpl implements IAdministratorService {
         Administrator admin = new Administrator();
         admin.setName(name);
         admin.setSurname(surname);
-        admin.setUsername(username);
-        admin.setPassword(password);
-        admin.setEmail(email);
-        admin.setRole(Role.ADMIN);
+//        admin.setUsername(username);
+//        admin.setPassword(password);
+//        admin.setEmail(email);
+//        admin.setRole(Role.ADMIN);
         return administratorRepository.save(admin);
     }
 

@@ -11,11 +11,15 @@ export class IdService {
   constructor() { }
 
   getFacilityId(){
-    return this.facilityId;
+    return this.getId();
   }
 
   getDeveloperId(){
-    return this.developerId;
+   return this.getId();
+  }
+
+  getId(){
+    return localStorage.id;
   }
 
 }
