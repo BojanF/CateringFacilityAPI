@@ -62,6 +62,12 @@ public interface IFacilityRepository extends CrudRepository<Facility, Long> {
             "where fi.facility.id = :facilityId and fi.invoicePayed=:paid")
     Double sumOfInvoicesForFacility(@Param("facilityId") Long facilityId, @Param("paid") boolean paid);
 
+    @Query(value =
+            "select fac " +
+            "from com.apiApp.CateringFacilityAPI.model.jpa.Facility fac " +
+            "where fac.user.id = :userId")
+    Facility findFacilityByUserId(@Param("userId") Long userId);
+
     //api queries
     @Query(value =
             "select new com.apiApp.CateringFacilityAPI.model.api.ApiFacility(fac.id, fac.name)" +

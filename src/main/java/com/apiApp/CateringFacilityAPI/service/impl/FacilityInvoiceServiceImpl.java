@@ -1,15 +1,17 @@
 package com.apiApp.CateringFacilityAPI.service.impl;
 
+import com.apiApp.CateringFacilityAPI.custom.MailData;
+import com.apiApp.CateringFacilityAPI.events.CreatedInvoice;
 import com.apiApp.CateringFacilityAPI.model.enums.CustomerStatus;
 import com.apiApp.CateringFacilityAPI.model.jpa.Facility;
 import com.apiApp.CateringFacilityAPI.model.jpa.FacilityInvoice;
 import com.apiApp.CateringFacilityAPI.model.jpa.SubscriptionPackage;
 import com.apiApp.CateringFacilityAPI.persistance.IFacilityInvoiceRepository;
-import com.apiApp.CateringFacilityAPI.persistance.IFacilityRepository;
 import com.apiApp.CateringFacilityAPI.service.IFacilityInvoiceService;
 import com.apiApp.CateringFacilityAPI.service.IFacilityService;
 import com.apiApp.CateringFacilityAPI.service.ITaxAmountService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
@@ -30,11 +32,14 @@ public class FacilityInvoiceServiceImpl implements IFacilityInvoiceService {
 
     @Autowired
     private IFacilityService facilityService;
+
+    @Autowired
+    private ApplicationEventPublisher publisher;
     
     @Override
     public FacilityInvoice insertFacilityInvoice(SubscriptionPackage subscribe,
                                                  Facility facility) {
-
+        int x = 0;
         LocalDateTime createdAt;
         List<FacilityInvoice> invoices = facilityService.facilityInvoices(facility.getId(),  new PageRequest(0, 1));
         if(invoices.size() == 0){
@@ -72,7 +77,36 @@ public class FacilityInvoiceServiceImpl implements IFacilityInvoiceService {
             facilityService.update(facility);
         }
 
-        return facilityInvoiceRepository.save(facilityInvoice);
+        facilityInvoiceRepository.save(facilityInvoice);
+        String invoiceDetails =
+                String.format("<p>Your subscription generated new invoice.Here are your invoice details:</p>" +
+                                "<table border=\"3\"> " +
+                                "<tr> <th> Package name: </th> <td> %s </td> </tr>" +
+                                "<tr> <th> Price: </th> <td> %s &euro;</td> </tr>" +
+                                "<tr> <th> Tax amount: </th> <td> %s %% </td> </tr>" +
+                                "<tr> <th> Gross price: </th> <td> %s &euro; </td> </tr>" +
+                                "<tr> <th> Expires in: </th> <td> %s days </td> </tr>" +
+                                "<tr> <th> Pay deadline: </th> <td> %s </td> </tr>" +
+                                "</table>\n",
+                        facilityInvoice.getSubscribe().getName(),
+                        facilityInvoice.getOriginalPackagePrice(),
+                        facilityInvoice.getTaxAmount(),
+                        facilityInvoice.getGrossPrice(),
+                        facilityInvoice.getSubscribe().getExpiresIn(),
+                        parseLocalDateTime(facilityInvoice.getPayUntil()));
+        String messageContent = String.format("<h3>Dear %s</h3> <div><p> %s </p> <p> Sincerely yours,</p> <p> CateringAPI team. </p> </div>" +
+                        "</br> <p> *This mail is sent couple of minutes after invoice is generated.</p>",
+                facilityInvoice.getFacility().getUser().getUsername(),
+                invoiceDetails);
+
+        MailData mailData = new MailData(
+                facilityInvoice.getFacility().getUser().getEmail(),
+                "Invoice for your subscription",
+                messageContent);
+        publisher.publishEvent(new CreatedInvoice(mailData));
+        System.out.print("Facility invoice is created.");
+
+        return facilityInvoice;
     }
 
     @Override
@@ -127,6 +161,17 @@ public class FacilityInvoiceServiceImpl implements IFacilityInvoiceService {
         result.add(sumOfFacilityInvoices(false));
         return  result;
 
+    }
+
+    private String parseLocalDateTime(LocalDateTime dateTime){
+        String result;
+        result = String.format("%s.%s.%s - %s:%s ",
+                dateTime.getDayOfMonth(),
+                dateTime.getMonthValue(),
+                dateTime.getYear(),
+                dateTime.getHour(),
+                dateTime.getMinute());
+        return result;
     }
 
 

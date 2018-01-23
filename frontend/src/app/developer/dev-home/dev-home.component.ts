@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import {DeveloperService} from "../../service/http/developer/developer.service";
 import {IdService} from "../../service/id-service/id.service";
 import * as c3 from 'c3';
+import {BeverageTypeService} from "../../service/beverage-type/beverage-type.service";
+import {CourseTypeService} from "../../service/course-type/course-type.service";
 
 @Component({
   selector: 'app-dev-home',
@@ -17,13 +19,20 @@ export class DevHomeComponent implements OnInit {
       hiddenError: true
     }
   };
+
+  private beverageTypes = [];
+  private courseTypes = [];
   private numberOfInvoices: number;
   private sumOfPaidInvoices: number;
   private sumOfUnpaidInvoices: number;
   private developerId: number;
   constructor(private developerService: DeveloperService,
-              private id: IdService) {
+              private id: IdService,
+              private beverageTypeService: BeverageTypeService,
+              private courseTypeService: CourseTypeService) {
     this.developerId = id.getDeveloperId();
+    this.beverageTypes = this.beverageTypeService.getTypes();
+    this.courseTypes = this.courseTypeService.getCourseTypes();
   }
 
   ngOnInit() {

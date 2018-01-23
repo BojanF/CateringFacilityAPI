@@ -28,6 +28,7 @@ import {FacGetSubscriptionComponent} from "./facility/fac-get-subscription/fac-g
 import {DevGetSubscriptionComponent} from "./developer/dev-get-subscription/dev-get-subscription.component";
 import { DevViewActivePackagesComponent } from './developer/dev-view-active-packages/dev-view-active-packages.component';
 import { FacViewActivePackagesComponent } from './facility/fac-view-active-packages/fac-view-active-packages.component';
+import {PackagesStatsComponent} from "./administrator/packages-stats/packages-stats.component";
 
 const routes: Routes = [
   {path: '', redirectTo: 'login', pathMatch: 'full'},
@@ -44,7 +45,8 @@ const routes: Routes = [
      {path: 'api-invoices', component: ApiInvoicesComponent},
      {path: 'facility-invoices', component: FacilityInvoicesComponent},
      {path: 'tax', component: TaxComponent},
-     {path: 'package-details/:id', component: PackageDetailsComponent}
+     {path: 'package-details/:id', component: PackageDetailsComponent},
+     {path: 'packages-stats', component: PackagesStatsComponent}
    ]
   },
   {path: 'developer', component: DeveloperComponent,

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {SubscriptionPackage} from "../../../model/SubscriptionPackage";
 import {LoginService} from "../login/login.service";
+import {SubscriptionPackageStats} from "../../../model/SubscriptionPackageStats";
 
 @Injectable()
 export class PackageService {
@@ -42,6 +43,10 @@ export class PackageService {
 
   updatePackage(subscriptionPackage: SubscriptionPackage){
     return this.http.patch<SubscriptionPackage>(this.packageUrl + '/update-package/', subscriptionPackage);
+  }
+
+  getPackagesStats(){
+    return this.http.get<Array<SubscriptionPackageStats>>(this.packageUrl + '/packages-stats');
   }
 
 }

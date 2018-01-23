@@ -1,6 +1,7 @@
 package com.apiApp.CateringFacilityAPI.service;
 
 import com.apiApp.CateringFacilityAPI.model.jpa.Administrator;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
@@ -20,6 +21,8 @@ public interface IAdministratorService {
     List<Double> percentageStats();
 
     List<Double>invoicesIncomeStats();
+
+    Administrator findAdministratorByUserId(Long userId);
 
 
 }

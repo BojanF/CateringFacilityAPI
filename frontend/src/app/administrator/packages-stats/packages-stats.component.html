@@ -1,0 +1,73 @@
+<div class="row">
+  <div class="col-md-12">
+    <h1 class="page-header">
+      Subscription packages statistics
+    </h1>
+    <ol class="breadcrumb">
+      <li>
+        <i class="fa fa-dashboard"></i>
+        <a href="admin/home"> Dashboard </a>
+      </li>
+      <li class="active">
+        <i class="fa fa-list-alt"></i> Subscription packages stats
+      </li>
+    </ol>
+  </div>
+</div>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title"><i class="fa fa-line-chart" aria-hidden="true"></i> Invoice paying stats </h3>
+  </div>
+  <div class="panel-body">
+    <div class="panel panel-info" [hidden]="uiState.hiddenLoadingGif">
+      <div class="panel-heading text-center">
+        <img src="../../../assets/pictures/loading.gif" style="width:20px; height:20px;">
+        <span>&nbsp;Loading...</span>
+      </div>
+    </div>
+    <div class="panel panel-info" [hidden]="uiState.hiddenNoDataInfo">
+      <div class="panel-heading text-center text-info">
+        There is no packages in the system.
+      </div>
+    </div>
+    <div class="panel panel-danger" [hidden]="uiState.hiddenErrorMsg">
+      <div class="panel-heading text-center text-danger">
+        <div> We run into an error!</div>
+        <div> Try again later!</div>
+      </div>
+    </div>
+    <div class="table-responsive" [hidden]="uiState.hiddenTable">
+      <table class="table table-responsive table-bordered table-striped">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Sum of paid invoices </th>
+            <th>Sum of unpaid invoices </th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let stats of packagesStats | paginate: { itemsPerPage: 3, currentPage: page }">
+            <td><a href="admin/package-details/{{stats.id}}">{{stats.name}}</a></td>
+            <th class="text-success">{{stats.sumOfPaidInvoices}}&euro;</th>
+            <th class="text-danger">{{stats.sumOfUnpaidInvoices}}&euro;</th>
+            <td>
+              <span [ngClass]="determineCssClass(stats.status)">{{stats.status}}</span>
+            </td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="4" class="text-center">
+              <pagination-controls (pageChange)="page = $event"></pagination-controls>
+            </td>
+          </tr>
+
+        </tfoot>
+      </table>
+
+    </div>
+
+  </div>
+</div>

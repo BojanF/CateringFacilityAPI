@@ -50,6 +50,7 @@ import { FacViewActivePackagesComponent } from './facility/fac-view-active-packa
 import {AdministratorService} from "./service/http/administrator/administrator.service";
 import {DeveloperService} from "./service/http/developer/developer.service";
 import {LoginService} from "./service/http/login/login.service";
+import {PackagesStatsComponent} from "./administrator/packages-stats/packages-stats.component";
 
 
 // import {NgxSelectOptions} from "ngx-select-options";
@@ -84,7 +85,8 @@ import {LoginService} from "./service/http/login/login.service";
     FacGetSubscriptionComponent,
     DevGetSubscriptionComponent,
     DevViewActivePackagesComponent,
-    FacViewActivePackagesComponent
+    FacViewActivePackagesComponent,
+    PackagesStatsComponent
   ],
   imports: [
     BrowserModule,

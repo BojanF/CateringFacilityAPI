@@ -16,7 +16,7 @@ public class EmailServiceImpl implements IEmailService {
     @Autowired
     public JavaMailSender emailSender;
 
-    public void sendSimpleMessage(String to, String subject, String text) {
+    public void sendSimpleMessage(String to, String subject, String text, boolean isHtml) {
 
 //        SimpleMailMessage message = new SimpleMailMessage();
 //        message.setTo(to);
@@ -29,7 +29,7 @@ public class EmailServiceImpl implements IEmailService {
             helper = new MimeMessageHelper(mail, true);
             helper.setTo(to);
             helper.setSubject(subject);
-            helper.setText(text, true);
+            helper.setText(text, isHtml);
         } catch (MessagingException e) {
             e.printStackTrace();
         }

@@ -1,16 +1,22 @@
 package com.apiApp.CateringFacilityAPI.service.impl;
 
+import com.apiApp.CateringFacilityAPI.custom.MailData;
+import com.apiApp.CateringFacilityAPI.events.MailFromScheduledTask;
 import com.apiApp.CateringFacilityAPI.model.enums.AllowSubscription;
 import com.apiApp.CateringFacilityAPI.model.enums.CustomerStatus;
 import com.apiApp.CateringFacilityAPI.model.enums.Role;
 import com.apiApp.CateringFacilityAPI.model.jpa.ApiInvoice;
 import com.apiApp.CateringFacilityAPI.model.jpa.Developer;
+import com.apiApp.CateringFacilityAPI.model.jpa.User;
 import com.apiApp.CateringFacilityAPI.persistance.IDeveloperRepository;
 import com.apiApp.CateringFacilityAPI.service.IApiInvoiceService;
 import com.apiApp.CateringFacilityAPI.service.IDeveloperService;
+import com.apiApp.CateringFacilityAPI.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
@@ -27,15 +33,18 @@ public class DeveloperServiceImpl implements IDeveloperService {
     @Autowired
     private IApiInvoiceService apiInvoiceService;
 
+    @Autowired
+    private IUserService userService;
+
+    @Autowired
+    private ApplicationEventPublisher publisher;
+
     @Override
     public Developer insertDeveloper(String username, String password, String email) {
+        User user = userService.insertUser(username, email, password, Role.DEVELOPER);
         Developer developer = new Developer();
-//        developer.setUsername(username);
-//        developer.setPassword(password);
-//        developer.setEmail(email);
         developer.setStatus(CustomerStatus.SUSPENDED);
-        developer.setUsedTrial(false);
-//        developer.setRole(Role.DEVELOPER);
+        developer.setUsedTrial(false);developer.setUser(user);
         return developerRepository.save(developer);
     }
 
@@ -113,21 +122,46 @@ public class DeveloperServiceImpl implements IDeveloperService {
     @Override
     public void suspendingDevelopersStatusForUnpaidInvoices() {
         List<ApiInvoice> invoices = apiInvoiceService.notPaidInvoicesAfterReliefPeriod(LocalDateTime.now());
+        String messageContent = "";
         for(ApiInvoice invoice : invoices){
             invoice.getDeveloper().setStatus(CustomerStatus.SUSPENDED);
             update(invoice.getDeveloper());
+            messageContent = String.format("<h4>Dear %s </h4> <div> <p> You have unpaid invoice for subscription." +
+                    "Now you <strong>CAN NOT </strong> make API request and use our service." +
+                    "If you want to continue to use our web service you need to pay your unpaid  invoice." +
+                    "If you have active subscription, you <strong> CAN </strong> immediately use our web service after you pay the old invoice</p> </div>" +
+                    "Check which invoice you did not paid on our web site" +
+                    "<div> <p> Sincerely yours,</p> <p> CateringAPI team. </p></div>" +
+                    "</br> <p> *This mail is sent couple of minutes after invoice is generated.</p>", invoice.getDeveloper().getUser().getUsername());
+            MailData mailData = new MailData(
+                    invoice.getDeveloper().getUser().getEmail(),
+                    "Your account on CateringAPI is suspended",
+                    messageContent);
+            publisher.publishEvent(new MailFromScheduledTask(mailData));
         }
     }
 
     @Override
     public void suspendingDevelopersForExpiredSubscription(){
         List<Developer> activeDevelopers = activeDevelopers();
+        String messageContent = "";
         for(Developer d : activeDevelopers){
             ApiInvoice lastInvoice = developerInvoices(d.getId(), new PageRequest(0, 1)).get(0);
             LocalDateTime expiresAt = lastInvoice.getCreatedAt().plusDays(lastInvoice.getSubscribe().getExpiresIn()-1);
             if(expiresAt.isBefore(LocalDateTime.now())){
                 d.setStatus(CustomerStatus.SUSPENDED);
                 update(d);
+                messageContent = String.format("<h4>Dear %s </h4> <div> <p> Your last subscription made on our platform expired." +
+                        "Now you <strong>CAN NOT </strong> make API request and use our service." +
+                        "If you want to continue to use our web service subscribe yourself again." +
+                        "The moment you wil subscribe your account will be active again, and you <strong> CAN </strong> use our web service.</p> </div>" +
+                        "<div> <p> Sincerely yours,</p> <p> CateringAPI team. </p></div>" +
+                        "</br> <p> *This mail is sent couple of minutes after invoice is generated.</p>", d.getUser().getUsername());
+                MailData mailData = new MailData(
+                        d.getUser().getEmail(),
+                        "Your account on CateringAPI is suspended",
+                        messageContent);
+                publisher.publishEvent(new MailFromScheduledTask(mailData));
             }
         }
     }
@@ -160,6 +194,11 @@ public class DeveloperServiceImpl implements IDeveloperService {
     @Override
     public Double sumOfInvoicesForDeveloper(Long developerId, boolean paid){
         return developerRepository.sumOfInvoicesForDeveloper(developerId, paid);
+    }
+
+    @Override
+    public Developer findDeveloperByUserId(Long userId){
+        return developerRepository.findDeveloperByUserId(userId);
     }
 
     //api

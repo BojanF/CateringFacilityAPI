@@ -46,6 +46,8 @@ public interface IFacilityService {
 
     Double sumOfInvoicesForFacility(Long facilityId, boolean paid);
 
+    Facility findFacilityByUserId(Long userId);
+
     //api
     List<ApiFacility> getActiveFacilities();
 

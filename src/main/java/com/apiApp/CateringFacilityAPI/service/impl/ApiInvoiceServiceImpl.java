@@ -1,5 +1,7 @@
 package com.apiApp.CateringFacilityAPI.service.impl;
 
+import com.apiApp.CateringFacilityAPI.custom.MailData;
+import com.apiApp.CateringFacilityAPI.events.CreatedInvoice;
 import com.apiApp.CateringFacilityAPI.model.enums.CustomerStatus;
 import com.apiApp.CateringFacilityAPI.model.jpa.ApiInvoice;
 import com.apiApp.CateringFacilityAPI.model.jpa.Developer;
@@ -9,6 +11,7 @@ import com.apiApp.CateringFacilityAPI.service.IApiInvoiceService;
 import com.apiApp.CateringFacilityAPI.service.IDeveloperService;
 import com.apiApp.CateringFacilityAPI.service.ITaxAmountService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +32,9 @@ public class ApiInvoiceServiceImpl implements IApiInvoiceService {
 
     @Autowired
     private IDeveloperService developerService;
+
+    @Autowired
+    private ApplicationEventPublisher publisher;
 
     @Override
     public ApiInvoice insertApiInvoice(SubscriptionPackage subscribe,
@@ -71,7 +77,36 @@ public class ApiInvoiceServiceImpl implements IApiInvoiceService {
             developerService.update(developer);
         }
 
-        return apiInvoiceRepository.save(apiInvoice);
+        apiInvoiceRepository.save(apiInvoice);
+        String invoiceDetails =
+                String.format("<p>Your subscription generated new invoice.Here are your invoice details:</p>" +
+                                "<table border=\"3\"> " +
+                                "<tr> <th> Package name: </th> <td> %s </td> </tr>" +
+                                "<tr> <th> Price: </th> <td> %s &euro;</td> </tr>" +
+                                "<tr> <th> Tax amount: </th> <td> %s %%</td> </tr>" +
+                                "<tr> <th> Gross price: </th> <td> %s &euro;</td> </tr>" +
+                                "<tr> <th> Expires in: </th> <td> %s days </td> </tr>" +
+                                "<tr> <th> Pay deadline: </th> <td> %s </td> </tr>" +
+                                "</table>\n",
+                        apiInvoice.getSubscribe().getName(),
+                        apiInvoice.getOriginalPackagePrice(),
+                        apiInvoice.getTaxAmount(),
+                        apiInvoice.getGrossPrice(),
+                        apiInvoice.getSubscribe().getExpiresIn(),
+                        parseLocalDateTime(apiInvoice.getPayUntil()));
+        String messageContent = String.format("<h3>Dear %s</h3> <div><p> %s </p> <p> Sincerely yours,</p> <p> CateringAPI team. </p> </div>" +
+                        " <p> *This mail is sent couple of minutes after invoice is generated.</p>",
+                apiInvoice.getDeveloper().getUser().getUsername(),
+                invoiceDetails);
+
+        MailData mailData = new MailData(
+                apiInvoice.getDeveloper().getUser().getEmail(),
+                "Invoice for your subscription",
+                messageContent);
+        publisher.publishEvent(new CreatedInvoice(mailData));
+        System.out.print("API invoice is created.");
+
+        return apiInvoice;
     }
 
     @Override
@@ -125,5 +160,16 @@ public class ApiInvoiceServiceImpl implements IApiInvoiceService {
         result.add(sumOfApiInvoices(true));
         result.add(sumOfApiInvoices(false));
         return  result;
+    }
+
+    private String parseLocalDateTime(LocalDateTime dateTime){
+        String result;
+        result = String.format("%s.%s.%s - %s:%s ",
+                dateTime.getDayOfMonth(),
+                dateTime.getMonthValue(),
+                dateTime.getYear(),
+                dateTime.getHour(),
+                dateTime.getMinute());
+        return result;
     }
 }

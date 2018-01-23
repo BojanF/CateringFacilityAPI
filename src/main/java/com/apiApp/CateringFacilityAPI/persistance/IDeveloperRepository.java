@@ -2,6 +2,7 @@ package com.apiApp.CateringFacilityAPI.persistance;
 
 import com.apiApp.CateringFacilityAPI.model.jpa.ApiInvoice;
 import com.apiApp.CateringFacilityAPI.model.jpa.Developer;
+import com.apiApp.CateringFacilityAPI.model.jpa.Facility;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -38,6 +39,13 @@ public interface IDeveloperRepository extends CrudRepository<Developer, Long> {
             "from com.apiApp.CateringFacilityAPI.model.jpa.ApiInvoice fi " +
             "where fi.developer.id = :developerId and fi.invoicePayed=:paid")
     Double sumOfInvoicesForDeveloper(@Param("developerId") Long developerId, @Param("paid") boolean paid);
+
+
+    @Query(value =
+            "select dev " +
+            "from com.apiApp.CateringFacilityAPI.model.jpa.Developer dev " +
+            "where dev.user.id = :userId")
+    Developer findDeveloperByUserId(@Param("userId") Long userId);
 
     //api queries
     @Query(value =

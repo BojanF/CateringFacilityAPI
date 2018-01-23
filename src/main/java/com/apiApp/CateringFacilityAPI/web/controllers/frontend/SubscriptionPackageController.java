@@ -1,5 +1,6 @@
 package com.apiApp.CateringFacilityAPI.web.controllers.frontend;
 
+import com.apiApp.CateringFacilityAPI.custom.SubscriptionPackageStats;
 import com.apiApp.CateringFacilityAPI.model.jpa.SubscriptionPackage;
 import com.apiApp.CateringFacilityAPI.service.ISubscriptionPackageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,4 +63,8 @@ public class SubscriptionPackageController {
         return packageService.findAll();
     }
 
+    @RequestMapping(value = "/packages-stats", method = RequestMethod.GET)
+    public List<SubscriptionPackageStats> subscriptionPackagesStats(){
+        return packageService.subscriptionPackagesStats();
+    }
 }

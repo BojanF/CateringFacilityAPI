@@ -2,10 +2,12 @@ package com.apiApp.CateringFacilityAPI.service.impl;
 
 import com.apiApp.CateringFacilityAPI.model.enums.Role;
 import com.apiApp.CateringFacilityAPI.model.jpa.Administrator;
+import com.apiApp.CateringFacilityAPI.model.jpa.User;
 import com.apiApp.CateringFacilityAPI.persistance.IAdministratorRepository;
 import com.apiApp.CateringFacilityAPI.service.IAdministratorService;
 import com.apiApp.CateringFacilityAPI.service.IApiInvoiceService;
 import com.apiApp.CateringFacilityAPI.service.IFacilityInvoiceService;
+import com.apiApp.CateringFacilityAPI.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,15 +26,17 @@ public class AdministratorServiceImpl implements IAdministratorService {
     @Autowired
     private IFacilityInvoiceService facilityInvoiceService;
 
+    @Autowired
+    private IUserService userService;
+
     @Override
     public Administrator insertAdmin(String name, String surname, String username, String password, String email) {
+
+        User user = userService.insertUser(username, email, password, Role.ADMIN);
         Administrator admin = new Administrator();
         admin.setName(name);
         admin.setSurname(surname);
-//        admin.setUsername(username);
-//        admin.setPassword(password);
-//        admin.setEmail(email);
-//        admin.setRole(Role.ADMIN);
+        admin.setUser(user);
         return administratorRepository.save(admin);
     }
 
@@ -82,5 +86,10 @@ public class AdministratorServiceImpl implements IAdministratorService {
         result.add(apiInvoicesIncomeStats.get(0)+facilityInvoicesIncomeStats.get(0)); //sum of paid invoices
         result.add(apiInvoicesIncomeStats.get(1)+facilityInvoicesIncomeStats.get(1)); //sum od unpaid invoices
         return result;
+    }
+
+    @Override
+    public Administrator findAdministratorByUserId(Long userId){
+        return administratorRepository.findAdministratorByUserId(userId);
     }
 }

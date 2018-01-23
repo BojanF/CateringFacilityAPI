@@ -1,6 +1,9 @@
 package com.apiApp.CateringFacilityAPI.service.impl;
 
 import com.apiApp.CateringFacilityAPI.components.IEmailService;
+import com.apiApp.CateringFacilityAPI.custom.SubscriptionPackageStats;
+import com.apiApp.CateringFacilityAPI.events.NewPackageSendMail;
+import com.apiApp.CateringFacilityAPI.events.UpdatedPackageSendMail;
 import com.apiApp.CateringFacilityAPI.model.enums.PackageStatus;
 import com.apiApp.CateringFacilityAPI.model.jpa.*;
 import com.apiApp.CateringFacilityAPI.persistance.ISubscriptionPackageRepository;
@@ -8,7 +11,10 @@ import com.apiApp.CateringFacilityAPI.service.IDeveloperService;
 import com.apiApp.CateringFacilityAPI.service.IFacilityService;
 import com.apiApp.CateringFacilityAPI.service.ISubscriptionPackageService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +34,9 @@ public class SubscriptionPackageServiceImpl implements ISubscriptionPackageServi
     @Autowired
     private IFacilityService facilityService;
 
+    @Autowired
+    private ApplicationEventPublisher publisher;
+
     @Override
     public SubscriptionPackage insertPackage(String name,
                                              Double price,
@@ -40,7 +49,16 @@ public class SubscriptionPackageServiceImpl implements ISubscriptionPackageServi
         p.setStatus(PackageStatus.ACTIVE);
         p.setDescription(description);
         p.setSendMail(true);
-        return packageRepository.save(p);
+        packageRepository.save(p);
+        String packageInfo = String.format("<p>From today you can subscribe yourself on the <strong>%s</strong> package on the platform.</p>" +
+                "<table border=\"3\"> " +
+                "<tr> <th> Price: </th> <td> %s &euro;</td> </tr>" +
+                "<tr> <th> Expires in: </th> <td> %s days</td> </tr>" +
+                "</table>\n" +
+                "<h4> Description: </h4>" +
+                "<p> %s </p> <br/>", p.getName(), p.getPrice(), p.getExpiresIn(), p.getDescription());
+        publisher.publishEvent(new NewPackageSendMail(packageInfo));
+        return p;
     }
 
     @Override
@@ -50,11 +68,36 @@ public class SubscriptionPackageServiceImpl implements ISubscriptionPackageServi
 
     @Override
     public SubscriptionPackage update(SubscriptionPackage updatedPackage) {
-        SubscriptionPackage notUpdated = findOne(updatedPackage.getId());
-        if(notUpdated.getStatus() != updatedPackage.getStatus()){
-            updatedPackage.setSendMail(true);
+        PackageStatus notUpdated = findOne(updatedPackage.getId()).getStatus();
+        updatedPackage = packageRepository.save(updatedPackage);
+        PackageStatus updatedStatus = updatedPackage.getStatus();
+        if(notUpdated != updatedStatus){
+            System.out.println("Send updating mails");
+            String packageInfo = "";
+            if(updatedStatus == PackageStatus.DEFUNCT){
+                packageInfo = String.format("From today package <strong>%s</strong> is <strong>NOT AVAILABLE</strong> for subscription.\n" +
+                        "And it will <strong> NEVER </strong> be available in the future" +
+                        "If you were subscribed to this package, check our subscription packages offer and chose different package to subscribe." +
+                        "Your current subscription will continue to be active although this package is scrapped.\n", updatedPackage.getName());
+            }
+            else if(updatedStatus == PackageStatus.SUSPENDED){
+                packageInfo = String.format("From today package <strong>%s</strong> temporarily is not available for subscription." +
+                        "Maybe one day will be active again." +
+                        "If you are subscribed to this package your current subscription will continue to be active although this package is temporarily not available." +
+                        "Meanwhile you can chose from currently active packages on the platform.", updatedPackage.getName());
+            }
+            else{
+                packageInfo = String.format("<p>From today package <strong>%s</strong> is <strong>AGAIN AVAILABLE</strong> for subscription!</p>" +
+                        "<table border=\"3\"> " +
+                        "<tr> <th> Price: </th> <td> %s &euro;</td> </tr>" +
+                        "<tr> <th> Expires in: </th> <td> %s days</td> </tr>" +
+                        "</table>\n" +
+                        "<h4> Description: </h4>" +
+                        "<p> %s </p> <br/>", updatedPackage.getName(), updatedPackage.getPrice(), updatedPackage.getExpiresIn(), updatedPackage.getDescription());
+            }
+            publisher.publishEvent(new UpdatedPackageSendMail(packageInfo));
         }
-        return packageRepository.save(updatedPackage);
+        return updatedPackage;
     }
 
     @Override
@@ -154,47 +197,18 @@ public class SubscriptionPackageServiceImpl implements ISubscriptionPackageServi
     }
 
     @Override
-    public void sendingMailsForSubscriptionPackagesUpdates(){
-        List<SubscriptionPackage> packagesForMailSending = packagesForMailSending();
-        int x =0;
-        if(packagesForMailSending.size() !=0 ) {
-            Iterable<Developer> developers = developerService.findAll();
-            Iterable<Facility> facilities = facilityService.findAll();
-            for (SubscriptionPackage p : packagesForMailSending) {
-                PackageStatus status = p.getStatus();
-                String packageInfo = "";
-                String messageContent = "";
-                String messageSubject = "Subscription package info";
-                if (status == PackageStatus.ACTIVE) {
-                    packageInfo = String.format("<p>From today you can subscribe yourself on the <strong>%s</strong> package on the platform.</p>" +
-                            "<table border=\"3\"> " +
-                                "<tr> <th> Price: </th> <td> %s &euro;</td> </tr>" +
-                                "<tr> <th> Expires in: </th> <td> %s </td> </tr>" +
-                            "</table>\n" +
-                            "<h4> Description: </h4>" +
-                            "<p> %s </p> <br/>", p.getName(), p.getPrice(), p.getExpiresIn(), p.getDescription());
-                } else if (status == PackageStatus.SUSPENDED) {
-                    packageInfo = String.format("From today package <strong>%s</strong> temporarily is not available for subscription." +
-                            "Maybe one day will be active again." +
-                            "Meanwhile you can chose from currently active packages on the platform.", p.getName());
-                } else {
-                    packageInfo = String.format("From today package <strong>%s</strong> is not available for subscription.\n" +
-                            "And it will never be available in the future", p.getName());
-                }
-
-                for(Developer d : developers){
-                   // messageContent = String.format("<h3>Dear %s</h3> <div><p> %s </p> <p> Sincerely yours,\n CateringAPI team. </p> </div>", d.getUsername(), packageInfo);
-                    //emailService.sendSimpleMessage(d.getEmail(), messageSubject, messageContent);
-                }
-
-                for(Facility f : facilities){
-                   // String.format(messageContent, "<h3>Dear %s</h3> <div> %s </div> <div> Sincerely yours CateringAPI team. </div>", f.getUsername(), packageInfo);
-                   // emailService.sendSimpleMessage(f.getEmail(), messageSubject, messageContent);
-                }
-                p.setSendMail(false);
-                update(p);
-            }
+    public List<SubscriptionPackageStats> subscriptionPackagesStats(){
+        List<SubscriptionPackageStats> result = new ArrayList<SubscriptionPackageStats>();
+        Iterable<SubscriptionPackage> packages = findAll();
+        for(SubscriptionPackage sp : packages){
+            List<Double> sums = packageIncomeStats(sp.getId());
+            result.add(new SubscriptionPackageStats(
+                    sp.getId(),
+                    sp.getName(),
+                    sums.get(0),
+                    sums.get(1),
+                    sp.getStatus()));
         }
+        return result;
     }
-
 }

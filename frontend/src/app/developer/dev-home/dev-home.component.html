@@ -77,6 +77,86 @@
       </div>
       <div class="panel-footer"></div>
     </div>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">
+          <i class="fa fa-file-text-o" aria-hidden="true"></i>
+          API service documentation
+        </h3>
+      </div>
+      <div class="panel-body">
+        <div class="col-md-6 col-md-12">
+          <ol>
+            <li>
+              <h4>Return all active facilities registered:</h4>
+              <code>/api/[key]/active-facilities</code>
+            </li>
+            <li>
+              <h4>Details for given facility</h4>
+              <code>/api/[key]/facility-details/[facilityId]</code>
+            </li>
+            <li>
+              <h4>Contacts for given facility location for one facility:</h4>
+              <code>/api/[key]/facility-location-contacts/[locationId]</code>
+            </li>
+            <li>
+              <h4>All courses from one type for given facility</h4>
+              <code>/api/[key]/facility/[facilityId]/courses/[courseType]</code>
+            </li>
+            <li>
+              <h4>All courses from one type in all facilities:</h4>
+              <code>/api/[key]/courses/[courseType]</code>
+            </li>
+            <li>
+              <h4>All beverages from one type for given facility</h4>
+              <code>/api/[key]/facility/[facilityId]/beverages/[beverageType]</code>
+            </li>
+            <li>
+              <h4>All beverages from one type in all facilities:</h4>
+              <code> /api/[key]/beverages/[beverageType]</code>
+            </li>
+            <li>
+              <h4>All beverages types for given facility:</h4>
+              <code>/api/[key]/facility/[facilityId]/beverage-types-in-menu</code>
+            </li>
+            <li>
+              <h4>All courses types for given facility:</h4>
+              <code>/api/[key]/facility/[facilityId]/course-types-in-menu</code>
+            </li>
+            <li>
+              <h4>Details for given menu item, course or beverage:</h4>
+              <code>/api/[key]/detailed-menu-item/[menuItemId]</code>
+            </li>
+          </ol>
+        </div>
+        <hr>
+        <div class="col-md-6 col-md-12">
+          <ol>
+            <li>
+              <h4>For placeholder <code>[key]</code></h4>
+              <ul>
+                <li> For this placeholder you need to put you api key provided by CateringAPI platform on your registration.</li>
+              </ul>
+            </li>
+            <li>
+              <h4>For placeholder <code>[beverageType]</code> you can use:</h4>
+              <ul>
+                <li *ngFor=" let bType of beverageTypes"> {{bType.key.toLowerCase()}}</li>
+              </ul>
+            </li>
+            <li>
+              <h4>For placeholder <code>[courseType]</code> you can use:</h4>
+              <ul>
+                <li *ngFor=" let cType of courseTypes"> {{cType.key.toLowerCase()}}</li>
+              </ul>
+            </li>
+          </ol>
+        </div>
+      </div>
+      <div class="panel-footer">
+
+      </div>
+    </div>
   </div>
 
 

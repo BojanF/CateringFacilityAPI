@@ -24,8 +24,9 @@ public class BeverageController {
     @RequestMapping(value = "/new", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     public Beverage insertBeverage(@RequestBody Beverage beverage){
-        Facility facility = facilityService.findOne(beverage.getFacility().getId());
         int x = 0;
+        Facility facility = facilityService.findOne(beverage.getFacility().getId());
+        x = 1;
 
         return beverageService.insertBeverage(
                 beverage.getName(),

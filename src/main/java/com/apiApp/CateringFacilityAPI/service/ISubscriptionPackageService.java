@@ -1,6 +1,7 @@
 
 package com.apiApp.CateringFacilityAPI.service;
 
+import com.apiApp.CateringFacilityAPI.custom.SubscriptionPackageStats;
 import com.apiApp.CateringFacilityAPI.model.enums.PackageStatus;
 import com.apiApp.CateringFacilityAPI.model.jpa.ApiInvoice;
 import com.apiApp.CateringFacilityAPI.model.jpa.FacilityInvoice;
@@ -49,6 +50,5 @@ public interface ISubscriptionPackageService {
 
     List<SubscriptionPackage> packagesForMailSending();
 
-    void sendingMailsForSubscriptionPackagesUpdates();
-
+    List<SubscriptionPackageStats> subscriptionPackagesStats();
 }

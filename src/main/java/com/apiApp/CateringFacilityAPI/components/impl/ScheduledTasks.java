@@ -19,33 +19,28 @@ public class ScheduledTasks {
     @Autowired
     private ISubscriptionPackageService packageService;
 
-    @Scheduled(cron = "0 15 */24 * * *")
+    @Scheduled(cron = "0 15 1 * * *")
     public void suspendingDevelopersStatusForUnpaidInvoices() {
         System.out.println("Changing developer status for unpaid invoices");//
         developerService.suspendingDevelopersStatusForUnpaidInvoices();
     }
 
-    @Scheduled(cron = "0 40 */24 * * *")
+    @Scheduled(cron = "0 44 1 * * *")
     public void suspendingFacilitiesStatusForUnpaidInvoices() {
         System.out.println("Changing facility status for unpaid invoices");
         facilityService.suspendingFacilitiesStatusForUnpaidInvoices();
     }
 
-    @Scheduled(cron = "0 15 1 * * *")
+    @Scheduled(cron = "0 15 3 * * *")
     public void suspendingDevelopersForExpiredSubscription(){
         System.out.println("Suspending developers for expired subscription");
         developerService.suspendingDevelopersForExpiredSubscription();
     }
 
-    @Scheduled(cron = "0 40 1 * * *")
+    @Scheduled(cron = "0 44 3 * * *")
     public void suspendingFacilitiesForExpiredSubscription(){
         System.out.println("Suspending facilities for expired subscription");
         facilityService.suspendingFacilitiesForExpiredSubscription();
     }
 
-    @Scheduled(cron = "0 0 */8 * * *")
-    public void sendingMailsForSubscriptionPackagesUpdates(){
-        System.out.println("Sending mails");
-        packageService.sendingMailsForSubscriptionPackagesUpdates();
-    }
 }

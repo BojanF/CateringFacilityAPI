@@ -1,15 +1,15 @@
 package com.apiApp.CateringFacilityAPI.service.impl;
 
+import com.apiApp.CateringFacilityAPI.custom.MailData;
+import com.apiApp.CateringFacilityAPI.events.MailFromScheduledTask;
 import com.apiApp.CateringFacilityAPI.exceptions.NotExisting;
 import com.apiApp.CateringFacilityAPI.model.api.*;
 import com.apiApp.CateringFacilityAPI.model.enums.*;
 import com.apiApp.CateringFacilityAPI.model.jpa.*;
 import com.apiApp.CateringFacilityAPI.persistance.IFacilityRepository;
-import com.apiApp.CateringFacilityAPI.service.IBeverageService;
-import com.apiApp.CateringFacilityAPI.service.ICourseService;
-import com.apiApp.CateringFacilityAPI.service.IFacilityInvoiceService;
-import com.apiApp.CateringFacilityAPI.service.IFacilityService;
+import com.apiApp.CateringFacilityAPI.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -34,16 +34,20 @@ public class FacilityServiceImpl implements IFacilityService {
     @Autowired
     private ICourseService courseService;
 
+    @Autowired
+    private IUserService userService;
+
+    @Autowired
+    private ApplicationEventPublisher publisher;
+
     @Override
     public Facility insertFacility(String name, String username, String password, String email) {
+        User user = userService.insertUser(username, email, password, Role.FACILITY);
         Facility facility = new Facility();
         facility.setName(name);
-//        facility.setUsername(username);
-//        facility.setPassword(password);
-//        facility.setEmail(email);
         facility.setStatus(CustomerStatus.SUSPENDED);
         facility.setUsedTrial(false);
-//        facility.setRole(Role.FACILITY);
+        facility.setUser(user);
         return facilityRepository.save(facility);
     }
 
@@ -136,21 +140,47 @@ public class FacilityServiceImpl implements IFacilityService {
     @Override
     public void suspendingFacilitiesStatusForUnpaidInvoices() {
         List<FacilityInvoice> invoices = facilityInvoiceService.notPaidInvoicesAfterReliefPeriod(LocalDateTime.now());
+        String messageContent = "";
         for(FacilityInvoice invoice : invoices){
             invoice.getFacility().setStatus(CustomerStatus.SUSPENDED);
             update(invoice.getFacility());
+
+            messageContent = String.format("<h4>Dear %s </h4> <div> <p> Your have unpaid invoice for subscription." +
+                    "Now your menu items <strong> ARE NOT </strong> included in results in our web service." +
+                    "If you want to continue to use our web service you need to pay your unpaid invoice." +
+                    "If you have active subscription, your menu items <strong> WILL BE </strong> included in results in our web service.</p> </div>" +
+                    "Check which invoice you did not paid on our web site" +
+                    "<div> <p> Sincerely yours,</p> <p> CateringAPI team. </p></div>" +
+                    "</br> <p> *This mail is sent couple of minutes after invoice is generated.</p>", invoice.getFacility().getUser().getUsername());
+            MailData mailData = new MailData(
+                    invoice.getFacility().getUser().getEmail(),
+                    "Your account on CateringAPI is suspended",
+                    messageContent);
+            publisher.publishEvent(new MailFromScheduledTask(mailData));
         }
     }
 
     @Override
     public void suspendingFacilitiesForExpiredSubscription(){
         List<Facility> activeFacilities = activeFacilities();
+        String messageContent = "";
         for(Facility f : activeFacilities){
-           FacilityInvoice lastInvoice = facilityInvoices(f.getId(), new PageRequest(0, 1)).get(0);
+            FacilityInvoice lastInvoice = facilityInvoices(f.getId(), new PageRequest(0, 1)).get(0);
             LocalDateTime expiresAt = lastInvoice.getCreatedAt().plusDays(lastInvoice.getSubscribe().getExpiresIn()-1);
             if(expiresAt.isBefore(LocalDateTime.now())){
                 f.setStatus(CustomerStatus.SUSPENDED);
                 update(f);
+                messageContent = String.format("<h4>Dear %s </h4> <div> <p> Your last subscription made on our platform expired." +
+                        "Now your menu items <strong> ARE NOT </strong> included in results in our web service." +
+                        "If you want to continue to use our web service subscribe yourself again." +
+                        "The moment you wil subscribe your account will be active again, and your menu items <strong> WILL BE </strong> included in results in our web service.</p> </div>" +
+                        "<div> <p> Sincerely yours,</p> <p> CateringAPI team. </p></div>" +
+                        "</br> <p> *This mail is sent couple of minutes after invoice is generated.</p>", f.getUser().getUsername());
+                MailData mailData = new MailData(
+                        f.getUser().getEmail(),
+                        "Your account on CateringAPI is suspended",
+                        messageContent);
+                publisher.publishEvent(new MailFromScheduledTask(mailData));
             }
         }
     }
@@ -183,6 +213,11 @@ public class FacilityServiceImpl implements IFacilityService {
     @Override
     public Double sumOfInvoicesForFacility(Long facilityId, boolean paid){
         return facilityRepository.sumOfInvoicesForFacility(facilityId, paid);
+    }
+
+    @Override
+    public Facility findFacilityByUserId(Long userId){
+        return facilityRepository.findFacilityByUserId(userId);
     }
 
     //api
@@ -259,7 +294,7 @@ public class FacilityServiceImpl implements IFacilityService {
                 && beverage.getListedInMenu()
                 && beverage.getFacility().getStatus() == CustomerStatus.ACTIVE) {
             return new ApiMenuItemDetailsTyped(
-                    course.getId(),
+                    beverage.getId(),
                     beverage.getName(),
                     beverage.getPrice(),
                     beverage.getDescription(),
