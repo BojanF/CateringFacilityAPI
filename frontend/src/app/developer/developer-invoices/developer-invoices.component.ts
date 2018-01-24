@@ -74,8 +74,9 @@ export class DeveloperInvoicesComponent implements OnInit {
     return this.dateParseService.dateParsing(date);
   }
 
-  pay(sum){
+  pay(sum,id){
     this.payPal.makePayment(sum).subscribe(function(response){
+      localStorage.paymentId=id;
       window.location.replace(response["redirect_url"]);
     });
   }

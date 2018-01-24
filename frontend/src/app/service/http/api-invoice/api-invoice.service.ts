@@ -23,4 +23,11 @@ export class ApiInvoiceService {
   getAllApiInvoicesForDeveloper(id: number){
     return this.http.get<Array<ApiInvoice>>('http://localhost:8080/fe/developer/invoices/'+id,{headers:this.loginService.getCredentials()});
   }
+
+  updateApiInvoice(invoiceId: number){
+    return this.http.patch<ApiInvoice>(this.apiInvoiceUrl + '/update/'+invoiceId,{headers:this.loginService.getCredentials()});
+  }
+  getApiInvoiceById(invoiceId: number){
+    return this.http.get<ApiInvoice>(this.apiInvoiceUrl + '/get-by-id/' + invoiceId,{headers:this.loginService.getCredentials()});
+  }
 }

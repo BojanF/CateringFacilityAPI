@@ -6,6 +6,7 @@ import com.paypal.base.rest.PayPalRESTException;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -67,13 +68,13 @@ public class PayPalServiceImpl {
         payment.setId(req.getParameter("paymentId"));
 
         PaymentExecution paymentExecution = new PaymentExecution();
-        paymentExecution.setPayerId(req.getParameter("PayerID"));
+        paymentExecution.setPayerId(req.getParameter("payerId"));
         try {
             APIContext context = new APIContext(clientId, clientSecret, "sandbox");
             Payment createdPayment = payment.execute(context, paymentExecution);
             if(createdPayment!=null){
-                response.put("status", "success");
-                response.put("payment", createdPayment);
+                //response.put("status", "success");
+               // response.put("payment", createdPayment);
             }
         } catch (PayPalRESTException e) {
             System.err.println(e.getDetails());

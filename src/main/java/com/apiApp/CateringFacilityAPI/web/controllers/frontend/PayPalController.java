@@ -24,9 +24,8 @@ public class PayPalController {
         return payPalService.createPayment(sum);
     }
 
-    @RequestMapping(value = "/complete/payment", method = RequestMethod.POST)
+    @PostMapping(value = "/complete/payment")
     public Map<String, Object> completePayment(HttpServletRequest request){
-
         return payPalService.completePayment(request);
     }
 }

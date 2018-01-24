@@ -19,4 +19,10 @@ export class FacilityInvoiceService {
     return this.http.get<Array<FacilityInvoice>>(this.facilityInvoiceUrl + '/all-sorted',{headers:this.loginService.getCredentials()});
   }
 
+
+  updateFacilityInvoice(invoiceId: number){
+    return this.http.patch<FacilityInvoice>(this.facilityInvoiceUrl + '/update/'+invoiceId,{headers:this.loginService.getCredentials()});
+  }
+  getFacilityInvoiceById(invoiceId: number){
+    return this.http.get<FacilityInvoice>(this.facilityInvoiceUrl + '/get-by-id/' + invoiceId,{headers:this.loginService.getCredentials()});}
 }

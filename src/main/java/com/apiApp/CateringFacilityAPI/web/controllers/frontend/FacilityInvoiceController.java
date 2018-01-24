@@ -1,5 +1,6 @@
 package com.apiApp.CateringFacilityAPI.web.controllers.frontend;
 
+import com.apiApp.CateringFacilityAPI.model.jpa.ApiInvoice;
 import com.apiApp.CateringFacilityAPI.model.jpa.Facility;
 import com.apiApp.CateringFacilityAPI.model.jpa.FacilityInvoice;
 import com.apiApp.CateringFacilityAPI.service.IFacilityInvoiceService;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @CrossOrigin
@@ -32,5 +34,18 @@ public class FacilityInvoiceController {
     @RequestMapping(value="/all-sorted", method = RequestMethod.GET)
     public List<FacilityInvoice> allFacilityInvoicesSorted(){
         return facilityInvoiceService.getAllFacilityInvoicesSortedByCreatedAt();
+    }
+
+    @RequestMapping(value = "/update/{invoiceId}", method = RequestMethod.PATCH)
+    public FacilityInvoice updateBeverage(@PathVariable Long invoiceId){
+        FacilityInvoice facilityInvoice = facilityInvoiceService.findOne(invoiceId);
+        facilityInvoice.setPayedAt(LocalDateTime.now());
+        facilityInvoice.setInvoicePayed(true);
+        return facilityInvoiceService.update(facilityInvoice);
+    }
+
+    @RequestMapping(value = "/get-by-id/{invoiceId}", method = RequestMethod.GET)
+    public FacilityInvoice getBeverageById(@PathVariable Long invoiceId){
+        return facilityInvoiceService.findOne(invoiceId);
     }
 }
