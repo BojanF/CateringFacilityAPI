@@ -3,6 +3,7 @@ import {DateParseService} from "../../service/date-parse/date-parse.service";
 import {ApiInvoice} from "../../model/ApiInvoice";
 import {ApiInvoiceService} from "../../service/http/api-invoice/api-invoice.service";
 import {IdService} from "../../service/id-service/id.service";
+import {PayPalService} from "../../service/http/paypal/paypal.service";
 
 
 
@@ -25,7 +26,8 @@ export class DeveloperInvoicesComponent implements OnInit {
   };
   constructor(private apiInvoiceService: ApiInvoiceService,
               private dateParseService: DateParseService,
-              private id: IdService) {
+              private id: IdService,
+              private payPal:PayPalService) {
     this.developerID = this.id.getDeveloperId();
   }
 
@@ -72,4 +74,9 @@ export class DeveloperInvoicesComponent implements OnInit {
     return this.dateParseService.dateParsing(date);
   }
 
+  pay(sum){
+    this.payPal.makePayment(sum).subscribe(function(response){
+      window.location.replace(response["redirect_url"]);
+    });
+  }
 }

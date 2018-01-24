@@ -29,9 +29,11 @@ import {DevGetSubscriptionComponent} from "./developer/dev-get-subscription/dev-
 import { DevViewActivePackagesComponent } from './developer/dev-view-active-packages/dev-view-active-packages.component';
 import { FacViewActivePackagesComponent } from './facility/fac-view-active-packages/fac-view-active-packages.component';
 import {PackagesStatsComponent} from "./administrator/packages-stats/packages-stats.component";
+import {PayPalComponent} from "./paypal/paypal.component";
 
 const routes: Routes = [
   {path: '', redirectTo: 'login', pathMatch: 'full'},
+  {path:'paypal',component:PayPalComponent,pathMatch:'full'},
   {path: 'admin', redirectTo: 'admin', pathMatch: 'full'},
   {path: 'developer', redirectTo: 'developer', pathMatch: 'full'},
   {path: 'facility', redirectTo: 'facility', pathMatch: 'full'},

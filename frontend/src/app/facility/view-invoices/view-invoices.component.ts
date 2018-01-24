@@ -3,6 +3,8 @@ import {FacilityService} from "../../service/http/facility/facility.service";
 import {FacilityInvoice} from "../../model/FacilityInvoice";
 import {DateParseService} from "../../service/date-parse/date-parse.service";
 import {IdService} from "../../service/id-service/id.service";
+import {PayPalService} from "../../service/http/paypal/paypal.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-view-invoices',
@@ -13,7 +15,9 @@ export class ViewInvoicesComponent implements OnInit {
 
   constructor(private facilityService: FacilityService,
               private dateParseService: DateParseService,
-              private id: IdService) {
+              private id: IdService,
+              private payPal:PayPalService,
+              private router:Router) {
 
     this.facilityId = this.id.getFacilityId();
 
@@ -74,5 +78,11 @@ export class ViewInvoicesComponent implements OnInit {
 
   dateParsing(date){
     return this.dateParseService.dateParsing(date);
+  }
+
+  pay(sum){
+    this.payPal.makePayment(sum).subscribe(function(response){
+      window.location.replace(response["redirect_url"]);
+    });
   }
 }

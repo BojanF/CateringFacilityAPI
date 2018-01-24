@@ -79,7 +79,7 @@
               </span>
             </td>
             <td>
-              <button class="btn btn-xs btn-primary" [disabled]="invoice.invoicePayed">
+              <button class="btn btn-xs btn-primary" 	(click)="pay(invoice.grossPrice)" [disabled]="invoice.invoicePayed">
                 <i class="fa fa-eur" aria-hidden="true"></i> Pay
               </button>
             </td>

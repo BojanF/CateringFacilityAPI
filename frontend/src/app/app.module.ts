@@ -51,6 +51,8 @@ import {AdministratorService} from "./service/http/administrator/administrator.s
 import {DeveloperService} from "./service/http/developer/developer.service";
 import {LoginService} from "./service/http/login/login.service";
 import {PackagesStatsComponent} from "./administrator/packages-stats/packages-stats.component";
+import {PayPalService} from "./service/http/paypal/paypal.service";
+import {PayPalComponent} from "./paypal/paypal.component";
 
 
 // import {NgxSelectOptions} from "ngx-select-options";
@@ -86,7 +88,8 @@ import {PackagesStatsComponent} from "./administrator/packages-stats/packages-st
     DevGetSubscriptionComponent,
     DevViewActivePackagesComponent,
     FacViewActivePackagesComponent,
-    PackagesStatsComponent
+    PackagesStatsComponent,
+    PayPalComponent
   ],
   imports: [
     BrowserModule,
@@ -112,7 +115,8 @@ import {PackagesStatsComponent} from "./administrator/packages-stats/packages-st
     FacilityLocationContactService,
     AdministratorService,
     DeveloperService,
-    LoginService
+    LoginService,
+    PayPalService
   ],
   bootstrap: [AppComponent]
 })
