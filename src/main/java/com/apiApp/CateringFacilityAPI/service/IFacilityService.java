@@ -65,6 +65,8 @@ public interface IFacilityService {
 
     List<ApiMenuItemDetails> allBeveragesForType(BeverageType beverageType);
 
-    ApiMenuItemDetailsTyped getDetailedMenuItem(Long menuItemId) throws NotExisting;
+    ApiMenuItemDetailsTyped getDetailedBeverage(Long menuItemId) throws NotExisting;
+
+    ApiMenuItemDetailsTyped getDetailedCourse(Long menuItemId) throws NotExisting;
 
 }

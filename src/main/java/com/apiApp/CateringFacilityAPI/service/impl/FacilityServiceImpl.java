@@ -274,9 +274,26 @@ public class FacilityServiceImpl implements IFacilityService {
     }
 
     @Override
-    public ApiMenuItemDetailsTyped getDetailedMenuItem(Long menuItemId) throws NotExisting {
-        Course course = courseService.findOne(menuItemId);
+    public ApiMenuItemDetailsTyped getDetailedBeverage(Long menuItemId) throws NotExisting {
         Beverage beverage = beverageService.findOne(menuItemId);
+        if (beverage != null
+                && beverage.getListedInMenu()
+                && beverage.getFacility().getStatus() == CustomerStatus.ACTIVE) {
+            return new ApiMenuItemDetailsTyped(
+                    beverage.getId(),
+                    beverage.getName(),
+                    beverage.getPrice(),
+                    beverage.getDescription(),
+                    beverage.getFacility().getId(),
+                    beverage.getFacility().getName(),
+                    beverage.getType().toString());
+        }
+        throw new NotExisting("Menu item with id:" + menuItemId + " is not found");
+    }
+
+    @Override
+    public ApiMenuItemDetailsTyped getDetailedCourse(Long menuItemId) throws NotExisting {
+        Course course = courseService.findOne(menuItemId);
         if (course != null
                 && course.getListedInMenu()
                 && course.getFacility().getStatus() == CustomerStatus.ACTIVE) {
@@ -290,18 +307,7 @@ public class FacilityServiceImpl implements IFacilityService {
                     course.getType().toString());
         }
 
-        if (beverage != null
-                && beverage.getListedInMenu()
-                && beverage.getFacility().getStatus() == CustomerStatus.ACTIVE) {
-            return new ApiMenuItemDetailsTyped(
-                    beverage.getId(),
-                    beverage.getName(),
-                    beverage.getPrice(),
-                    beverage.getDescription(),
-                    beverage.getFacility().getId(),
-                    beverage.getFacility().getName(),
-                    beverage.getType().toString());
-        }
+
         throw new NotExisting("Menu item with id:" + menuItemId + " is not found");
     }
 

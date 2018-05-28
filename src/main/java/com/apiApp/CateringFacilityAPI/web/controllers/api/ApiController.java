@@ -105,12 +105,20 @@ public class ApiController {
         return facilityService.getCoursesTypesForFacility(facilityIdLong);
     }
 
-    @RequestMapping(value = "/detailed-menu-item/{menuItemId}")
-    public ApiMenuItemDetailsTyped getDetailedMenuItem(@PathVariable String key,
+    @RequestMapping(value = "/detailed-beverage/{menuItemId}")
+    public ApiMenuItemDetailsTyped getDetailedBeverage(@PathVariable String key,
                                                        @PathVariable String menuItemId) throws BadRequest, SuspendedDeveloper, DeveloperAuth, NotExisting {
         Long menuItemIdLong = parseIdToLong(menuItemId);
         checkDeveloper(key);
-        return facilityService.getDetailedMenuItem(menuItemIdLong);
+        return facilityService.getDetailedBeverage(menuItemIdLong);
+    }
+
+    @RequestMapping(value = "/detailed-course/{menuItemId}")
+    public ApiMenuItemDetailsTyped getDetailedCourse(@PathVariable String key,
+                                                       @PathVariable String menuItemId) throws BadRequest, SuspendedDeveloper, DeveloperAuth, NotExisting {
+        Long menuItemIdLong = parseIdToLong(menuItemId);
+        checkDeveloper(key);
+        return facilityService.getDetailedCourse(menuItemIdLong);
     }
 
     @ExceptionHandler(NotExisting.class)
